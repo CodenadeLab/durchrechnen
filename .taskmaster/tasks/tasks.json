@@ -1,0 +1,532 @@
+{
+  "master": {
+    "tasks": [
+      {
+        "id": 1,
+        "title": "Tauri-Projektstruktur initialisieren",
+        "description": "Optimierung der Tauri v2 Business-Konfiguration mit erweiterten Desktop- und Mobile-Funktionen für professionelle Anwendungsbereitstellung",
+        "status": "pending",
+        "dependencies": [],
+        "priority": "high",
+        "details": "Optimierung der bestehenden Tauri v2-Infrastruktur für Business-Anforderungen. Implementierung nativer Desktop-Menüs mit platform-spezifischen Funktionen (macOS, Windows, Linux). Aufbau eines umfassenden Tastaturkürzel-Systems mit Anpassungsmöglichkeiten. Integration von SQLite für lokalen Offline-Speicher mit Synchronisierungsmechanismen. Implementierung von System-Benachrichtigungen für wichtige Events. Aufbau von Datei-Handling-Funktionen für PDF-Export und Dokumentenverwaltung. Konfiguration platform-spezifischer Anpassungen für iOS/Android inklusive nativer Navigationsmuster und Touch-Optimierungen.",
+        "testStrategy": "Test der nativen Menüfunktionalität auf allen Desktop-Plattformen. Validierung aller Tastaturkürzel und deren Konfliktvermeidung. Test der SQLite-Integration und Offline-Synchronisierung. Überprüfung von System-Benachrichtigungen und deren Berechtigungen. Test des PDF-Exports und Datei-Handlings. Validierung platform-spezifischer UI/UX-Anpassungen auf iOS/Android-Simulatoren.",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Native Desktop-Menüs implementieren",
+            "description": "Erstellung platform-spezifischer Menüstrukturen für macOS, Windows und Linux",
+            "status": "pending",
+            "dependencies": [],
+            "details": "Implementierung nativer Menüleisten mit platform-spezifischen Konventionen. macOS: Application Menu, File, Edit, View, Window, Help. Windows/Linux: File, Edit, View, Tools, Help. Integration von Kontextmenüs für Rechtklick-Aktionen.",
+            "testStrategy": ""
+          },
+          {
+            "id": 2,
+            "title": "Tastaturkürzel-System aufbauen",
+            "description": "Implementierung eines umfassenden und anpassbaren Tastaturkürzel-Systems",
+            "status": "pending",
+            "dependencies": [],
+            "details": "Aufbau eines globalen Shortcut-Managers mit Konfliktserkennung. Implementierung von Standard-Shortcuts (Ctrl+N, Ctrl+S, etc.) und benutzerdefinierten Kombinationen. Integration mit Tauri's globalShortcut API für systemweite Shortcuts.",
+            "testStrategy": ""
+          },
+          {
+            "id": 3,
+            "title": "SQLite Offline-Speicher integrieren",
+            "description": "Integration von SQLite für lokale Datenspeicherung und Offline-Funktionalität",
+            "status": "pending",
+            "dependencies": [],
+            "details": "Einrichtung von SQLite mit sql.js oder tauri-plugin-sql. Implementierung von Datensynchronisierung zwischen lokalem SQLite und PostgreSQL-Backend. Aufbau von Konfliktlösungsmechanismen für Offline/Online-Datenabgleich.",
+            "testStrategy": ""
+          },
+          {
+            "id": 4,
+            "title": "System-Benachrichtigungen implementieren",
+            "description": "Aufbau von nativen System-Benachrichtigungen für wichtige Events",
+            "status": "pending",
+            "dependencies": [],
+            "details": "Integration von Tauri's notification API für Desktop-Benachrichtigungen. Implementierung von Push-Notifications für Mobile-Plattformen. Aufbau eines Notification-Managers mit Prioritäten und Benutzereinstellungen.",
+            "testStrategy": ""
+          },
+          {
+            "id": 5,
+            "title": "PDF-Export und Datei-Handling aufbauen",
+            "description": "Implementierung von Datei-Operationen für PDF-Export und Dokumentenverwaltung",
+            "status": "pending",
+            "dependencies": [],
+            "details": "Integration von PDF-Generierung mit jsPDF oder ähnlicher Library. Implementierung von Datei-Dialog-APIs für Speichern/Öffnen. Aufbau von Drag-and-Drop-Funktionalität für Datei-Import. Konfiguration von Dateisystem-Berechtigungen.",
+            "testStrategy": ""
+          },
+          {
+            "id": 6,
+            "title": "Platform-spezifische Mobile-Anpassungen",
+            "description": "Optimierung der UI/UX für iOS und Android mit nativen Navigationsmustern",
+            "status": "pending",
+            "dependencies": [],
+            "details": "Implementierung von iOS-spezifischen Navigationsprinzipien (Tab Bar, Navigation Stack). Aufbau von Android Material Design-Komponenten und Navigationsdrawer. Integration von Touch-Gesten und Haptic Feedback. Konfiguration von App-Icons und Splash-Screens.",
+            "testStrategy": ""
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "title": "PostgreSQL-Datenbank mit Drizzle ORM konfigurieren",
+        "description": "Datenbankschema mit Drizzle ORM implementieren - Fokus auf die Implementierung aller Kern-Entitäten für das Preiskalkulator-System",
+        "status": "pending",
+        "dependencies": [
+          1
+        ],
+        "priority": "high",
+        "details": "Implementierung eines vollständigen Datenbankschemas mit Drizzle ORM für alle Kern-Entitäten: Services mit 7 Kategorien und hierarchischer Struktur, 4 Preismodelle (Festpreis, Stundensatz, monatlich wiederkehrend, projektbasiert), Service-Abhängigkeiten mit zirkulärer Validierung, Kunden-Management, Angebots-System, Benutzer-Rollen (Admin, Vertriebsleiter, Vertriebsmitarbeiter), Audit-Tabellen für Änderungsverfolgung. Setup des Migrations-Systems mit drizzle-kit für Versionskontrolle. Multi-Region PostgreSQL ist bereits konfiguriert und muss genutzt werden.",
+        "testStrategy": "Test aller CRUD-Operationen für jede Entität. Überprüfung von Fremdschlüsselbeschränkungen und kaskadierenden Löschungen. Test von Service-Abhängigkeiten und zirkulärer Validierung. Validierung der 4 Preismodelle mit verschiedenen Berechnungsszenarien. Test von Migrations-Rollback/Forward. Benchmark der Abfrageleistung mit 10k+ Datensätzen. Überprüfung der Audit-Trail-Funktionalität.",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Kern-Entitäten Schema definieren",
+            "description": "Implementierung der Haupttabellen: users, services, customers, quotes mit vollständigen Spalten und Beziehungen",
+            "status": "pending",
+            "dependencies": [],
+            "details": "",
+            "testStrategy": ""
+          },
+          {
+            "id": 2,
+            "title": "Service-Kategorien und hierarchische Struktur",
+            "description": "Erstellung von 7 Service-Kategorien mit Unterkategorien-Support und Baum-Struktur für verschachtelte Services",
+            "status": "pending",
+            "dependencies": [],
+            "details": "",
+            "testStrategy": ""
+          },
+          {
+            "id": 3,
+            "title": "Preismodell-Schema implementieren",
+            "description": "Schema für 4 Preismodelle: Festpreis, Stundensatz, monatlich wiederkehrend, projektbasiert mit entsprechenden Konfigurationsfeldern",
+            "status": "pending",
+            "dependencies": [],
+            "details": "",
+            "testStrategy": ""
+          },
+          {
+            "id": 4,
+            "title": "Service-Abhängigkeiten System",
+            "description": "Implementierung von Service-Dependencies-Tabelle mit zirkulärer Abhängigkeits-Validierung und rekursiver Auflösung",
+            "status": "pending",
+            "dependencies": [],
+            "details": "",
+            "testStrategy": ""
+          },
+          {
+            "id": 5,
+            "title": "Benutzer-Rollen und Berechtigungen",
+            "description": "Schema für rollenbasierte Zugriffskontrolle: Admin, Vertriebsleiter, Vertriebsmitarbeiter mit entsprechenden Berechtigungstabellen",
+            "status": "pending",
+            "dependencies": [],
+            "details": "",
+            "testStrategy": ""
+          },
+          {
+            "id": 6,
+            "title": "Audit-Tabellen für Änderungsverfolgung",
+            "description": "Implementierung von Audit-Trails für alle kritischen Entitäten mit Zeitstempel, Benutzer-ID und Änderungstyp",
+            "status": "pending",
+            "dependencies": [],
+            "details": "",
+            "testStrategy": ""
+          },
+          {
+            "id": 7,
+            "title": "Migrations-Setup und Indizierung",
+            "description": "Konfiguration des drizzle-kit Migrationssystems und Erstellung performanter Indizes für häufig abgefragte Felder",
+            "status": "pending",
+            "dependencies": [],
+            "details": "",
+            "testStrategy": ""
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "title": "Better-Auth Authentifizierungssystem implementieren",
+        "description": "Better-Auth Integration mit rollenbasierter Zugriffskontrolle - Setup von Better-Auth mit PostgreSQL-Adapter, Session-Management und E-Mail/Passwort-Authentifizierung",
+        "status": "pending",
+        "dependencies": [
+          2
+        ],
+        "priority": "high",
+        "details": "Installation und Konfiguration von better-auth (neueste stabile Version) mit PostgreSQL-Adapter. Setup von E-Mail/Passwort-Authentifizierung mit sicherem bcrypt-Hashing. Implementierung von Session-Management (bestehende JWT/jose-Integration nutzen). Einrichtung rollenbasierter Berechtigungen: Admin (Vollzugriff), Vertriebsleiter (Team + Analytik), Vertriebsmitarbeiter (Angebote + Kunden). Konfiguration von Passwortrichtlinien (min. 8 Zeichen, Komplexitätsanforderungen). Implementierung eines sicheren Passwort-Reset-Ablaufs mit E-Mail-Verifizierung über die bereits vorhandene Resend API. Integration mit vorhandenem Rate-Limiting-System für Anmeldeversuche.",
+        "testStrategy": "Test von Login/Logout-Abläufen mit gültigen/ungültigen Anmeldedaten. Überprüfung rollenbasierter Zugriffsbeschränkungen für alle drei Rollen. Test des Passwort-Reset-Ablaufs von Anfang bis Ende mit Resend-Integration. Validierung der Session-Management-Integration mit bestehender JWT-Infrastruktur. Test der Rate-Limiting-Integration bei Anmeldeversuchen.",
+        "subtasks": []
+      },
+      {
+        "id": 4,
+        "title": "tRPC API-Schicht mit Typsicherheit erstellen",
+        "description": "Implementierung von tRPC Business-Routern und Client-Integration für typsichere API-Kommunikation zwischen Frontend und Backend mit ordnungsgemäßer Fehlerbehandlung und Validierung",
+        "status": "pending",
+        "dependencies": [
+          2,
+          3
+        ],
+        "priority": "high",
+        "details": "Da tRPC Server bereits mit Hono läuft, Fokus auf Business-Router-Implementierung: Service-Management Router (CRUD + Abhängigkeiten), Berechnungs-Engine Router (Echtzeit-Preisgestaltung), Angebots-Router (CRUD + PDF-Generierung), Kunden-Router (CRUD + Historie), Analytics-Router (Dashboards + Berichte). Client-Integration in React mit bereits vorhandenem TanStack Query. Implementierung von Zod-Schemas zur Eingabevalidierung. Konfiguration von WebSocket-Unterstützung für Echtzeit-Updates. Einrichtung der Fehlerbehandlung mit benutzerdefinierten Fehlercodes. Implementierung von Request-Batching für bessere Leistung. Hinzufügen von OpenTelemetry-Tracing für Monitoring.",
+        "testStrategy": "Test aller tRPC-Prozeduren mit gültigen/ungültigen Eingaben. Überprüfung, ob die Typinferenz im Frontend korrekt funktioniert. Test von WebSocket-Verbindungen für Echtzeit-Updates. Validierung der Fehlerbehandlung und -wiederherstellung. Leistungstest mit gleichzeitigen Anfragen. Test der TanStack Query Integration.",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Service-Management Router implementieren",
+            "description": "tRPC Router für Dienstleistungs-CRUD mit Abhängigkeitsmanagement",
+            "status": "pending",
+            "dependencies": [],
+            "details": "Implementierung von Prozeduren für: createService, updateService, deleteService, getServices, getServiceById, getServiceDependencies, updateServiceDependencies. Zod-Schemas für Service-Validierung.",
+            "testStrategy": ""
+          },
+          {
+            "id": 2,
+            "title": "Berechnungs-Engine Router erstellen",
+            "description": "Router für Echtzeit-Preisberechnungen mit WebSocket-Support",
+            "status": "pending",
+            "dependencies": [],
+            "details": "Implementierung von: calculatePrice, getCalculationHistory, subscribeToCalculationUpdates. WebSocket-Integration für Live-Updates der Preisberechnungen.",
+            "testStrategy": ""
+          },
+          {
+            "id": 3,
+            "title": "Angebots-Router implementieren",
+            "description": "Vollständiger CRUD für Angebote mit PDF-Generierung",
+            "status": "pending",
+            "dependencies": [],
+            "details": "Prozeduren für: createQuote, updateQuote, deleteQuote, getQuotes, getQuoteById, generateQuotePDF, duplicateQuote. Integration mit PDF-Generierungs-Service.",
+            "testStrategy": ""
+          },
+          {
+            "id": 4,
+            "title": "Kunden-Router erstellen",
+            "description": "Kundenmanagement mit Historie und Segmentierung",
+            "status": "pending",
+            "dependencies": [],
+            "details": "Implementierung von: createCustomer, updateCustomer, deleteCustomer, getCustomers, getCustomerById, getCustomerHistory, getCustomerSegment. DSGVO-konforme Datenverwaltung.",
+            "testStrategy": ""
+          },
+          {
+            "id": 5,
+            "title": "Analytics-Router implementieren",
+            "description": "Router für Dashboard-Daten und Berichte",
+            "status": "pending",
+            "dependencies": [],
+            "details": "Prozeduren für: getDashboardMetrics, getRevenueAnalytics, getCustomerInsights, getServicePerformance, generateReport. Optimierte Queries für große Datenmengen.",
+            "testStrategy": ""
+          },
+          {
+            "id": 6,
+            "title": "tRPC Client-Integration in React",
+            "description": "Integration des tRPC Clients mit TanStack Query",
+            "status": "pending",
+            "dependencies": [],
+            "details": "Konfiguration des tRPC React Query Clients. Setup von Providern, Error Handling und Type-Safety. Integration mit bestehendem TanStack Query Setup.",
+            "testStrategy": ""
+          },
+          {
+            "id": 7,
+            "title": "WebSocket-Unterstützung konfigurieren",
+            "description": "Echtzeit-Updates über WebSockets implementieren",
+            "status": "pending",
+            "dependencies": [],
+            "details": "Setup von tRPC WebSocket-Adapter mit Hono. Implementierung von Subscriptions für Live-Updates von Berechnungen und Angebotsstatus.",
+            "testStrategy": ""
+          },
+          {
+            "id": 8,
+            "title": "Fehlerbehandlung und Monitoring",
+            "description": "Umfassende Fehlerbehandlung und Tracing implementieren",
+            "status": "pending",
+            "dependencies": [],
+            "details": "Benutzerdefinierte Fehlercodes, Request-Batching, OpenTelemetry-Integration für Performance-Monitoring und Debugging.",
+            "testStrategy": ""
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "title": "Dienstleistungskatalog-Managementsystem entwerfen",
+        "description": "Aufbau eines umfassenden Dienstleistungskatalogs mit hierarchischen Kategorien, mehreren Preismodellen und Abhängigkeitsmanagement - Kernfunktionalität als Grundlage für alle Preisberechnungen",
+        "status": "pending",
+        "dependencies": [
+          2,
+          4
+        ],
+        "priority": "high",
+        "details": "Erstellung eines Dienstleistungsmanagement-Moduls mit Unterstützung für 7 Kategorien mit verschachtelten Unterkategorien. Implementierung von 4 Preismodellen: Festpreis, Stundensatz, monatlich wiederkehrend, projektbasiert - diese sind Kernfunktionalität für das gesamte System. Design eines Abhängigkeitssystems mit rekursiver Validierung und Erkennung zirkulärer Abhängigkeiten. Hinzufügen von Komplexitätsstufen (Basic/Standard/Premium) mit konfigurierbaren Multiplikatoren (1,0x, 1,5x, 2,0x). Implementierung von Zusatzleistungen mit Eltern-Kind-Beziehungen. Erstellung einer Admin-Oberfläche mit shadcn/ui-Komponenten für CRUD-Operationen. Hinzufügen von Funktionen für Massenimport/-export (CSV/JSON). Da der Service-Katalog die Grundlage für alle Preisberechnungen bildet, ist diese Aufgabe von höchster Priorität und muss vor allen anderen preisabhängigen Modulen abgeschlossen werden.",
+        "testStrategy": "Test von CRUD-Operationen für Dienstleistungen in allen 7 Kategorien. Validierung von Abhängigkeitsketten mit komplexen Szenarien. Test von Preisberechnungen für alle 4 Modelltypen als Kernfunktionalität. Überprüfung, ob Zusatzleistungen korrekt verknüpft sind. Test von Massenoperationen mit 1000+ Dienstleistungen. Validierung der Grundlagenfunktionalität für nachgelagerte Preisberechnungsmodule.",
+        "subtasks": []
+      },
+      {
+        "id": 6,
+        "title": "Echtzeit-Preisberechnungs-Engine implementieren",
+        "description": "Erstellung einer leistungsstarken Berechnungs-Engine für Echtzeit-Preisgestaltung mit Abhängigkeitsvalidierung und Rabattanwendung",
+        "details": "Aufbau einer Berechnungs-Engine mit Web Workers für nicht-blockierende Berechnung. Implementierung von Echtzeit-Preisaktualisierungen mit <100ms Antwortzeit unter Verwendung von Memoization und Caching-Strategien. Erstellung eines Abhängigkeitsvalidators mit automatischer Erkennung fehlender Dienstleistungen. Implementierung eines Rabattsystems: Bündelrabatte (5-20% für Kombinationen), kundenspezifische Rabatte, Mengenrabatte. Hinzufügen von Gewinnmargenberechnungen mit Kostenverfolgung. Implementierung eines Zeitschätzungsalgorithmus basierend auf der Dienstleistungskomplexität. Verwendung von Decimal.js für präzise Finanzberechnungen.",
+        "testStrategy": "Benchmark der Berechnungsleistung mit 50+ Dienstleistungen. Test der Abhängigkeitsvalidierung mit Grenzfällen. Überprüfung der Regeln für Rabattstaffelung. Test der Berechnungsgenauigkeit mit finanziellen Testfällen. Validierung, dass Echtzeit-Updates die Benutzeroberfläche nicht blockieren.",
+        "priority": "high",
+        "dependencies": [
+          5
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 7,
+        "title": "Kundenmanagement-Modul erstellen",
+        "description": "Aufbau einer umfassenden Kundendatenbank mit Historien-Tracking, Segmentierung und personalisierten Preisgestaltungsfunktionen",
+        "details": "Design eines Kundendatenmodells mit Feldern: Kontaktinformationen, Unternehmensdetails, Kommunikationspräferenzen, benutzerdefinierte Preisregeln. Implementierung der Kundensegmentierung: Privat, KMU, Unternehmen mit unterschiedlicher Dienstverfügbarkeit. Erstellung einer Kundenhistorie für alle Angebote und Interaktionen mit Zeitleistenansicht. Hinzufügen einer Suchfunktion mit Fuzzy-Matching unter Verwendung von Fuse.js. Implementierung von Datenschutzfunktionen mit DSGVO-Konformität (Datenexport, Löschung). Erstellung eines Kundenimports aus CSV/vCard. Hinzufügen eines Algorithmus zur Duplikaterkennung.",
+        "testStrategy": "Test von Kunden-CRUD-Operationen mit Validierung. Überprüfung, ob die Segmentierung die Dienstverfügbarkeit beeinflusst. Test der Historien-Verfolgung über mehrere Angebote hinweg. Validierung der Suche mit Teilübereinstimmungen. Test der DSGVO-Konformitätsfunktionen.",
+        "priority": "medium",
+        "dependencies": [
+          2,
+          4
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 8,
+        "title": "PDF-Generierungssystem für Angebote erstellen",
+        "description": "Implementierung einer professionellen PDF-Generierung mit anpassbaren Vorlagen, Branding und Unterstützung für digitale Signaturen",
+        "details": "Integration von React PDF (neueste Version) für PDF-Generierung. Erstellung eines Vorlagensystems mit Handlebars.js für dynamische Inhalte. Design professioneller Layouts mit: Unternehmensbranding (Logo, Farben), Dienstleistungsaufschlüsselung mit Beschreibungen, Zahlungsbedingungen, Gültigkeitszeiträumen. Implementierung der Integration digitaler Signaturen mit PDF-lib. Hinzufügen von QR-Codes für schnellen Angebotszugriff. Unterstützung mehrerer Sprachen mit i18next. Optimierung der PDF-Größe mit Bildkomprimierung. Hinzufügen von Wasserzeichenunterstützung für Entwurfsversionen.",
+        "testStrategy": "Generierung von PDFs mit verschiedenen Dienstleistungskombinationen. Test des Vorlagen-Renderings mit verschiedenen Datensätzen. Überprüfung, ob digitale Signaturen gültig sind. Test der mehrsprachigen PDF-Generierung. Validierung der PDF-Zugänglichkeitsstandards.",
+        "priority": "high",
+        "dependencies": [
+          6,
+          7
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 9,
+        "title": "Administratives Dashboard entwickeln",
+        "description": "Erstellung eines zentralen Admin-Dashboards für Systemkonfiguration, Benutzerverwaltung und globale Einstellungen",
+        "details": "Aufbau eines Admin-Dashboards mit shadcn/ui mit Dark-Mode-Unterstützung. Implementierung der Benutzerverwaltung: CRUD-Operationen, Rollenzuweisungen, Aktivitätsüberwachung, Massenoperationen. Erstellung eines Systemkonfigurationspanels: Steuersätze, Währungseinstellungen, Branding-Uploads, E-Mail-Vorlagen. Hinzufügen eines Dienstleistungsvorlagen-Builders mit Drag-and-Drop-Oberfläche. Implementierung einer automatisierten Rabattregelmaschine mit Bedingungsbuilder. Erstellung eines Audit-Log-Viewers mit Filterung und Export. Hinzufügen eines System-Gesundheitsüberwachungs-Dashboards.",
+        "testStrategy": "Test aller Admin-CRUD-Operationen mit Rollenbeschränkungen. Überprüfung, ob Konfigurationsänderungen systemweit wirksam sind. Test, ob das Audit-Log alle Aktionen erfasst. Validierung der Ausgabe des Vorlagen-Builders. Test der Genauigkeit der Systemüberwachung.",
+        "priority": "medium",
+        "dependencies": [
+          3,
+          5
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 10,
+        "title": "Analyse- und Berichtsmodul implementieren",
+        "description": "Aufbau eines umfassenden Analysesystems mit Echtzeit-Dashboards und anpassbaren Berichten",
+        "details": "Integration von Recharts für Datenvisualisierung. Erstellung von Dashboards: Vertriebsleistung (Konversionsraten, Durchschnittswerte), Dienstleistungsbeliebtheit (Nutzungsstatistiken, Trends), Gewinnmargen (nach Dienstleistung/Kategorie), Zeitvergleiche (MoM, QoQ, YoY). Implementierung eines Berichtsbuilders mit Drag-and-Drop-Metriken. Hinzufügen von Exportfunktionen (CSV, Excel mit ExcelJS, PDF). Erstellung einer geplanten Berichtsgenerierung mit E-Mail-Zustellung. Implementierung eines Datenaggregationsdienstes für Leistung. Hinzufügen eines benutzerdefinierten KPI-Builders für Geschäftsmetriken.",
+        "testStrategy": "Test der Dashboard-Datengenauigkeit im Vergleich zu Rohdaten. Überprüfung von Echtzeit-Updates innerhalb von 5 Sekunden. Test der Berichtsgenerierung mit großen Datensätzen. Validierung, ob Exportformate korrekt geöffnet werden. Test der geplanten Berichtszustellung.",
+        "priority": "medium",
+        "dependencies": [
+          6,
+          7,
+          8
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 11,
+        "title": "Mobile-optimierte Touch-Oberfläche erstellen",
+        "description": "Entwicklung von touch-optimierten UI-Komponenten für Mobile mit React + TailwindCSS v4 + shadcn/ui",
+        "status": "pending",
+        "dependencies": [
+          1,
+          4
+        ],
+        "priority": "high",
+        "details": "Da React + TailwindCSS v4 + shadcn/ui bereits installiert sind, Fokus auf Mobile-spezifische UI-Komponenten: Erstellung von Bottom-Sheet Komponenten für mobile Interaktionen. Implementierung von Swipe-Gesten für intuitive Navigation. Entwicklung touch-optimierter Service-Auswahl mit großen Touch-Targets (min. 44px). Aufbau von Mobile Navigation Patterns mit Tab-Leiste und Burger-Menü. Erstellung responsiver Layouts für kleine Bildschirme mit mobile-first Ansatz. Integration von Haptic Feedback für iOS/Android über Tauri-APIs. Optimierung der Komponenten für Touch-Interaktionen mit appropriate feedback states.",
+        "testStrategy": "Test auf verschiedenen Gerätegrößen (Smartphones, Tablets). Überprüfung, ob Touch-Ziele das Minimum von 44px erfüllen. Test der Swipe-Gesten auf verschiedenen Touch-Geräten. Validierung der Bottom-Sheet-Funktionalität. Test der responsiven Layouts bei verschiedenen Bildschirmauflösungen. Test des haptischen Feedbacks auf iOS/Android-Geräten.",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Bottom-Sheet Komponenten erstellen",
+            "description": "Implementierung wiederverwendbarer Bottom-Sheet Komponenten mit shadcn/ui",
+            "status": "pending",
+            "dependencies": [],
+            "details": "Erstellung von Bottom-Sheet Komponenten für mobile Interaktionen: Basis Bottom-Sheet mit Drag-to-dismiss Funktionalität, Modal Bottom-Sheet für wichtige Aktionen, Scrollable Bottom-Sheet für lange Inhalte. Integration mit shadcn/ui Dialog und Sheet Komponenten. Implementierung von Backdrop-Blur-Effekten und smooth Animationen.",
+            "testStrategy": ""
+          },
+          {
+            "id": 2,
+            "title": "Swipe-Gesten implementieren",
+            "description": "Hinzufügen von Swipe-Gesten für intuitive Mobile-Navigation",
+            "status": "pending",
+            "dependencies": [],
+            "details": "Implementierung von Swipe-Gesten mit react-swipeable oder framer-motion: Swipe-to-go-back Navigation, Swipe-to-delete für Listen-Items, Swipe-to-refresh für Datenaktualisierung. Konfiguration von Swipe-Thresholds und Feedback-Animationen.",
+            "testStrategy": ""
+          },
+          {
+            "id": 3,
+            "title": "Touch-optimierte Service-Auswahl erstellen",
+            "description": "Entwicklung touch-freundlicher Service-Auswahl mit großen Touch-Targets",
+            "status": "pending",
+            "dependencies": [],
+            "details": "Redesign der Service-Auswahl für Mobile: Große Touch-Buttons (min. 44px), Card-basierte Service-Darstellung, Multi-Select mit visuellen Checkboxes, Touch-optimierte Dropdown-Alternativen mit Bottom-Sheets. Implementierung von Touch-Feedback mit Ripple-Effekten.",
+            "testStrategy": ""
+          },
+          {
+            "id": 4,
+            "title": "Mobile Navigation Patterns implementieren",
+            "description": "Aufbau responsiver Navigation mit Tab-Leiste und Burger-Menü",
+            "status": "pending",
+            "dependencies": [],
+            "details": "Implementierung einer mobilen Navigation: Bottom-Tab-Navigation für Hauptbereiche, Collapsible Burger-Menü für Sekundärfunktionen, Breadcrumb-Navigation für tiefe Hierarchien, Floating Action Button für Hauptaktionen. Integration mit TanStack Router für Mobile-optimierte Routen.",
+            "testStrategy": ""
+          },
+          {
+            "id": 5,
+            "title": "Responsive Layouts für kleine Bildschirme",
+            "description": "Erstellung mobile-first responsiver Layouts",
+            "status": "pending",
+            "dependencies": [],
+            "details": "Entwicklung responsiver Layouts mit TailwindCSS: Mobile-first Breakpoint-Design, Single-Column-Layouts für Smartphones, Optimierte Spacing und Typography für kleine Bildschirme, Adaptive Grid-Systeme für verschiedene Bildschirmgrößen. Implementierung von Container-Queries für komponentenbasierte Responsivität.",
+            "testStrategy": ""
+          },
+          {
+            "id": 6,
+            "title": "Haptic Feedback Integration",
+            "description": "Integration von haptischem Feedback über Tauri-APIs",
+            "status": "pending",
+            "dependencies": [],
+            "details": "Implementierung von Haptic Feedback für iOS/Android: Tauri-Plugin für Native Haptic APIs, Feedback für Button-Interaktionen, Success/Error Haptic Patterns, Customizable Haptic Intensität. Erstellung einer Haptic-Utility-Library mit TypeScript-Typen für verschiedene Feedback-Arten.",
+            "testStrategy": ""
+          }
+        ]
+      },
+      {
+        "id": 12,
+        "title": "Offline-Synchronisierungssystem implementieren",
+        "description": "Aufbau einer robusten Offline-First-Architektur mit Konfliktlösung und Hintergrundsynchronisierung",
+        "details": "Implementierung eines Service Workers mit Workbox für Offline-Caching. Erstellung einer Sync-Engine mit Background Sync API mit exponentiellem Backoff. Design der Konfliktlösung: Last-Write-Wins für einfache Felder, manuelle Auflösungs-UI für komplexe Konflikte. Implementierung von Delta-Sync zur Minimierung der Datenübertragung. Erstellung eines Offline-Indikators mit Synchronisierungsstatus. Hinzufügen einer Warteschlangenverwaltung für Offline-Aktionen. Implementierung von Datenkompression mit LZ-string. Erstellung von Sync-Analysen für die Überwachung.",
+        "testStrategy": "Test der Offline-Erstellung und -Bearbeitung von Angeboten. Überprüfung der Synchronisierung bei Rückkehr ins Online-Netz. Test von Konfliktlösungsszenarien. Validierung der Datenintegrität nach der Synchronisierung. Test mit intermittierender Konnektivität.",
+        "priority": "high",
+        "dependencies": [
+          2,
+          11
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 13,
+        "title": "Workflow-Optimierungsfunktionen erstellen",
+        "description": "Erstellung von Produktivitätsfunktionen einschließlich Favoriten, Vorlagen und Schnellaktionen für optimierte Abläufe",
+        "details": "Implementierung eines Favoritensystems für Dienstleistungskombinationen mit Schnellzugriffs-Symbolleiste. Erstellung von Angebotsduplizierung mit intelligenten Feldaktualisierungen. Aufbau eines Express-Modus für Standardpakete mit Ein-Klick-Generierung. Hinzufügen einer Volltextsuche mit MiniSearch über Dienstleistungen, Kunden, Angebote. Implementierung einer Drag-and-Drop-Oberfläche mit dnd-kit für die Dienstleistungsauswahl. Erstellung eines Tastenkürzel-Systems mit Anpassungsmöglichkeiten. Hinzufügen eines Schnellzugriffs auf kürzlich verwendete Elemente. Aufbau intelligenter Vorschläge basierend auf Nutzungsmustern.",
+        "testStrategy": "Test, ob Favoriten korrekt gespeichert und geladen werden. Überprüfung, ob die Vorlagenduplizierung Beziehungen beibehält. Test der Suchgenauigkeit und -leistung. Validierung von Drag-and-Drop über verschiedene Browser hinweg. Test, ob Tastenkürzel nicht in Konflikt geraten.",
+        "priority": "low",
+        "dependencies": [
+          6,
+          8
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 14,
+        "title": "Sicherheits- und Compliance-Funktionen implementieren",
+        "description": "Hinzufügen umfassender Sicherheitsmaßnahmen, Audit-Logging und Compliance-Funktionen für Unternehmensbereitschaft",
+        "details": "Implementierung von zeilenbasierter Sicherheit in PostgreSQL für Multi-Tenant-Isolation. Hinzufügen umfassender Audit-Protokollierung mit unveränderlichem Event-Store. Erstellung von Datenverschlüsselung im Ruhezustand mit AES-256. Implementierung von API-Rate-Limiting mit Redis. Hinzufügen von DSGVO-Compliance-Tools: Datenexport, Recht auf Löschung, Einwilligungsverwaltung. Implementierung von Sicherheits-Headern (CSP, HSTS, X-Frame-Options). Erstellung einer Integration zur Schwachstellenprüfung. Hinzufügen von Zwei-Faktor-Authentifizierungsunterstützung. Implementierung von Sitzungs-Timeout mit Warnung.",
+        "testStrategy": "Durchführung von Penetrationstests auf API-Endpunkten. Test der Vollständigkeit und Unveränderlichkeit des Audit-Logs. Überprüfung der Verschlüsselungs-/Entschlüsselungsleistung. Test des Rate-Limitings unter Last. Validierung der DSGVO-Compliance-Funktionen.",
+        "priority": "high",
+        "dependencies": [
+          3,
+          9
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 15,
+        "title": "Test-Suite und Dokumentation erstellen",
+        "description": "Aufbau eines umfassenden Test-Frameworks und Dokumentationssystems für Wartbarkeit",
+        "details": "Einrichtung von Vitest für Unit-Tests mit 80% Abdeckungsziel. Implementierung von Playwright für E2E-Tests über Plattformen hinweg. Erstellung von Storybook für Komponentendokumentation. Verfassen der API-Dokumentation mit TypeDoc. Implementierung von Performance-Tests mit Lighthouse CI. Erstellung einer Lasttestsuite mit k6. Aufbau visueller Regressionstests mit Percy. Generierung von OpenAPI-Dokumentation aus tRPC. Erstellung eines Benutzerhandbuchs mit Docusaurus. Implementierung automatisierter Barrierefreiheitstests.",
+        "testStrategy": "Erreichen von 80% Unit-Test-Abdeckung. Ausführung von E2E-Tests auf allen Plattformen. Überprüfung der Vollständigkeit der Dokumentation. Test, ob Performance-Benchmarks erfüllt werden. Validierung der Einhaltung von Barrierefreiheitsstandards.",
+        "priority": "medium",
+        "dependencies": [
+          14
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 16,
+        "title": "GDPR-Compliance Features implementieren",
+        "description": "Implementierung aller GDPR-relevanten Funktionen für rechtskonforme Datenverarbeitung",
+        "details": "Umsetzung von GDPR-Anforderungen: Recht auf Datenauskunft (Export aller Kundendaten), Recht auf Löschung (vollständige Datenlöschung mit Audit-Trail), Consent-Management für Datenverarbeitung, Anonymisierung alter Daten, Datenschutzerklärung-Integration, Cookie-Consent (falls Web-Version), Verschlüsselung personenbezogener Daten, Datenverarbeitungsverzeichnis-Export",
+        "testStrategy": "Test aller GDPR-Funktionen mit echten Szenarien, Überprüfung vollständiger Datenlöschung, Test der Datenexport-Funktionalität, Validierung der Verschlüsselung",
+        "status": "pending",
+        "dependencies": [
+          2,
+          3,
+          7
+        ],
+        "priority": "high",
+        "subtasks": []
+      },
+      {
+        "id": 17,
+        "title": "Live-Kundengespräch Features implementieren",
+        "description": "Spezielle Features für spontane Preiskalkulationen während aktiver Kundengespräche",
+        "details": "Implementierung von Features für Live-Kundengespräche: Express-Modus für schnelle Kalkulationen, Interaktive Preisanpassung in Echtzeit, Was-wäre-wenn Szenarien mit sofortiger Neuberechnung, Spontane Rabattgewährung mit Berechtigungsprüfung, Sofort-Angebot per E-Mail während des Gesprächs, Offline-Modus für Vor-Ort-Termine ohne Internet, Touch-optimierte Bedienung für Tablet-Nutzung beim Kunden, Kundensignatur-Erfassung für Angebotsakzeptanz",
+        "testStrategy": "Simulation echter Kundengespräch-Szenarien, Test der Offline-Funktionalität, Performance-Test für sofortige Reaktionszeiten, Usability-Test mit Vertriebsmitarbeitern",
+        "status": "pending",
+        "dependencies": [
+          6,
+          8,
+          11
+        ],
+        "priority": "high",
+        "subtasks": []
+      },
+      {
+        "id": 18,
+        "title": "Multi-Template PDF-System mit Branding erstellen",
+        "description": "Professionelles PDF-Template-System mit Corporate Branding und digitalen Signaturen",
+        "details": "Aufbau eines flexiblen PDF-Template-Systems: Multiple Templates für verschiedene Kundentypen (Privat, KMU, Enterprise), Corporate Branding Integration (Logo, Farben, Schriften), Template-Editor für Administratoren, Digitale Signatur-Integration, QR-Code für Angebots-Tracking, Wasserzeichen für Entwürfe, Multi-Language Support (DE, EN), Barrierefreie PDFs (PDF/A Standard), Anhänge-Integration (AGBs, Produktblätter)",
+        "testStrategy": "Test aller Templates mit verschiedenen Datenmengen, Validierung der digitalen Signaturen, Barrierefreiheits-Tests, Multi-Language Validierung",
+        "status": "pending",
+        "dependencies": [
+          8
+        ],
+        "priority": "high",
+        "subtasks": []
+      },
+      {
+        "id": 19,
+        "title": "Erweiterte Bundle-Rabatt-Engine implementieren",
+        "description": "Komplexe Bundle-Rabatt-Logik mit automatischer Erkennung und Stacking-Regeln",
+        "details": "Implementierung einer erweiterten Rabatt-Engine: Automatische Bundle-Erkennung bei Service-Kombinationen, Mehrstufige Rabatte (z.B. 3 Services = 5%, 5 Services = 10%), Zeitbasierte Rabatte (Aktionsangebote), Kundengruppen-spezifische Rabatte, Rabatt-Stacking-Regeln (welche Rabatte kombinierbar sind), Mindestmargen-Schutz (Rabatte nie unter Kostpreis), Rabatt-Genehmigungsworkflow für große Nachlässe, Rabatt-Historie und Analyse-Dashboard",
+        "testStrategy": "Test komplexer Rabatt-Kombinationen, Validierung der Mindestmargen, Test des Genehmigungsworkflows, Performance-Tests mit vielen Rabatten",
+        "status": "pending",
+        "dependencies": [
+          6
+        ],
+        "priority": "medium",
+        "subtasks": []
+      },
+      {
+        "id": 20,
+        "title": "Import/Export-System für Massendaten erstellen",
+        "description": "Bulk-Import/Export für Services, Kunden und Preise mit Validierung",
+        "details": "Entwicklung eines Import/Export-Systems: CSV/Excel-Import für Service-Katalog, Kunden-Import aus CRM-Systemen (vCard, CSV), Preis-Updates via Excel-Upload, Validierung und Fehlerbehandlung beim Import, Rollback-Funktionalität bei fehlerhaften Imports, Export-Templates zum Download, Scheduled Exports für regelmäßige Backups, API-Endpunkte für Drittanbieter-Integration",
+        "testStrategy": "Test mit großen Datenmengen (10k+ Einträge), Validierung der Fehlerbehandlung, Test der Rollback-Funktionalität, Performance-Tests",
+        "status": "pending",
+        "dependencies": [
+          5,
+          7
+        ],
+        "priority": "medium",
+        "subtasks": []
+      }
+    ],
+    "metadata": {
+      "created": "2025-07-23T13:00:08.684Z",
+      "updated": "2025-07-23T15:27:40.360Z",
+      "description": "Aufgaben für den Master-Kontext"
+    }
+  }
+}
