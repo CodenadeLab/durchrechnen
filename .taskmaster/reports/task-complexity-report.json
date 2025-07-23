@@ -1,0 +1,189 @@
+{
+	"meta": {
+		"generatedAt": "2025-07-23T16:24:19.010Z",
+		"tasksAnalyzed": 22,
+		"totalTasks": 22,
+		"analysisCount": 22,
+		"thresholdScore": 5,
+		"projectName": "Task Master",
+		"usedResearch": false
+	},
+	"complexityAnalysis": [
+		{
+			"taskId": 1,
+			"taskTitle": "Tauri-Projektstruktur initialisieren",
+			"complexityScore": 8,
+			"recommendedSubtasks": 8,
+			"expansionPrompt": "Break down Tauri v2 business configuration into platform-specific implementations: native desktop menus for each OS, keyboard shortcut system with conflict detection, SQLite integration for API caching only, system notifications with permissions, file handling for API-based PDF operations, and mobile-specific adaptations for iOS/Android. Ensure API-First architecture with no local business logic.",
+			"reasoning": "High complexity due to multi-platform requirements, native OS integrations, and the need to maintain API-First architecture across desktop and mobile platforms. Already has 6 subtasks but needs more granular breakdown for platform-specific implementations."
+		},
+		{
+			"taskId": 2,
+			"taskTitle": "PostgreSQL-Datenbank mit Drizzle ORM konfigurieren",
+			"complexityScore": 9,
+			"recommendedSubtasks": 9,
+			"expansionPrompt": "Expand the database schema implementation into specific entity groups: core entities (users, services, customers, quotes), service hierarchy with 7 categories, pricing models (4 types) with validation rules, service dependencies with circular detection, role-based permissions schema, audit trail implementation, and migration system setup. Include performance optimization with proper indexing strategies.",
+			"reasoning": "Very high complexity as this is the foundation layer with multiple interconnected entities, complex relationships, pricing models, and dependency management. Current 7 subtasks need expansion to cover validation logic and performance considerations."
+		},
+		{
+			"taskId": 3,
+			"taskTitle": "Better-Auth Authentifizierungssystem implementieren",
+			"complexityScore": 7,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "Break down Better-Auth implementation into: PostgreSQL adapter setup, email/password authentication with bcrypt, session management integration with existing JWT, role-based permissions for 3 user types, password policy enforcement, secure password reset flow with Resend integration, and rate limiting integration for login attempts.",
+			"reasoning": "Moderate to high complexity involving security-critical authentication flows, role-based access control, and integration with existing systems. Requires careful handling of security best practices."
+		},
+		{
+			"taskId": 4,
+			"taskTitle": "tRPC API-Schicht mit Typsicherheit erstellen",
+			"complexityScore": 9,
+			"recommendedSubtasks": 10,
+			"expansionPrompt": "Expand tRPC implementation into business-specific routers: service management router with CRUD and dependencies, real-time calculation engine router with WebSocket support, quote router with PDF generation, customer router with history tracking, analytics router for dashboard data, client integration with TanStack Query, WebSocket configuration for real-time updates, comprehensive error handling with custom codes, and monitoring with OpenTelemetry tracing.",
+			"reasoning": "Very high complexity as this is the core API layer containing all business logic. Current 8 subtasks are well-defined but need expansion for monitoring, WebSocket handling, and client integration specifics."
+		},
+		{
+			"taskId": 5,
+			"taskTitle": "Dienstleistungskatalog-Managementsystem entwerfen",
+			"complexityScore": 8,
+			"recommendedSubtasks": 7,
+			"expansionPrompt": "Break down service catalog into: hierarchical category system (7 categories with nesting), pricing model implementation (4 types: fixed, hourly, monthly, project-based), dependency management system with circular validation, complexity levels (Basic/Standard/Premium) with multipliers, additional services with parent-child relationships, admin interface with shadcn/ui components, and bulk import/export functionality via API endpoints.",
+			"reasoning": "High complexity as this is foundational to all pricing calculations. Involves complex hierarchical structures, multiple pricing models, and dependency management which are critical for the entire system."
+		},
+		{
+			"taskId": 6,
+			"taskTitle": "Echtzeit-Preisberechnungs-Engine implementieren",
+			"complexityScore": 9,
+			"recommendedSubtasks": 8,
+			"expansionPrompt": "Expand the calculation engine into: server-side calculation endpoints with Decimal.js precision, WebSocket/SSE implementation for real-time updates (<100ms response), dependency validation engine with missing service detection, discount system (bundle, customer-specific, volume discounts), profit margin calculations with cost tracking, time estimation algorithms, caching and memoization strategies, and Native App client adaptation for API-only consumption.",
+			"reasoning": "Very high complexity involving real-time calculations, WebSocket communication, financial precision requirements, and performance optimization. Current 6 subtasks need expansion for caching strategies and client integration."
+		},
+		{
+			"taskId": 7,
+			"taskTitle": "Kundenmanagement-Modul erstellen",
+			"complexityScore": 7,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "Break down customer management into: customer data model with contact and company details, customer segmentation (Private, SME, Enterprise) affecting service availability, customer history tracking with timeline view, fuzzy search implementation with Fuse.js, GDPR compliance features (data export, deletion), CSV/vCard import functionality, and duplicate detection algorithms.",
+			"reasoning": "Moderate to high complexity involving data modeling, search functionality, GDPR compliance, and import/export features. Requires careful handling of personal data and search optimization."
+		},
+		{
+			"taskId": 8,
+			"taskTitle": "PDF-Generierungssystem für Angebote erstellen",
+			"complexityScore": 8,
+			"recommendedSubtasks": 7,
+			"expansionPrompt": "Expand PDF generation into: React PDF integration for server-side generation, template system with Handlebars.js for dynamic content, professional layout design with corporate branding, digital signature integration with PDF-lib, QR code generation for quote access, multi-language support with i18next, PDF optimization with image compression, and watermark support for draft versions.",
+			"reasoning": "High complexity involving PDF generation libraries, template systems, digital signatures, and multi-language support. Server-side generation adds performance considerations."
+		},
+		{
+			"taskId": 9,
+			"taskTitle": "Administratives Dashboard entwickeln",
+			"complexityScore": 7,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "Break down admin dashboard into: user management interface with CRUD and role assignments, system configuration panel for taxes and currencies, service template builder with drag-and-drop, automated discount rule engine with condition builder, audit log viewer with filtering and export, and system health monitoring dashboard with API metrics.",
+			"reasoning": "Moderate to high complexity involving multiple admin interfaces, drag-and-drop functionality, rule engines, and system monitoring. Requires comprehensive UI/UX design for complex admin operations."
+		},
+		{
+			"taskId": 10,
+			"taskTitle": "Analyse- und Berichtsmodul implementieren",
+			"complexityScore": 8,
+			"recommendedSubtasks": 7,
+			"expansionPrompt": "Expand analytics module into: Recharts integration for data visualization, sales performance dashboards (conversion rates, averages), service popularity analytics with trends, profit margin analysis by service/category, time-based comparisons (MoM, QoQ, YoY), report builder with drag-and-drop metrics, export functionality (CSV, Excel, PDF), scheduled report generation with email delivery, and custom KPI builder for business metrics.",
+			"reasoning": "High complexity involving data visualization, multiple dashboard types, report generation, and scheduled delivery. Requires data aggregation optimization and export functionality."
+		},
+		{
+			"taskId": 11,
+			"taskTitle": "Mobile-optimierte Touch-Oberfläche erstellen",
+			"complexityScore": 7,
+			"recommendedSubtasks": 8,
+			"expansionPrompt": "Expand mobile UI into: bottom-sheet components with shadcn/ui integration, swipe gesture implementation for navigation, touch-optimized service selection with large targets (44px minimum), mobile navigation patterns with tab bar and burger menu, responsive layouts for small screens with mobile-first approach, haptic feedback integration via Tauri APIs, touch interaction optimization with appropriate feedback states, and platform-specific adaptations for iOS/Android touch patterns.",
+			"reasoning": "Moderate to high complexity involving mobile-specific UI patterns, touch optimization, haptic feedback, and cross-platform considerations. Current 6 subtasks need expansion for gesture handling and platform-specific features."
+		},
+		{
+			"taskId": 12,
+			"taskTitle": "Offline-Synchronisierungssystem implementieren",
+			"complexityScore": 6,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "Break down offline system into: Service Worker setup for API response caching, request queueing system for offline operations, offline indicator with queue status display, exponential backoff for failed requests, and TanStack Query integration with persistent cache and background refetch. Focus on read-only cache without local business logic.",
+			"reasoning": "Moderate complexity with simplified API-First approach. Avoiding complex sync logic reduces complexity while maintaining offline functionality through caching and queueing."
+		},
+		{
+			"taskId": 13,
+			"taskTitle": "Workflow-Optimierungsfunktionen erstellen",
+			"complexityScore": 6,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "Break down workflow optimization into: favorites system for service combinations, quote duplication with intelligent field updates, express mode for standard packages with one-click generation, full-text search with MiniSearch across services/customers/quotes, and drag-and-drop interface with dnd-kit for service selection. Include keyboard shortcuts system with customization options.",
+			"reasoning": "Moderate complexity focusing on productivity features and user experience improvements. Involves search optimization, drag-and-drop functionality, and workflow automation."
+		},
+		{
+			"taskId": 14,
+			"taskTitle": "Sicherheits- und Compliance-Funktionen implementieren",
+			"complexityScore": 9,
+			"recommendedSubtasks": 8,
+			"expansionPrompt": "Expand security features into: row-level security in PostgreSQL for multi-tenant isolation, comprehensive audit logging with immutable event store, data encryption at rest with AES-256, API rate limiting with Redis, GDPR compliance tools (data export, right to deletion, consent management), security headers implementation (CSP, HSTS, X-Frame-Options), vulnerability scanning integration, two-factor authentication support, and session timeout with warnings.",
+			"reasoning": "Very high complexity involving multiple security layers, compliance requirements, encryption, and audit systems. Critical for enterprise readiness and requires expertise in security best practices."
+		},
+		{
+			"taskId": 15,
+			"taskTitle": "Test-Suite und Dokumentation erstellen",
+			"complexityScore": 7,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "Break down testing and documentation into: Vitest setup for unit tests with 80% coverage target, Playwright implementation for cross-platform E2E testing, Storybook for component documentation, API documentation with TypeDoc, performance testing with Lighthouse CI, load testing with k6 for API endpoints, visual regression testing with Percy, OpenAPI documentation generation from tRPC, user manual creation with Docusaurus, and automated accessibility testing.",
+			"reasoning": "Moderate to high complexity involving multiple testing frameworks, documentation systems, and automation. Comprehensive testing strategy requires coordination across different tools and platforms."
+		},
+		{
+			"taskId": 16,
+			"taskTitle": "GDPR-Compliance Features implementieren",
+			"complexityScore": 8,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "Break down GDPR compliance into: right to data access with complete export functionality, right to deletion with audit trail, consent management system for data processing, data anonymization for old records, privacy policy integration, cookie consent (for web version), personal data encryption, and data processing registry export functionality.",
+			"reasoning": "High complexity due to legal requirements, data handling complexity, and the need for comprehensive audit trails. Requires understanding of GDPR regulations and careful implementation of data protection measures."
+		},
+		{
+			"taskId": 17,
+			"taskTitle": "Live-Kundengespräch Features implementieren",
+			"complexityScore": 8,
+			"recommendedSubtasks": 10,
+			"expansionPrompt": "Expand live customer features into: express mode API endpoints optimization for fast calculations, real-time price adjustment with debounced API requests, what-if scenarios with instant API-based recalculation, spontaneous discount authorization with permission checks, instant quote email during conversations, offline mode with cached API data display, touch-optimized tablet interface for customer meetings, and customer signature capture with API upload functionality.",
+			"reasoning": "High complexity involving real-time interactions, offline capabilities, touch optimization, and signature capture. Current 8 subtasks need expansion for API optimization and signature handling specifics."
+		},
+		{
+			"taskId": 18,
+			"taskTitle": "Multi-Template PDF-System mit Branding erstellen",
+			"complexityScore": 8,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "Break down PDF template system into: multiple template designs for different customer types (Private, SME, Enterprise), corporate branding integration (logos, colors, fonts), template editor for administrators, digital signature integration, QR code generation for quote tracking, watermark support for drafts, multi-language support (DE, EN), accessible PDF generation (PDF/A standard), and attachment integration (terms, product sheets).",
+			"reasoning": "High complexity involving template systems, branding customization, digital signatures, and accessibility requirements. Multiple template types and branding integration add significant complexity."
+		},
+		{
+			"taskId": 19,
+			"taskTitle": "Erweiterte Bundle-Rabatt-Engine implementieren",
+			"complexityScore": 7,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "Break down advanced discount engine into: automatic bundle detection for service combinations, multi-tier discounts (3 services = 5%, 5 services = 10%), time-based discounts for promotional offers, customer group-specific discount rules, discount stacking rules and validation, minimum margin protection (never below cost), discount approval workflow for large discounts, and discount history with analytics dashboard.",
+			"reasoning": "Moderate to high complexity involving complex business rules, approval workflows, and discount stacking logic. Requires careful validation to protect profit margins while enabling flexible discount strategies."
+		},
+		{
+			"taskId": 20,
+			"taskTitle": "Import/Export-System für Massendaten erstellen",
+			"complexityScore": 7,
+			"recommendedSubtasks": 6,
+			"expansionPrompt": "Break down import/export system into: CSV/Excel import for service catalog, customer import from CRM systems (vCard, CSV), price updates via Excel upload, validation and error handling during import, rollback functionality for failed imports, export templates for download, scheduled exports for regular backups, and API endpoints for third-party integration.",
+			"reasoning": "Moderate to high complexity involving file processing, data validation, error handling, and rollback mechanisms. Bulk operations require careful performance optimization and error recovery strategies."
+		},
+		{
+			"taskId": 21,
+			"taskTitle": "tRPC Client Integration in Native App",
+			"complexityScore": 6,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "Break down tRPC client integration into: @trpc/client and @trpc/react-query setup, API endpoint configuration (localhost:3003 for dev, production URL), type-safe API consumption with automatic type inference, authentication header integration (Bearer token), and error handling with retry logic. Include request/response logging for debugging and ensure no business logic in Native App.",
+			"reasoning": "Moderate complexity focusing on client setup and configuration. Simplified by API-First architecture which eliminates local business logic, making this primarily a configuration and integration task."
+		},
+		{
+			"taskId": 22,
+			"taskTitle": "Web-App als zweite Frontend-Plattform vorbereiten",
+			"complexityScore": 6,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "Break down web app preparation into: API endpoint documentation with OpenAPI/Swagger, CORS configuration extension for web clients, authentication flow for web (JWT in cookies + LocalStorage), shared UI components in packages/ui for web+native reuse, API client abstraction for platform independence, file upload handling via API for web, WebSocket abstraction for platform-agnostic real-time updates, and Progressive Web App (PWA) preparation.",
+			"reasoning": "Moderate complexity involving architecture preparation and shared component design. API-First architecture simplifies this by ensuring backend readiness, focusing mainly on client abstraction and shared component organization."
+		}
+	]
+}
