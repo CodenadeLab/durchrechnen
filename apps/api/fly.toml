@@ -1,4 +1,4 @@
-app = 'preiskalkulator-api'
+app = 'durchrechnen-api'
 primary_region = 'fra'
 
 [build]

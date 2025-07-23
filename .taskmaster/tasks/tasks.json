@@ -4,279 +4,370 @@
       {
         "id": 1,
         "title": "Tauri-Projektstruktur initialisieren",
-        "description": "Optimierung der Tauri v2 Business-Konfiguration mit erweiterten Desktop- und Mobile-Funktionen für professionelle Anwendungsbereitstellung",
+        "description": "Optimierung der Tauri v2 Business-Konfiguration mit erweiterten Desktop- und Mobile-Funktionen für professionelle Anwendungsbereitstellung - API-First Architektur: Native App als Thin Client",
         "status": "pending",
         "dependencies": [],
         "priority": "high",
-        "details": "Optimierung der bestehenden Tauri v2-Infrastruktur für Business-Anforderungen. Implementierung nativer Desktop-Menüs mit platform-spezifischen Funktionen (macOS, Windows, Linux). Aufbau eines umfassenden Tastaturkürzel-Systems mit Anpassungsmöglichkeiten. Integration von SQLite für lokalen Offline-Speicher mit Synchronisierungsmechanismen. Implementierung von System-Benachrichtigungen für wichtige Events. Aufbau von Datei-Handling-Funktionen für PDF-Export und Dokumentenverwaltung. Konfiguration platform-spezifischer Anpassungen für iOS/Android inklusive nativer Navigationsmuster und Touch-Optimierungen.",
-        "testStrategy": "Test der nativen Menüfunktionalität auf allen Desktop-Plattformen. Validierung aller Tastaturkürzel und deren Konfliktvermeidung. Test der SQLite-Integration und Offline-Synchronisierung. Überprüfung von System-Benachrichtigungen und deren Berechtigungen. Test des PDF-Exports und Datei-Handlings. Validierung platform-spezifischer UI/UX-Anpassungen auf iOS/Android-Simulatoren.",
+        "details": "Optimierung der bestehenden Tauri v2-Infrastruktur für Business-Anforderungen mit API-First Architektur - die Native App ist nur ein Thin Client ohne Business-Logik. Implementierung nativer Desktop-Menüs mit platform-spezifischen Funktionen (macOS, Windows, Linux). Aufbau eines umfassenden Tastaturkürzel-Systems mit Anpassungsmöglichkeiten. Integration von SQLite für lokalen Offline-Cache (nur API-Daten, keine Berechnungen). Implementierung von System-Benachrichtigungen für wichtige Events von der API. Aufbau von Datei-Handling-Funktionen für PDF-Export über API-Endpoints. Konfiguration platform-spezifischer Anpassungen für iOS/Android inklusive nativer Navigationsmuster und Touch-Optimierungen. WICHTIG: Keine lokale Business-Logik - alle Daten und Berechnungen über API.",
+        "testStrategy": "Test der nativen Menüfunktionalität auf allen Desktop-Plattformen. Validierung aller Tastaturkürzel und deren Konfliktvermeidung. Test der SQLite-Integration nur als API-Cache. Überprüfung von System-Benachrichtigungen und deren Berechtigungen. Test des PDF-Exports über API-Endpoints. Validierung platform-spezifischer UI/UX-Anpassungen auf iOS/Android-Simulatoren. Bestätigung dass keine lokale Business-Logik existiert.",
         "subtasks": [
           {
             "id": 1,
-            "title": "Native Desktop-Menüs implementieren",
-            "description": "Erstellung platform-spezifischer Menüstrukturen für macOS, Windows und Linux",
-            "status": "pending",
+            "title": "Tauri v2 Konfiguration für Business-Umgebung optimieren",
+            "description": "Konfiguration der Tauri-Anwendung für professionelle Business-Anforderungen mit API-First Architektur. Anpassung der tauri.conf.json für erweiterte Berechtigungen und Platform-spezifische Einstellungen.",
             "dependencies": [],
-            "details": "Implementierung nativer Menüleisten mit platform-spezifischen Konventionen. macOS: Application Menu, File, Edit, View, Window, Help. Windows/Linux: File, Edit, View, Tools, Help. Integration von Kontextmenüs für Rechtklick-Aktionen.",
-            "testStrategy": ""
+            "details": "Aktualisierung der tauri.conf.json mit erweiterten Berechtigungen für Dateisystem, Benachrichtigungen und Netzwerk. Konfiguration von Platform-spezifischen Einstellungen für macOS, Windows, Linux. Setup der Build-Konfiguration für alle Zielplattformen. Aktivierung der erforderlichen Tauri-APIs und Plugins.",
+            "status": "pending",
+            "testStrategy": "Test der Anwendung auf allen Desktop-Plattformen. Überprüfung der Berechtigungen und Platform-spezifischen Funktionen."
           },
           {
             "id": 2,
-            "title": "Tastaturkürzel-System aufbauen",
-            "description": "Implementierung eines umfassenden und anpassbaren Tastaturkürzel-Systems",
+            "title": "Native Desktop-Menüsystem implementieren",
+            "description": "Implementierung platform-spezifischer Desktop-Menüs für macOS, Windows und Linux mit nativen UI-Patterns und Tastaturkürzeln.",
+            "dependencies": [
+              "1.1"
+            ],
+            "details": "Erstellung platform-spezifischer Menüstrukturen mit nativen Patterns (macOS Application Menu, Windows File Menu, Linux Menu Bar). Implementierung von Standardmenüs (File, Edit, View, Window, Help) mit platform-spezifischen Unterschieden. Integration von Tastaturkürzeln mit Konfliktvermeidung. Setup von Kontextmenüs für verschiedene UI-Bereiche.",
             "status": "pending",
-            "dependencies": [],
-            "details": "Aufbau eines globalen Shortcut-Managers mit Konfliktserkennung. Implementierung von Standard-Shortcuts (Ctrl+N, Ctrl+S, etc.) und benutzerdefinierten Kombinationen. Integration mit Tauri's globalShortcut API für systemweite Shortcuts.",
-            "testStrategy": ""
+            "testStrategy": "Test der Menüfunktionalität auf allen Desktop-Plattformen. Validierung aller Tastaturkürzel und deren platform-spezifische Unterschiede. Überprüfung der nativen UI-Integration."
           },
           {
             "id": 3,
-            "title": "SQLite Offline-Speicher integrieren",
-            "description": "Integration von SQLite für lokale Datenspeicherung und Offline-Funktionalität",
+            "title": "SQLite-Integration für lokalen API-Cache",
+            "description": "Integration von SQLite als lokaler Offline-Cache ausschließlich für API-Daten ohne lokale Business-Logik.",
+            "dependencies": [
+              "1.1"
+            ],
+            "details": "Setup von SQLite mit Tauri-SQL-Plugin für lokalen Datencache. Implementierung von Cache-Strategien für API-Responses (TTL, Invalidierung). Erstellung von Cache-Tabellen für häufig abgerufene API-Daten. Implementierung von Offline-Fallback-Mechanismen. Synchronisation zwischen Cache und API bei Verbindungswiederherstellung.",
             "status": "pending",
-            "dependencies": [],
-            "details": "Einrichtung von SQLite mit sql.js oder tauri-plugin-sql. Implementierung von Datensynchronisierung zwischen lokalem SQLite und PostgreSQL-Backend. Aufbau von Konfliktlösungsmechanismen für Offline/Online-Datenabgleich.",
-            "testStrategy": ""
+            "testStrategy": "Test der SQLite-Integration und Cache-Funktionalität. Überprüfung der Offline-Funktionalität mit gecachten Daten. Test der Synchronisation bei Verbindungswiederherstellung."
           },
           {
             "id": 4,
-            "title": "System-Benachrichtigungen implementieren",
-            "description": "Aufbau von nativen System-Benachrichtigungen für wichtige Events",
+            "title": "System-Benachrichtigungen und Datei-Handling",
+            "description": "Implementierung von nativen System-Benachrichtigungen für API-Events und Datei-Handling-Funktionen für PDF-Export über API-Endpoints.",
+            "dependencies": [
+              "1.1"
+            ],
+            "details": "Integration des Tauri-Notification-Plugins für System-Benachrichtigungen. Setup von Event-Listening für API-Responses und wichtige Ereignisse. Implementierung von Datei-Handling für PDF-Downloads von API-Endpoints. Konfiguration von Berechtigungen für Benachrichtigungen und Dateisystem-Zugriff. Erstellung von Benachrichtigungs-Templates für verschiedene Event-Typen.",
             "status": "pending",
-            "dependencies": [],
-            "details": "Integration von Tauri's notification API für Desktop-Benachrichtigungen. Implementierung von Push-Notifications für Mobile-Plattformen. Aufbau eines Notification-Managers mit Prioritäten und Benutzereinstellungen.",
-            "testStrategy": ""
+            "testStrategy": "Test der System-Benachrichtigungen auf allen Plattformen. Überprüfung der Benachrichtigungsberechtigungen. Test des PDF-Exports und Datei-Handlings über API-Endpoints."
           },
           {
             "id": 5,
-            "title": "PDF-Export und Datei-Handling aufbauen",
-            "description": "Implementierung von Datei-Operationen für PDF-Export und Dokumentenverwaltung",
+            "title": "Mobile Platform-Optimierungen für iOS/Android",
+            "description": "Konfiguration und Optimierung für mobile Plattformen mit nativen Navigationsmustern und Touch-Optimierungen.",
+            "dependencies": [
+              "1.1",
+              "1.2"
+            ],
+            "details": "Konfiguration der mobilen Tauri-Targets für iOS und Android. Implementierung nativer Navigationsmuster (iOS Navigation Controller, Android Material Navigation). Optimierung der Touch-Gesten und Mobile-UI-Patterns. Setup von platform-spezifischen Berechtigungen und Capabilities. Anpassung der UI-Komponenten für mobile Bildschirmgrößen und Touch-Interaktion.",
             "status": "pending",
-            "dependencies": [],
-            "details": "Integration von PDF-Generierung mit jsPDF oder ähnlicher Library. Implementierung von Datei-Dialog-APIs für Speichern/Öffnen. Aufbau von Drag-and-Drop-Funktionalität für Datei-Import. Konfiguration von Dateisystem-Berechtigungen.",
-            "testStrategy": ""
-          },
-          {
-            "id": 6,
-            "title": "Platform-spezifische Mobile-Anpassungen",
-            "description": "Optimierung der UI/UX für iOS und Android mit nativen Navigationsmustern",
-            "status": "pending",
-            "dependencies": [],
-            "details": "Implementierung von iOS-spezifischen Navigationsprinzipien (Tab Bar, Navigation Stack). Aufbau von Android Material Design-Komponenten und Navigationsdrawer. Integration von Touch-Gesten und Haptic Feedback. Konfiguration von App-Icons und Splash-Screens.",
-            "testStrategy": ""
+            "testStrategy": "Test der mobilen Anwendung auf iOS und Android Geräten. Überprüfung der nativen Navigationsmuster und Touch-Optimierungen. Validierung der platform-spezifischen UI-Anpassungen."
           }
         ]
       },
       {
         "id": 2,
         "title": "PostgreSQL-Datenbank mit Drizzle ORM konfigurieren",
-        "description": "Datenbankschema mit Drizzle ORM implementieren - Fokus auf die Implementierung aller Kern-Entitäten für das Preiskalkulator-System",
-        "status": "pending",
-        "dependencies": [
-          1
-        ],
+        "description": "Datenbankschema mit Drizzle ORM implementieren - Fokus auf die Implementierung aller Kern-Entitäten für das Preiskalkulator-System - API-First Architektur: Zentrale Datenhaltung für alle Clients",
+        "status": "in-progress",
+        "dependencies": [],
         "priority": "high",
-        "details": "Implementierung eines vollständigen Datenbankschemas mit Drizzle ORM für alle Kern-Entitäten: Services mit 7 Kategorien und hierarchischer Struktur, 4 Preismodelle (Festpreis, Stundensatz, monatlich wiederkehrend, projektbasiert), Service-Abhängigkeiten mit zirkulärer Validierung, Kunden-Management, Angebots-System, Benutzer-Rollen (Admin, Vertriebsleiter, Vertriebsmitarbeiter), Audit-Tabellen für Änderungsverfolgung. Setup des Migrations-Systems mit drizzle-kit für Versionskontrolle. Multi-Region PostgreSQL ist bereits konfiguriert und muss genutzt werden.",
-        "testStrategy": "Test aller CRUD-Operationen für jede Entität. Überprüfung von Fremdschlüsselbeschränkungen und kaskadierenden Löschungen. Test von Service-Abhängigkeiten und zirkulärer Validierung. Validierung der 4 Preismodelle mit verschiedenen Berechnungsszenarien. Test von Migrations-Rollback/Forward. Benchmark der Abfrageleistung mit 10k+ Datensätzen. Überprüfung der Audit-Trail-Funktionalität.",
+        "details": "Implementierung eines vollständigen Datenbankschemas mit Drizzle ORM für alle Kern-Entitäten mit API-First Architektur: Services mit 7 Kategorien und hierarchischer Struktur, 4 Preismodelle (Festpreis, Stundensatz, monatlich wiederkehrend, projektbasiert), Service-Abhängigkeiten mit zirkulärer Validierung, Kunden-Management, Angebots-System, Benutzer-Rollen (Admin, Vertriebsleiter, Vertriebsmitarbeiter), Audit-Tabellen für Änderungsverfolgung. Setup des Migrations-Systems mit drizzle-kit für Versionskontrolle. Multi-Region PostgreSQL ist bereits konfiguriert und muss genutzt werden. Alle Business-Logik erfolgt in der API - Clients sind nur Präsentationsschichten.",
+        "testStrategy": "Test aller CRUD-Operationen für jede Entität über API-Endpoints. Überprüfung von Fremdschlüsselbeschränkungen und kaskadierenden Löschungen. Test von Service-Abhängigkeiten und zirkulärer Validierung. Validierung der 4 Preismodelle mit verschiedenen Berechnungsszenarien über API. Test von Migrations-Rollback/Forward. Benchmark der Abfrageleistung mit 10k+ Datensätzen über API-Layer. Überprüfung der Audit-Trail-Funktionalität.",
         "subtasks": [
           {
             "id": 1,
-            "title": "Kern-Entitäten Schema definieren",
-            "description": "Implementierung der Haupttabellen: users, services, customers, quotes mit vollständigen Spalten und Beziehungen",
-            "status": "pending",
+            "title": "Drizzle ORM Konfiguration und Core-Tabellen Setup",
+            "description": "Basis-Setup von Drizzle ORM mit PostgreSQL-Verbindung und Implementierung der grundlegenden Tabellen für Benutzer, Rollen und Audit-System",
             "dependencies": [],
-            "details": "",
-            "testStrategy": ""
+            "details": "Konfiguration der Drizzle-Verbindung zur bestehenden Multi-Region PostgreSQL-Datenbank in apps/api/src/db/. Erstellung der Core-Schema-Dateien: users (id, email, name, role, created_at, updated_at), roles (id, name, permissions), audit_logs (id, table_name, record_id, action, old_values, new_values, user_id, timestamp). Setup der Drizzle-Konfiguration mit Umgebungsvariablen für verschiedene Regionen.",
+            "status": "done",
+            "testStrategy": "Verbindungstest zur Datenbank, CRUD-Tests für User- und Role-Tabellen, Audit-Log-Funktionalität testen"
           },
           {
             "id": 2,
-            "title": "Service-Kategorien und hierarchische Struktur",
-            "description": "Erstellung von 7 Service-Kategorien mit Unterkategorien-Support und Baum-Struktur für verschachtelte Services",
+            "title": "Service-Entitäten mit hierarchischer Struktur implementieren",
+            "description": "Implementierung der Service-Tabellen mit 7 Kategorien, hierarchischer Struktur und Service-Abhängigkeiten inklusive zirkulärer Validierung",
+            "dependencies": [
+              "2.1"
+            ],
+            "details": "Erstellung der Service-Schema-Tabellen: service_categories (id, name, parent_id, level, sort_order), services (id, name, description, category_id, base_price, created_by, updated_by), service_dependencies (id, service_id, depends_on_service_id, dependency_type). Implementierung von hierarchischen Queries für Kategorien und zirkulärer Abhängigkeits-Validierung durch rekursive CTEs. Setup von Fremdschlüsseln und Constraints.",
             "status": "pending",
-            "dependencies": [],
-            "details": "",
-            "testStrategy": ""
+            "testStrategy": "Test der hierarchischen Kategorien-Abfragen, Validierung der zirkulären Abhängigkeits-Prüfung, CRUD-Tests für alle Service-Entitäten"
           },
           {
             "id": 3,
-            "title": "Preismodell-Schema implementieren",
-            "description": "Schema für 4 Preismodelle: Festpreis, Stundensatz, monatlich wiederkehrend, projektbasiert mit entsprechenden Konfigurationsfeldern",
+            "title": "Preismodelle und Berechnungslogik-Tabellen erstellen",
+            "description": "Implementierung der 4 Preismodelle (Festpreis, Stundensatz, monatlich wiederkehrend, projektbasiert) mit flexibler Berechnungslogik",
+            "dependencies": [
+              "2.2"
+            ],
+            "details": "Schema-Erstellung für pricing_models (id, name, calculation_type, formula), service_pricing (id, service_id, pricing_model_id, base_rate, unit, min_quantity, max_quantity, discount_tiers), pricing_tiers (id, service_pricing_id, min_quantity, max_quantity, rate_multiplier). Implementierung von JSON-Feldern für flexible Preisberechnungsparameter und Validierungsregeln für verschiedene Preismodell-Typen.",
             "status": "pending",
-            "dependencies": [],
-            "details": "",
-            "testStrategy": ""
+            "testStrategy": "Test aller 4 Preismodelle mit verschiedenen Berechnungsszenarien, Validierung der Preisberechnung über API-Endpoints, Test von Mengenrabatten"
           },
           {
             "id": 4,
-            "title": "Service-Abhängigkeiten System",
-            "description": "Implementierung von Service-Dependencies-Tabelle mit zirkulärer Abhängigkeits-Validierung und rekursiver Auflösung",
+            "title": "Kunden-Management und Angebots-System implementieren",
+            "description": "Vollständige Implementierung der Kunden- und Angebots-Entitäten mit Historisierung und Status-Management",
+            "dependencies": [
+              "2.1"
+            ],
+            "details": "Schema für customers (id, company_name, contact_person, email, phone, address, tax_id, payment_terms, created_by), quotes (id, customer_id, quote_number, status, valid_until, total_amount, created_by, approved_by), quote_items (id, quote_id, service_id, quantity, unit_price, discount, total). Implementierung von automatischer Angebotsnummerierung, Status-Workflows und Versionierung von Angeboten.",
             "status": "pending",
-            "dependencies": [],
-            "details": "",
-            "testStrategy": ""
+            "testStrategy": "CRUD-Tests für Kunden und Angebote, Test der automatischen Nummerierung, Validierung der Status-Übergänge, Test der Angebots-Versionierung"
           },
           {
             "id": 5,
-            "title": "Benutzer-Rollen und Berechtigungen",
-            "description": "Schema für rollenbasierte Zugriffskontrolle: Admin, Vertriebsleiter, Vertriebsmitarbeiter mit entsprechenden Berechtigungstabellen",
+            "title": "Migrations-System und Datenbank-Seeding einrichten",
+            "description": "Setup des Drizzle-Migrations-Systems mit drizzle-kit für Versionskontrolle und Erstellung von Seed-Daten für Entwicklung und Testing",
+            "dependencies": [
+              "2.1",
+              "2.2",
+              "2.3",
+              "2.4"
+            ],
+            "details": "Konfiguration von drizzle-kit für automatische Migration-Generierung. Erstellung von Seed-Scripts für Basis-Daten: Standard-Rollen, Service-Kategorien, Beispiel-Services und Preismodelle. Setup von Entwicklungs- und Test-Datenbank-Seeds. Implementierung von Migration-Rollback-Strategien und Backup-Procedures.",
             "status": "pending",
-            "dependencies": [],
-            "details": "",
-            "testStrategy": ""
-          },
-          {
-            "id": 6,
-            "title": "Audit-Tabellen für Änderungsverfolgung",
-            "description": "Implementierung von Audit-Trails für alle kritischen Entitäten mit Zeitstempel, Benutzer-ID und Änderungstyp",
-            "status": "pending",
-            "dependencies": [],
-            "details": "",
-            "testStrategy": ""
-          },
-          {
-            "id": 7,
-            "title": "Migrations-Setup und Indizierung",
-            "description": "Konfiguration des drizzle-kit Migrationssystems und Erstellung performanter Indizes für häufig abgefragte Felder",
-            "status": "pending",
-            "dependencies": [],
-            "details": "",
-            "testStrategy": ""
+            "testStrategy": "Test der Migration-Ausführung und Rollbacks, Validierung der Seed-Daten, Test der Schema-Updates ohne Datenverlust, Backup-Restore-Tests"
           }
         ]
       },
       {
         "id": 3,
         "title": "Better-Auth Authentifizierungssystem implementieren",
-        "description": "Better-Auth Integration mit rollenbasierter Zugriffskontrolle - Setup von Better-Auth mit PostgreSQL-Adapter, Session-Management und E-Mail/Passwort-Authentifizierung",
+        "description": "Better-Auth Integration mit rollenbasierter Zugriffskontrolle - Setup von Better-Auth mit PostgreSQL-Adapter, Session-Management und E-Mail/Passwort-Authentifizierung - API-First Architektur: Zentrale Authentifizierung für alle Clients",
         "status": "pending",
         "dependencies": [
           2
         ],
         "priority": "high",
-        "details": "Installation und Konfiguration von better-auth (neueste stabile Version) mit PostgreSQL-Adapter. Setup von E-Mail/Passwort-Authentifizierung mit sicherem bcrypt-Hashing. Implementierung von Session-Management (bestehende JWT/jose-Integration nutzen). Einrichtung rollenbasierter Berechtigungen: Admin (Vollzugriff), Vertriebsleiter (Team + Analytik), Vertriebsmitarbeiter (Angebote + Kunden). Konfiguration von Passwortrichtlinien (min. 8 Zeichen, Komplexitätsanforderungen). Implementierung eines sicheren Passwort-Reset-Ablaufs mit E-Mail-Verifizierung über die bereits vorhandene Resend API. Integration mit vorhandenem Rate-Limiting-System für Anmeldeversuche.",
-        "testStrategy": "Test von Login/Logout-Abläufen mit gültigen/ungültigen Anmeldedaten. Überprüfung rollenbasierter Zugriffsbeschränkungen für alle drei Rollen. Test des Passwort-Reset-Ablaufs von Anfang bis Ende mit Resend-Integration. Validierung der Session-Management-Integration mit bestehender JWT-Infrastruktur. Test der Rate-Limiting-Integration bei Anmeldeversuchen.",
+        "details": "Installation und Konfiguration von better-auth (neueste stabile Version) mit PostgreSQL-Adapter für API-First Architektur. Setup von E-Mail/Passwort-Authentifizierung mit sicherem bcrypt-Hashing. Implementierung von Session-Management (bestehende JWT/jose-Integration nutzen). Einrichtung rollenbasierter Berechtigungen: Admin (Vollzugriff), Vertriebsleiter (Team + Analytik), Vertriebsmitarbeiter (Angebote + Kunden). Konfiguration von Passwortrichtlinien (min. 8 Zeichen, Komplexitätsanforderungen). Implementierung eines sicheren Passwort-Reset-Ablaufs mit E-Mail-Verifizierung über die bereits vorhandene Resend API. Integration mit vorhandenem Rate-Limiting-System für Anmeldeversuche. Authentifizierung erfolgt zentral in der API - alle Clients nutzen die gleichen Auth-Endpoints.",
+        "testStrategy": "Test von Login/Logout-Abläufen mit gültigen/ungültigen Anmeldedaten über API-Endpoints. Überprüfung rollenbasierter Zugriffsbeschränkungen für alle drei Rollen. Test des Passwort-Reset-Ablaufs von Anfang bis Ende mit Resend-Integration. Validierung der Session-Management-Integration mit bestehender JWT-Infrastruktur. Test der Rate-Limiting-Integration bei Anmeldeversuchen.",
         "subtasks": []
       },
       {
         "id": 4,
         "title": "tRPC API-Schicht mit Typsicherheit erstellen",
-        "description": "Implementierung von tRPC Business-Routern und Client-Integration für typsichere API-Kommunikation zwischen Frontend und Backend mit ordnungsgemäßer Fehlerbehandlung und Validierung",
+        "description": "Implementierung von tRPC Business-Routern und Client-Integration für typsichere API-Kommunikation zwischen Frontend und Backend mit ordnungsgemäßer Fehlerbehandlung und Validierung - API-First Architektur: Alle Business-Logik in tRPC-Routern",
         "status": "pending",
         "dependencies": [
           2,
           3
         ],
         "priority": "high",
-        "details": "Da tRPC Server bereits mit Hono läuft, Fokus auf Business-Router-Implementierung: Service-Management Router (CRUD + Abhängigkeiten), Berechnungs-Engine Router (Echtzeit-Preisgestaltung), Angebots-Router (CRUD + PDF-Generierung), Kunden-Router (CRUD + Historie), Analytics-Router (Dashboards + Berichte). Client-Integration in React mit bereits vorhandenem TanStack Query. Implementierung von Zod-Schemas zur Eingabevalidierung. Konfiguration von WebSocket-Unterstützung für Echtzeit-Updates. Einrichtung der Fehlerbehandlung mit benutzerdefinierten Fehlercodes. Implementierung von Request-Batching für bessere Leistung. Hinzufügen von OpenTelemetry-Tracing für Monitoring.",
-        "testStrategy": "Test aller tRPC-Prozeduren mit gültigen/ungültigen Eingaben. Überprüfung, ob die Typinferenz im Frontend korrekt funktioniert. Test von WebSocket-Verbindungen für Echtzeit-Updates. Validierung der Fehlerbehandlung und -wiederherstellung. Leistungstest mit gleichzeitigen Anfragen. Test der TanStack Query Integration.",
+        "details": "Da tRPC Server bereits mit Hono läuft, Fokus auf Business-Router-Implementierung mit API-First Architektur - alle Business-Logik läuft in der API: Service-Management Router (CRUD + Abhängigkeiten), Berechnungs-Engine Router (Echtzeit-Preisgestaltung), Angebots-Router (CRUD + PDF-Generierung), Kunden-Router (CRUD + Historie), Analytics-Router (Dashboards + Berichte). Client-Integration in React mit bereits vorhandenem TanStack Query. Implementierung von Zod-Schemas zur Eingabevalidierung. Konfiguration von WebSocket-Unterstützung für Echtzeit-Updates. Einrichtung der Fehlerbehandlung mit benutzerdefinierten Fehlercodes. Implementierung von Request-Batching für bessere Leistung. Hinzufügen von OpenTelemetry-Tracing für Monitoring. Clients sind nur Thin-Layer für API-Consumption.",
+        "testStrategy": "Test aller tRPC-Prozeduren mit gültigen/ungültigen Eingaben. Überprüfung, ob die Typinferenz im Frontend korrekt funktioniert. Test von WebSocket-Verbindungen für Echtzeit-Updates. Validierung der Fehlerbehandlung und -wiederherstellung. Leistungstest mit gleichzeitigen Anfragen. Test der TanStack Query Integration. Bestätigung dass alle Business-Logik in API-Routern liegt.",
         "subtasks": [
           {
             "id": 1,
-            "title": "Service-Management Router implementieren",
-            "description": "tRPC Router für Dienstleistungs-CRUD mit Abhängigkeitsmanagement",
-            "status": "pending",
+            "title": "Implement Service Management tRPC Router with CRUD Operations",
+            "description": "Create a comprehensive tRPC router for service management with full CRUD operations, service dependencies handling, and category management following API-First architecture",
             "dependencies": [],
-            "details": "Implementierung von Prozeduren für: createService, updateService, deleteService, getServices, getServiceById, getServiceDependencies, updateServiceDependencies. Zod-Schemas für Service-Validierung.",
-            "testStrategy": ""
+            "details": "Implement tRPC router in `apps/api/src/trpc/routers/services.ts` with procedures for createService, getService, updateService, deleteService, listServices. Add Zod schemas for service validation including name, description, basePrice, category, dependencies array. Implement service dependency validation to prevent circular dependencies. Include soft delete functionality and service status management (active/inactive). Add filtering and pagination for service listings.",
+            "status": "pending",
+            "testStrategy": "Unit tests for all CRUD operations with valid/invalid inputs. Test service dependency validation logic. Verify soft delete behavior and status transitions. Test pagination and filtering functionality."
           },
           {
             "id": 2,
-            "title": "Berechnungs-Engine Router erstellen",
-            "description": "Router für Echtzeit-Preisberechnungen mit WebSocket-Support",
+            "title": "Create Real-time Pricing Calculation Engine Router",
+            "description": "Build tRPC router for real-time price calculations with complex pricing rules, discounts, and WebSocket support for live updates",
+            "dependencies": [
+              "4.1"
+            ],
+            "details": "Create `apps/api/src/trpc/routers/calculations.ts` with procedures for calculatePrice, applyDiscount, getBulkPricing. Implement complex pricing logic considering service dependencies, quantity discounts, customer-specific pricing rules. Add WebSocket subscription support for real-time price updates using tRPC subscriptions. Include tax calculations and multi-currency support. Implement caching layer for frequently accessed pricing data using Redis.",
             "status": "pending",
-            "dependencies": [],
-            "details": "Implementierung von: calculatePrice, getCalculationHistory, subscribeToCalculationUpdates. WebSocket-Integration für Live-Updates der Preisberechnungen.",
-            "testStrategy": ""
+            "testStrategy": "Test price calculations with various service combinations and quantities. Verify discount application logic. Test WebSocket connections for real-time updates. Performance testing with concurrent calculation requests."
           },
           {
             "id": 3,
-            "title": "Angebots-Router implementieren",
-            "description": "Vollständiger CRUD für Angebote mit PDF-Generierung",
+            "title": "Develop Quote Management Router with PDF Generation",
+            "description": "Implement comprehensive quote management system with CRUD operations, status tracking, and PDF generation capabilities",
+            "dependencies": [
+              "4.1",
+              "4.2"
+            ],
+            "details": "Build `apps/api/src/trpc/routers/quotes.ts` with procedures for createQuote, updateQuote, getQuote, listQuotes, generateQuotePDF, sendQuoteEmail. Implement quote status workflow (draft, sent, accepted, rejected, expired). Add PDF generation using puppeteer or similar library with customizable templates. Include quote versioning system for tracking changes. Implement quote duplication and template functionality. Add email integration for sending quotes to customers.",
             "status": "pending",
-            "dependencies": [],
-            "details": "Prozeduren für: createQuote, updateQuote, deleteQuote, getQuotes, getQuoteById, generateQuotePDF, duplicateQuote. Integration mit PDF-Generierungs-Service.",
-            "testStrategy": ""
+            "testStrategy": "Test quote CRUD operations and status transitions. Verify PDF generation with different quote configurations. Test email sending functionality. Validate quote versioning and duplication features."
           },
           {
             "id": 4,
-            "title": "Kunden-Router erstellen",
-            "description": "Kundenmanagement mit Historie und Segmentierung",
+            "title": "Build Customer Management Router with History Tracking",
+            "description": "Create customer management system with comprehensive CRUD operations, interaction history, and segmentation features",
+            "dependencies": [
+              "4.1"
+            ],
+            "details": "Implement `apps/api/src/trpc/routers/customers.ts` with procedures for customer CRUD, getCustomerHistory, updateCustomerSegment, searchCustomers. Design customer data model with contact info, company details, communication preferences, custom pricing rules. Implement customer segmentation (Private, SME, Enterprise) with different service availability. Add comprehensive history tracking for all customer interactions and quotes. Include fuzzy search functionality using Fuse.js for customer lookup.",
             "status": "pending",
-            "dependencies": [],
-            "details": "Implementierung von: createCustomer, updateCustomer, deleteCustomer, getCustomers, getCustomerById, getCustomerHistory, getCustomerSegment. DSGVO-konforme Datenverwaltung.",
-            "testStrategy": ""
+            "testStrategy": "Test customer CRUD operations with data validation. Verify segmentation affects service availability. Test history tracking across multiple interactions. Validate search functionality with partial matches and fuzzy matching."
           },
           {
             "id": 5,
-            "title": "Analytics-Router implementieren",
-            "description": "Router für Dashboard-Daten und Berichte",
+            "title": "Integrate tRPC Client with React Frontend and Error Handling",
+            "description": "Set up tRPC client integration with React using TanStack Query, implement comprehensive error handling, and configure request batching",
+            "dependencies": [
+              "4.1",
+              "4.2",
+              "4.3",
+              "4.4"
+            ],
+            "details": "Configure tRPC client in `apps/native/src/lib/trpc.ts` with proper TypeScript inference. Set up TanStack Query integration with optimistic updates and caching strategies. Implement comprehensive error handling with custom error codes and user-friendly messages. Configure request batching for improved performance. Add loading states and error boundaries throughout the React components. Implement retry logic with exponential backoff for failed requests. Add OpenTelemetry tracing for monitoring API calls.",
             "status": "pending",
-            "dependencies": [],
-            "details": "Prozeduren für: getDashboardMetrics, getRevenueAnalytics, getCustomerInsights, getServicePerformance, generateReport. Optimierte Queries für große Datenmengen.",
-            "testStrategy": ""
-          },
-          {
-            "id": 6,
-            "title": "tRPC Client-Integration in React",
-            "description": "Integration des tRPC Clients mit TanStack Query",
-            "status": "pending",
-            "dependencies": [],
-            "details": "Konfiguration des tRPC React Query Clients. Setup von Providern, Error Handling und Type-Safety. Integration mit bestehendem TanStack Query Setup.",
-            "testStrategy": ""
-          },
-          {
-            "id": 7,
-            "title": "WebSocket-Unterstützung konfigurieren",
-            "description": "Echtzeit-Updates über WebSockets implementieren",
-            "status": "pending",
-            "dependencies": [],
-            "details": "Setup von tRPC WebSocket-Adapter mit Hono. Implementierung von Subscriptions für Live-Updates von Berechnungen und Angebotsstatus.",
-            "testStrategy": ""
-          },
-          {
-            "id": 8,
-            "title": "Fehlerbehandlung und Monitoring",
-            "description": "Umfassende Fehlerbehandlung und Tracing implementieren",
-            "status": "pending",
-            "dependencies": [],
-            "details": "Benutzerdefinierte Fehlercodes, Request-Batching, OpenTelemetry-Integration für Performance-Monitoring und Debugging.",
-            "testStrategy": ""
+            "testStrategy": "Test type inference works correctly in frontend components. Verify error handling displays appropriate messages. Test request batching reduces network calls. Validate loading states and error boundaries function properly. Test retry logic with simulated network failures."
           }
         ]
       },
       {
         "id": 5,
         "title": "Dienstleistungskatalog-Managementsystem entwerfen",
-        "description": "Aufbau eines umfassenden Dienstleistungskatalogs mit hierarchischen Kategorien, mehreren Preismodellen und Abhängigkeitsmanagement - Kernfunktionalität als Grundlage für alle Preisberechnungen",
+        "description": "Aufbau eines umfassenden Dienstleistungskatalogs mit hierarchischen Kategorien, mehreren Preismodellen und Abhängigkeitsmanagement - Kernfunktionalität als Grundlage für alle Preisberechnungen - API-First Architektur: Service-Management in der API",
         "status": "pending",
         "dependencies": [
           2,
           4
         ],
         "priority": "high",
-        "details": "Erstellung eines Dienstleistungsmanagement-Moduls mit Unterstützung für 7 Kategorien mit verschachtelten Unterkategorien. Implementierung von 4 Preismodellen: Festpreis, Stundensatz, monatlich wiederkehrend, projektbasiert - diese sind Kernfunktionalität für das gesamte System. Design eines Abhängigkeitssystems mit rekursiver Validierung und Erkennung zirkulärer Abhängigkeiten. Hinzufügen von Komplexitätsstufen (Basic/Standard/Premium) mit konfigurierbaren Multiplikatoren (1,0x, 1,5x, 2,0x). Implementierung von Zusatzleistungen mit Eltern-Kind-Beziehungen. Erstellung einer Admin-Oberfläche mit shadcn/ui-Komponenten für CRUD-Operationen. Hinzufügen von Funktionen für Massenimport/-export (CSV/JSON). Da der Service-Katalog die Grundlage für alle Preisberechnungen bildet, ist diese Aufgabe von höchster Priorität und muss vor allen anderen preisabhängigen Modulen abgeschlossen werden.",
-        "testStrategy": "Test von CRUD-Operationen für Dienstleistungen in allen 7 Kategorien. Validierung von Abhängigkeitsketten mit komplexen Szenarien. Test von Preisberechnungen für alle 4 Modelltypen als Kernfunktionalität. Überprüfung, ob Zusatzleistungen korrekt verknüpft sind. Test von Massenoperationen mit 1000+ Dienstleistungen. Validierung der Grundlagenfunktionalität für nachgelagerte Preisberechnungsmodule.",
-        "subtasks": []
+        "details": "Erstellung eines Dienstleistungsmanagement-Moduls mit API-First Architektur - alle Business-Logik läuft in der API: Unterstützung für 7 Kategorien mit verschachtelten Unterkategorien. Implementierung von 4 Preismodellen: Festpreis, Stundensatz, monatlich wiederkehrend, projektbasiert - diese sind Kernfunktionalität für das gesamte System. Design eines Abhängigkeitssystems mit rekursiver Validierung und Erkennung zirkulärer Abhängigkeiten in der API. Hinzufügen von Komplexitätsstufen (Basic/Standard/Premium) mit konfigurierbaren Multiplikatoren (1,0x, 1,5x, 2,0x). Implementierung von Zusatzleistungen mit Eltern-Kind-Beziehungen. Erstellung einer Admin-Oberfläche mit shadcn/ui-Komponenten für CRUD-Operationen über API-Calls. Hinzufügen von Funktionen für Massenimport/-export (CSV/JSON) über API-Endpoints. Da der Service-Katalog die Grundlage für alle Preisberechnungen bildet, ist diese Aufgabe von höchster Priorität und muss vor allen anderen preisabhängigen Modulen abgeschlossen werden. Clients sind nur Präsentationsschichten für API-Daten.",
+        "testStrategy": "Test von CRUD-Operationen für Dienstleistungen in allen 7 Kategorien über API-Endpoints. Validierung von Abhängigkeitsketten mit komplexen Szenarien über API. Test von Preisberechnungen für alle 4 Modelltypen als Kernfunktionalität über API. Überprüfung, ob Zusatzleistungen korrekt verknüpft sind. Test von Massenoperationen mit 1000+ Dienstleistungen über API. Validierung der Grundlagenfunktionalität für nachgelagerte Preisberechnungsmodule. Bestätigung dass Clients nur API-Consumer sind.",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Database-Schema für Dienstleistungskatalog erstellen",
+            "description": "Design und Implementierung des relationalen Datenbankschemas für Dienstleistungen mit hierarchischen Kategorien, Preismodellen und Abhängigkeitsmanagement in der PostgreSQL-Datenbank",
+            "dependencies": [],
+            "details": "Erstellung der Drizzle-Schema-Definitionen in apps/api/src/db/schema.ts: Services-Tabelle mit Feldern für ID, Titel, Beschreibung, Kategorie-ID, Preismodell-Typ, Basis-Preis, Komplexitätsstufe. Categories-Tabelle mit parent_id für hierarchische Struktur (7 Hauptkategorien). ServiceDependencies-Tabelle für m:n-Beziehungen. PricingModels-Tabelle für die 4 Modelltypen (Festpreis, Stundensatz, monatlich, projektbasiert). ComplexityLevels-Tabelle mit Multiplikatoren (1.0x, 1.5x, 2.0x). Indizierung für Performance und Fremdschlüssel-Constraints für referentielle Integrität.",
+            "status": "pending",
+            "testStrategy": "Datenbankmigrationen testen, Fremdschlüssel-Constraints validieren, hierarchische Abfragen für verschachtelte Kategorien testen"
+          },
+          {
+            "id": 2,
+            "title": "API-Endpoints für Service-CRUD-Operationen implementieren",
+            "description": "Entwicklung der RESTful API-Endpoints und tRPC-Procedures für vollständige CRUD-Operationen von Dienstleistungen mit Validierung und Fehlerbehandlung",
+            "dependencies": [
+              "5.1"
+            ],
+            "details": "Implementierung in apps/api/src/rest/routers/ und apps/api/src/trpc/routers/: GET /services für Auflistung mit Filterung nach Kategorien und Preismodellen. POST /services für Erstellung mit Zod-Validierung. PUT /services/:id für Updates. DELETE /services/:id mit Abhängigkeitsprüfung. GET /services/:id/dependencies für Abhängigkeitsgraph. POST /services/bulk für Massenoperationen. Implementierung von Error-Handling für ungültige Abhängigkeiten und zirkuläre Referenzen. OpenAPI-Dokumentation mit Scalar UI.",
+            "status": "pending",
+            "testStrategy": "API-Endpoint-Tests für alle CRUD-Operationen, Validierungstests für ungültige Eingaben, Abhängigkeitsvalidierung testen"
+          },
+          {
+            "id": 3,
+            "title": "Abhängigkeitssystem mit zirkulärer Validierung entwickeln",
+            "description": "Implementierung eines robusten Abhängigkeitsmanagementsystems mit rekursiver Validierung und Erkennung zirkulärer Abhängigkeiten in der API-Logik",
+            "dependencies": [
+              "5.2"
+            ],
+            "details": "Entwicklung in apps/api/src/lib/dependency-manager.ts: Algorithmus für Tiefensuche (DFS) zur Erkennung zirkulärer Abhängigkeiten. validateDependencies()-Funktion für rekursive Prüfung der Abhängigkeitskette. getDependencyGraph()-Funktion für Visualisierung. Implementierung von topologischer Sortierung für Abhängigkeitsreihenfolge. Caching-Mechanismus für Performance bei komplexen Abhängigkeitsgraphen. Integration in Service-CRUD-Endpoints für automatische Validierung vor Speicherung.",
+            "status": "pending",
+            "testStrategy": "Tests für zirkuläre Abhängigkeitserkennung, komplexe Abhängigkeitsketten validieren, Performance-Tests mit großen Abhängigkeitsgraphen"
+          },
+          {
+            "id": 4,
+            "title": "Preisberechnungslogik für alle Modelltypen implementieren",
+            "description": "Entwicklung der zentralen Preisberechnungslogik für alle 4 Preismodelle mit Komplexitätsstufen und Zusatzleistungen als Kernfunktionalität des Systems",
+            "dependencies": [
+              "5.1",
+              "5.3"
+            ],
+            "details": "Implementierung in apps/api/src/lib/pricing-calculator.ts: PricingEngine-Klasse mit calculatePrice()-Methoden für Festpreis, Stundensatz, monatlich wiederkehrend, projektbasiert. Integration von Komplexitätsmultiplikatoren (Basic: 1.0x, Standard: 1.5x, Premium: 2.0x). Logik für Zusatzleistungen mit Eltern-Kind-Beziehungen und automatische Preissummierung. Berücksichtigung von Kundenrabatt-Stufen und benutzerdefinierten Preisregeln. Validierung von Mindest- und Höchstpreisen. API-Endpoint /calculate-price für Echtzeit-Preisberechnungen.",
+            "status": "pending",
+            "testStrategy": "Preisberechnungstests für alle 4 Modelltypen, Komplexitätsstufen-Multiplikatoren validieren, Zusatzleistungen-Berechnung testen"
+          },
+          {
+            "id": 5,
+            "title": "Admin-Interface für Dienstleistungsmanagement erstellen",
+            "description": "Entwicklung einer benutzerfreundlichen Admin-Oberfläche mit shadcn/ui-Komponenten für vollständige Verwaltung des Dienstleistungskatalogs über API-Calls",
+            "dependencies": [
+              "5.2",
+              "5.4"
+            ],
+            "details": "Implementierung im Native-App unter apps/native/src/pages/admin/: ServiceManagement-Komponente mit TanStack Table für Auflistung aller Services. ServiceForm-Komponente mit react-hook-form und Zod-Validierung für Create/Update. CategoryTree-Komponente für hierarchische Kategorienauswahl. DependencyGraph-Komponente mit React Flow für visuelle Abhängigkeitsdarstellung. BulkImport-Komponente für CSV/JSON-Upload über File-API. PricingModelSelector mit konfigurierbaren Parametern. Integration von TanStack Query für API-State-Management und Caching.",
+            "status": "pending",
+            "testStrategy": "UI-Komponenten-Tests mit Testing Library, CRUD-Operationen über Interface testen, Bulk-Import/Export-Funktionalität validieren"
+          }
+        ]
       },
       {
         "id": 6,
         "title": "Echtzeit-Preisberechnungs-Engine implementieren",
-        "description": "Erstellung einer leistungsstarken Berechnungs-Engine für Echtzeit-Preisgestaltung mit Abhängigkeitsvalidierung und Rabattanwendung",
-        "details": "Aufbau einer Berechnungs-Engine mit Web Workers für nicht-blockierende Berechnung. Implementierung von Echtzeit-Preisaktualisierungen mit <100ms Antwortzeit unter Verwendung von Memoization und Caching-Strategien. Erstellung eines Abhängigkeitsvalidators mit automatischer Erkennung fehlender Dienstleistungen. Implementierung eines Rabattsystems: Bündelrabatte (5-20% für Kombinationen), kundenspezifische Rabatte, Mengenrabatte. Hinzufügen von Gewinnmargenberechnungen mit Kostenverfolgung. Implementierung eines Zeitschätzungsalgorithmus basierend auf der Dienstleistungskomplexität. Verwendung von Decimal.js für präzise Finanzberechnungen.",
-        "testStrategy": "Benchmark der Berechnungsleistung mit 50+ Dienstleistungen. Test der Abhängigkeitsvalidierung mit Grenzfällen. Überprüfung der Regeln für Rabattstaffelung. Test der Berechnungsgenauigkeit mit finanziellen Testfällen. Validierung, dass Echtzeit-Updates die Benutzeroberfläche nicht blockieren.",
-        "priority": "high",
+        "description": "Erstellung einer leistungsstarken Berechnungs-Engine für Echtzeit-Preisgestaltung mit Abhängigkeitsvalidierung und Rabattanwendung - API-First Architektur: Alle Berechnungen in der API",
+        "status": "pending",
         "dependencies": [
           5
         ],
-        "status": "pending",
-        "subtasks": []
+        "priority": "high",
+        "details": "Aufbau einer server-seitigen Berechnungs-Engine in der API (Hono.js) für zentrale Preiskalkulationen mit API-First Architektur - alle Business-Logik läuft in der API. Implementierung von Echtzeit-Preisaktualisierungen via WebSocket/SSE mit <100ms Antwortzeit unter Verwendung von Memoization und Caching-Strategien. Erstellung eines Abhängigkeitsvalidators mit automatischer Erkennung fehlender Dienstleistungen. Implementierung eines Rabattsystems: Bündelrabatte (5-20% für Kombinationen), kundenspezifische Rabatte, Mengenrabatte. Hinzufügen von Gewinnmargenberechnungen mit Kostenverfolgung. Implementierung eines Zeitschätzungsalgorithmus basierend auf der Dienstleistungskomplexität. Verwendung von Decimal.js für präzise Finanzberechnungen. Die Native App fungiert als reiner Client und ruft nur API-Endpoints auf - keine lokalen Berechnungen.",
+        "testStrategy": "Benchmark der server-seitigen Berechnungsleistung mit 50+ Dienstleistungen. Test der WebSocket/SSE-Verbindungen für Echtzeit-Updates. Test der Abhängigkeitsvalidierung mit Grenzfällen. Überprüfung der Regeln für Rabattstaffelung. Test der Berechnungsgenauigkeit mit finanziellen Testfällen. Validierung, dass Echtzeit-Updates über die API die Native App UI nicht blockieren. Load-Testing der API-Endpoints unter hoher Last. Bestätigung dass keine lokalen Berechnungen in Clients existieren.",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Core Calculation Engine mit Decimal.js einrichten",
+            "description": "Implementierung der grundlegenden Berechnungs-Engine in der API mit präzisen Finanzberechnungen und Basisarchitektur für alle Preiskalkulationen",
+            "dependencies": [],
+            "details": "Erstelle in apps/api/src/lib/calculation-engine.ts eine zentrale Berechnungsklasse mit Decimal.js für präzise Finanzberechnungen. Implementiere Basisfunktionen für Preisberechnungen, Steuern und Gesamtsummen. Erstelle Service-Klassen für verschiedene Berechnungstypen (Einzelpreise, Kombinationen, Zeitschätzungen). Verwende Memoization für Performance-Optimierung bei wiederholten Berechnungen. Implementiere Error-Handling für ungültige Eingaben.",
+            "status": "pending",
+            "testStrategy": "Unit-Tests für alle Berechnungsfunktionen mit verschiedenen Dezimalstellen, Grenzwerte-Tests, Performance-Tests mit großen Zahlenmengen"
+          },
+          {
+            "id": 2,
+            "title": "Abhängigkeitsvalidierung und Service-Dependencies implementieren",
+            "description": "Erstellung eines intelligenten Validators für Service-Abhängigkeiten mit automatischer Erkennung fehlender Dienstleistungen",
+            "dependencies": [
+              "6.1"
+            ],
+            "details": "Implementiere in apps/api/src/lib/dependency-validator.ts einen Abhängigkeitsgraph für Services. Erstelle Validierungslogik für Pflicht-Services und optionale Abhängigkeiten. Implementiere automatische Vorschläge für fehlende Services basierend auf gewählten Kombinationen. Erstelle API-Endpoints (/api/validate-dependencies) für Echtzeit-Validierung. Füge Warnmeldungen und Empfehlungen hinzu.",
+            "status": "pending",
+            "testStrategy": "Tests für komplexe Abhängigkeitsketten, Edge-Cases mit zirkulären Abhängigkeiten, Performance-Tests mit vielen Services"
+          },
+          {
+            "id": 3,
+            "title": "Rabattsystem und Bundle-Logic entwickeln",
+            "description": "Implementierung des umfassenden Rabattsystems mit Bündel-, Mengen- und kundenspezifischen Rabatten inklusive Gewinnmargen-Schutz",
+            "dependencies": [
+              "6.1"
+            ],
+            "details": "Erstelle apps/api/src/lib/discount-engine.ts mit verschiedenen Rabatttypen: Bundle-Rabatte (5-20%), Mengenrabatte, kundenspezifische Rabatte. Implementiere Rabatt-Stacking-Regeln und Mindestmargen-Schutz. Erstelle Gewinnmargenberechnungen mit Kostenverfolgung. Implementiere zeitbasierte Rabatte und Aktionsangebote. Erstelle API-Endpoints für Rabattberechnungen (/api/calculate-discounts).",
+            "status": "pending",
+            "testStrategy": "Tests für alle Rabattkombinationen, Validierung der Mindestmargen, Tests für zeitbasierte Rabatte, Performance-Tests mit vielen Rabattregeln"
+          },
+          {
+            "id": 4,
+            "title": "Caching und Memoization-Strategien implementieren",
+            "description": "Implementierung von hochperformanten Caching-Mechanismen und Memoization für sub-100ms Antwortzeiten bei Preisberechnungen",
+            "dependencies": [
+              "6.1",
+              "6.2",
+              "6.3"
+            ],
+            "details": "Implementiere Redis-basiertes Caching für häufige Berechnungen in apps/api/src/lib/cache-manager.ts. Erstelle intelligente Cache-Keys basierend auf Service-Kombinationen und Parametern. Implementiere Cache-Invalidierung bei Preisänderungen. Füge Memory-Caching für Session-basierte Berechnungen hinzu. Implementiere Cache-Warming-Strategien für beliebte Service-Kombinationen.",
+            "status": "pending",
+            "testStrategy": "Performance-Tests für Cache-Hit-Raten, Tests für Cache-Invalidierung, Benchmark-Tests für <100ms Antwortzeiten, Memory-Leak-Tests"
+          },
+          {
+            "id": 5,
+            "title": "WebSocket/SSE Echtzeit-Updates einrichten",
+            "description": "Implementierung von Echtzeit-Preisaktualisierungen via WebSocket oder Server-Sent Events für Live-Updates in der Native App",
+            "dependencies": [
+              "6.1",
+              "6.2",
+              "6.3",
+              "6.4"
+            ],
+            "details": "Implementiere WebSocket-Server in apps/api/src/websocket/price-updates.ts für Echtzeit-Kommunikation. Erstelle Event-System für Preisänderungen und Rabatt-Updates. Implementiere Client-seitige WebSocket-Verbindung in der Native App. Füge Reconnection-Logic und Error-Handling hinzu. Implementiere Batch-Updates für Performance-Optimierung. Erstelle Fallback auf Server-Sent Events.",
+            "status": "pending",
+            "testStrategy": "Tests für WebSocket-Verbindungsaufbau, Tests für Reconnection-Logic, Performance-Tests für gleichzeitige Verbindungen, Tests für Batch-Updates"
+          }
+        ]
       },
       {
         "id": 7,
         "title": "Kundenmanagement-Modul erstellen",
-        "description": "Aufbau einer umfassenden Kundendatenbank mit Historien-Tracking, Segmentierung und personalisierten Preisgestaltungsfunktionen",
-        "details": "Design eines Kundendatenmodells mit Feldern: Kontaktinformationen, Unternehmensdetails, Kommunikationspräferenzen, benutzerdefinierte Preisregeln. Implementierung der Kundensegmentierung: Privat, KMU, Unternehmen mit unterschiedlicher Dienstverfügbarkeit. Erstellung einer Kundenhistorie für alle Angebote und Interaktionen mit Zeitleistenansicht. Hinzufügen einer Suchfunktion mit Fuzzy-Matching unter Verwendung von Fuse.js. Implementierung von Datenschutzfunktionen mit DSGVO-Konformität (Datenexport, Löschung). Erstellung eines Kundenimports aus CSV/vCard. Hinzufügen eines Algorithmus zur Duplikaterkennung.",
-        "testStrategy": "Test von Kunden-CRUD-Operationen mit Validierung. Überprüfung, ob die Segmentierung die Dienstverfügbarkeit beeinflusst. Test der Historien-Verfolgung über mehrere Angebote hinweg. Validierung der Suche mit Teilübereinstimmungen. Test der DSGVO-Konformitätsfunktionen.",
+        "description": "Aufbau einer umfassenden Kundendatenbank mit Historien-Tracking, Segmentierung und personalisierten Preisgestaltungsfunktionen - API-First Architektur: Alle Kundendaten-Logik in der API",
+        "details": "Design eines Kundendatenmodells mit API-First Architektur - alle Business-Logik läuft in der API: Felder: Kontaktinformationen, Unternehmensdetails, Kommunikationspräferenzen, benutzerdefinierte Preisregeln. Implementierung der Kundensegmentierung: Privat, KMU, Unternehmen mit unterschiedlicher Dienstverfügbarkeit. Erstellung einer Kundenhistorie für alle Angebote und Interaktionen mit Zeitleistenansicht. Hinzufügen einer Suchfunktion mit Fuzzy-Matching unter Verwendung von Fuse.js in der API. Implementierung von Datenschutzfunktionen mit DSGVO-Konformität (Datenexport, Löschung). Erstellung eines Kundenimports aus CSV/vCard über API-Endpoints. Hinzufügen eines Algorithmus zur Duplikaterkennung in der API. Clients sind nur Präsentationsschichten für API-Daten.",
+        "testStrategy": "Test von Kunden-CRUD-Operationen mit Validierung über API-Endpoints. Überprüfung, ob die Segmentierung die Dienstverfügbarkeit beeinflusst. Test der Historien-Verfolgung über mehrere Angebote hinweg. Validierung der Suche mit Teilübereinstimmungen über API. Test der DSGVO-Konformitätsfunktionen. Bestätigung dass Clients nur API-Consumer sind.",
         "priority": "medium",
         "dependencies": [
           2,
@@ -288,23 +379,77 @@
       {
         "id": 8,
         "title": "PDF-Generierungssystem für Angebote erstellen",
-        "description": "Implementierung einer professionellen PDF-Generierung mit anpassbaren Vorlagen, Branding und Unterstützung für digitale Signaturen",
-        "details": "Integration von React PDF (neueste Version) für PDF-Generierung. Erstellung eines Vorlagensystems mit Handlebars.js für dynamische Inhalte. Design professioneller Layouts mit: Unternehmensbranding (Logo, Farben), Dienstleistungsaufschlüsselung mit Beschreibungen, Zahlungsbedingungen, Gültigkeitszeiträumen. Implementierung der Integration digitaler Signaturen mit PDF-lib. Hinzufügen von QR-Codes für schnellen Angebotszugriff. Unterstützung mehrerer Sprachen mit i18next. Optimierung der PDF-Größe mit Bildkomprimierung. Hinzufügen von Wasserzeichenunterstützung für Entwurfsversionen.",
-        "testStrategy": "Generierung von PDFs mit verschiedenen Dienstleistungskombinationen. Test des Vorlagen-Renderings mit verschiedenen Datensätzen. Überprüfung, ob digitale Signaturen gültig sind. Test der mehrsprachigen PDF-Generierung. Validierung der PDF-Zugänglichkeitsstandards.",
+        "description": "Implementierung einer professionellen PDF-Generierung mit anpassbaren Vorlagen, Branding und Unterstützung für digitale Signaturen - API-First Architektur: PDF-Generierung in der API",
+        "details": "Integration von React PDF (neueste Version) für PDF-Generierung mit API-First Architektur - alle Business-Logik läuft in der API. Erstellung eines Vorlagensystems mit Handlebars.js für dynamische Inhalte. Design professioneller Layouts mit: Unternehmensbranding (Logo, Farben), Dienstleistungsaufschlüsselung mit Beschreibungen, Zahlungsbedingungen, Gültigkeitszeiträumen. Implementierung der Integration digitaler Signaturen mit PDF-lib. Hinzufügen von QR-Codes für schnellen Angebotszugriff. Unterstützung mehrerer Sprachen mit i18next. Optimierung der PDF-Größe mit Bildkomprimierung. Hinzufügen von Wasserzeichenunterstützung für Entwurfsversionen. PDF-Generierung erfolgt server-seitig - Clients laden nur fertige PDFs herunter.",
+        "testStrategy": "Generierung von PDFs mit verschiedenen Dienstleistungskombinationen über API-Endpoints. Test des Vorlagen-Renderings mit verschiedenen Datensätzen. Überprüfung, ob digitale Signaturen gültig sind. Test der mehrsprachigen PDF-Generierung. Validierung der PDF-Zugänglichkeitsstandards. Bestätigung dass PDF-Generierung nur in der API erfolgt.",
         "priority": "high",
         "dependencies": [
           6,
           7
         ],
         "status": "pending",
-        "subtasks": []
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "API PDF-Generation Service Setup",
+            "description": "Establish the core PDF generation infrastructure in the API using React PDF and PDF-lib libraries with proper API endpoints",
+            "dependencies": [],
+            "details": "Install and configure React PDF (latest version) and PDF-lib in the API project. Create dedicated API endpoints for PDF generation (POST /api/quotes/pdf). Set up basic PDF creation service with error handling and validation. Configure TypeScript types for PDF generation requests/responses. Implement proper error handling for PDF generation failures.",
+            "status": "pending",
+            "testStrategy": "Unit tests for PDF service initialization, API endpoint integration tests, error handling validation with malformed requests"
+          },
+          {
+            "id": 2,
+            "title": "Handlebars Template System Implementation",
+            "description": "Create a flexible template system using Handlebars.js for dynamic PDF content generation with professional layouts",
+            "dependencies": [
+              "8.1"
+            ],
+            "details": "Integrate Handlebars.js into the API for template rendering. Design base template structure with company branding slots (logo, colors, fonts). Create template sections for service breakdown, payment terms, validity periods. Implement template compilation and caching system. Add support for conditional rendering based on quote data. Create helper functions for formatting dates, currencies, and calculations.",
+            "status": "pending",
+            "testStrategy": "Template rendering tests with various data sets, validation of Handlebars helper functions, template compilation performance tests"
+          },
+          {
+            "id": 3,
+            "title": "Professional Layout and Branding Integration",
+            "description": "Design and implement professional PDF layouts with corporate branding elements and service presentation",
+            "dependencies": [
+              "8.2"
+            ],
+            "details": "Create responsive PDF layouts that work across different content lengths. Implement company logo integration with proper sizing and positioning. Design color scheme system that adapts to corporate branding. Create service breakdown sections with clear descriptions and pricing. Add payment terms, validity periods, and legal text sections. Implement image compression for logos and graphics to optimize PDF size.",
+            "status": "pending",
+            "testStrategy": "Visual regression tests for PDF layouts, branding consistency validation, PDF size optimization verification, content overflow handling tests"
+          },
+          {
+            "id": 4,
+            "title": "Digital Signatures and QR Code Integration",
+            "description": "Implement digital signature capabilities using PDF-lib and add QR codes for quick quote access",
+            "dependencies": [
+              "8.3"
+            ],
+            "details": "Integrate PDF-lib for digital signature placement and validation. Create signature fields in PDF templates with proper positioning. Implement QR code generation using qrcode library linking to quote access URLs. Add signature verification endpoints in the API. Create signature status tracking in database. Implement signature workflow with proper authentication.",
+            "status": "pending",
+            "testStrategy": "Digital signature validation tests, QR code functionality verification, signature workflow integration tests, authentication security tests"
+          },
+          {
+            "id": 5,
+            "title": "Multi-language Support and Advanced Features",
+            "description": "Add internationalization with i18next, watermark support for drafts, and finalize the complete PDF generation system",
+            "dependencies": [
+              "8.4"
+            ],
+            "details": "Integrate i18next for multi-language PDF generation (German, English). Create language-specific templates and text resources. Implement watermark functionality for draft versions using PDF-lib. Add accessibility features for PDF/A standard compliance. Create comprehensive API documentation for PDF endpoints. Implement PDF generation queue system for handling large requests. Add audit logging for PDF generation activities.",
+            "status": "pending",
+            "testStrategy": "Multi-language PDF generation tests, watermark visibility validation, accessibility compliance testing, API documentation validation, performance testing with concurrent requests"
+          }
+        ]
       },
       {
         "id": 9,
         "title": "Administratives Dashboard entwickeln",
-        "description": "Erstellung eines zentralen Admin-Dashboards für Systemkonfiguration, Benutzerverwaltung und globale Einstellungen",
-        "details": "Aufbau eines Admin-Dashboards mit shadcn/ui mit Dark-Mode-Unterstützung. Implementierung der Benutzerverwaltung: CRUD-Operationen, Rollenzuweisungen, Aktivitätsüberwachung, Massenoperationen. Erstellung eines Systemkonfigurationspanels: Steuersätze, Währungseinstellungen, Branding-Uploads, E-Mail-Vorlagen. Hinzufügen eines Dienstleistungsvorlagen-Builders mit Drag-and-Drop-Oberfläche. Implementierung einer automatisierten Rabattregelmaschine mit Bedingungsbuilder. Erstellung eines Audit-Log-Viewers mit Filterung und Export. Hinzufügen eines System-Gesundheitsüberwachungs-Dashboards.",
-        "testStrategy": "Test aller Admin-CRUD-Operationen mit Rollenbeschränkungen. Überprüfung, ob Konfigurationsänderungen systemweit wirksam sind. Test, ob das Audit-Log alle Aktionen erfasst. Validierung der Ausgabe des Vorlagen-Builders. Test der Genauigkeit der Systemüberwachung.",
+        "description": "Erstellung eines zentralen Admin-Dashboards für Systemkonfiguration, Benutzerverwaltung und globale Einstellungen - API-First Architektur: Dashboard konsumiert nur API-Daten",
+        "details": "Aufbau eines Admin-Dashboards mit shadcn/ui mit Dark-Mode-Unterstützung und API-First Architektur - alle Business-Logik läuft in der API. Implementierung der Benutzerverwaltung: CRUD-Operationen, Rollenzuweisungen, Aktivitätsüberwachung, Massenoperationen über API-Endpoints. Erstellung eines Systemkonfigurationspanels: Steuersätze, Währungseinstellungen, Branding-Uploads, E-Mail-Vorlagen über API. Hinzufügen eines Dienstleistungsvorlagen-Builders mit Drag-and-Drop-Oberfläche über API-Calls. Implementierung einer automatisierten Rabattregelmaschine mit Bedingungsbuilder über API. Erstellung eines Audit-Log-Viewers mit Filterung und Export über API. Hinzufügen eines System-Gesundheitsüberwachungs-Dashboards über API-Metriken. Dashboard ist nur Präsentationsschicht für API-Daten.",
+        "testStrategy": "Test aller Admin-CRUD-Operationen mit Rollenbeschränkungen über API-Endpoints. Überprüfung, ob Konfigurationsänderungen systemweit wirksam sind. Test, ob das Audit-Log alle Aktionen erfasst. Validierung der Ausgabe des Vorlagen-Builders. Test der Genauigkeit der Systemüberwachung. Bestätigung dass Dashboard nur API-Consumer ist.",
         "priority": "medium",
         "dependencies": [
           3,
@@ -316,9 +461,9 @@
       {
         "id": 10,
         "title": "Analyse- und Berichtsmodul implementieren",
-        "description": "Aufbau eines umfassenden Analysesystems mit Echtzeit-Dashboards und anpassbaren Berichten",
-        "details": "Integration von Recharts für Datenvisualisierung. Erstellung von Dashboards: Vertriebsleistung (Konversionsraten, Durchschnittswerte), Dienstleistungsbeliebtheit (Nutzungsstatistiken, Trends), Gewinnmargen (nach Dienstleistung/Kategorie), Zeitvergleiche (MoM, QoQ, YoY). Implementierung eines Berichtsbuilders mit Drag-and-Drop-Metriken. Hinzufügen von Exportfunktionen (CSV, Excel mit ExcelJS, PDF). Erstellung einer geplanten Berichtsgenerierung mit E-Mail-Zustellung. Implementierung eines Datenaggregationsdienstes für Leistung. Hinzufügen eines benutzerdefinierten KPI-Builders für Geschäftsmetriken.",
-        "testStrategy": "Test der Dashboard-Datengenauigkeit im Vergleich zu Rohdaten. Überprüfung von Echtzeit-Updates innerhalb von 5 Sekunden. Test der Berichtsgenerierung mit großen Datensätzen. Validierung, ob Exportformate korrekt geöffnet werden. Test der geplanten Berichtszustellung.",
+        "description": "Aufbau eines umfassenden Analysesystems mit Echtzeit-Dashboards und anpassbaren Berichten - API-First Architektur: Alle Analytik-Berechnungen in der API",
+        "details": "Integration von Recharts für Datenvisualisierung mit API-First Architektur - alle Business-Logik läuft in der API. Erstellung von Dashboards: Vertriebsleistung (Konversionsraten, Durchschnittswerte), Dienstleistungsbeliebtheit (Nutzungsstatistiken, Trends), Gewinnmargen (nach Dienstleistung/Kategorie), Zeitvergleiche (MoM, QoQ, YoY) über API-Berechnungen. Implementierung eines Berichtsbuilders mit Drag-and-Drop-Metriken über API-Calls. Hinzufügen von Exportfunktionen (CSV, Excel mit ExcelJS, PDF) über API-Endpoints. Erstellung einer geplanten Berichtsgenerierung mit E-Mail-Zustellung über API. Implementierung eines Datenaggregationsdienstes für Leistung in der API. Hinzufügen eines benutzerdefinierten KPI-Builders für Geschäftsmetriken über API. Clients zeigen nur aufbereitete API-Daten an.",
+        "testStrategy": "Test der Dashboard-Datengenauigkeit im Vergleich zu Rohdaten über API. Überprüfung von Echtzeit-Updates innerhalb von 5 Sekunden. Test der Berichtsgenerierung mit großen Datensätzen über API. Validierung, ob Exportformate korrekt geöffnet werden. Test der geplanten Berichtszustellung. Bestätigung dass alle Berechnungen in der API erfolgen.",
         "priority": "medium",
         "dependencies": [
           6,
@@ -326,73 +471,127 @@
           8
         ],
         "status": "pending",
-        "subtasks": []
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "API Analytics Service mit Berechnungsengine implementieren",
+            "description": "Aufbau der zentralen Analytics-API mit allen Berechnungslogiken für Dashboards und Berichte",
+            "dependencies": [],
+            "details": "Implementierung eines Analytics-Services in apps/api/src/lib/analytics/ mit Berechnungsengines für: Vertriebsleistung (Konversionsraten, Durchschnittswerte), Dienstleistungsbeliebtheit (Nutzungsstatistiken, Trends), Gewinnmargen nach Kategorien, Zeitvergleiche (MoM, QoQ, YoY). Datenaggregationsdienst für Performance-Optimierung mit Caching-Strategien. Integration mit Drizzle ORM für Datenbankzugriffe. Verwendung von PostgreSQL-spezifischen Funktionen für komplexe Aggregationen.",
+            "status": "pending",
+            "testStrategy": "Unit-Tests für alle Berechnungslogiken mit Mock-Daten. Performance-Tests mit großen Datensätzen. Validierung der Berechnungsgenauigkeit gegen manuelle Referenzwerte."
+          },
+          {
+            "id": 2,
+            "title": "tRPC Analytics Router mit Echtzeit-Dashboards erstellen",
+            "description": "Implementierung des tRPC Analytics-Routers für typsichere Dashboard-APIs mit WebSocket-Support",
+            "dependencies": [
+              "10.1"
+            ],
+            "details": "Erstellung von tRPC-Routern in apps/api/src/trpc/routers/analytics.ts mit Prozeduren für: Dashboard-Daten (Echtzeit-Updates via WebSocket), historische Datenabfragen, KPI-Berechnungen, benutzerdefinierte Metriken. Integration des Analytics-Services aus Subtask 10.1. Implementierung von Zod-Schemas für Input-Validierung. WebSocket-Subscriptions für Live-Dashboard-Updates. Rate-Limiting und Caching für Performance.",
+            "status": "pending",
+            "testStrategy": "Test aller tRPC-Prozeduren mit verschiedenen Zeiträumen und Filtern. WebSocket-Verbindungstest für Echtzeit-Updates. Performance-Test mit gleichzeitigen Dashboard-Anfragen."
+          },
+          {
+            "id": 3,
+            "title": "React Dashboard-Components mit Recharts Integration",
+            "description": "Entwicklung der Frontend-Dashboard-Komponenten mit Recharts für Datenvisualisierung",
+            "dependencies": [
+              "10.2"
+            ],
+            "details": "Implementierung von Dashboard-Komponenten in apps/native/src/components/analytics/ mit Recharts: SalesPerformanceChart (Linien-/Balkendiagramme), ServicePopularityChart (Kreisdiagramme), ProfitMarginChart (gestapelte Balken), TimeComparisonChart (Multi-Line-Charts). Integration mit TanStack Query für API-Calls. Responsive Design mit TailwindCSS. Real-time Updates via WebSocket-Subscriptions. Interaktive Charts mit Drill-Down-Funktionalität.",
+            "status": "pending",
+            "testStrategy": "Visual Regression Tests für Chart-Rendering. Interaktionstest für Drill-Down-Features. Performance-Test mit großen Datensätzen. Test der responsiven Darstellung auf verschiedenen Bildschirmgrößen."
+          },
+          {
+            "id": 4,
+            "title": "Berichtsbuilder und Export-System implementieren",
+            "description": "Aufbau eines Drag-and-Drop Berichtsbuilders mit Export-Funktionen über API",
+            "dependencies": [
+              "10.2"
+            ],
+            "details": "Implementierung eines Report-Builder-Systems: API-Endpoints für Berichtskonfiguration in apps/api/src/rest/routers/reports.ts, Export-Service für CSV/Excel (ExcelJS)/PDF-Generierung, Frontend Report-Builder mit Drag-and-Drop-Interface für Metriken-Auswahl, Template-System für wiederkehrende Berichte. Integration von ExcelJS für Excel-Export, jsPDF für PDF-Generierung. Speicherung von Berichtskonfigurationen in der Datenbank.",
+            "status": "pending",
+            "testStrategy": "Test aller Export-Formate auf Korrektheit und Öffnungskompatibilität. Drag-and-Drop-Funktionalitätstest. Performance-Test bei großen Datenexporten. Validierung der Berichtskonfiguration-Persistierung."
+          },
+          {
+            "id": 5,
+            "title": "Geplante Berichtsgenerierung und E-Mail-System",
+            "description": "Implementierung eines Scheduler-Systems für automatische Berichtsgenerierung mit E-Mail-Versand",
+            "dependencies": [
+              "10.4"
+            ],
+            "details": "Aufbau eines Scheduling-Systems für automatische Berichte: Cron-Job-System in der API für geplante Berichtsgenerierung, Integration mit Resend für E-Mail-Versand, Benutzeroberfläche für Scheduling-Konfiguration (täglich, wöchentlich, monatlich), Report-Queue-System für Background-Processing, E-Mail-Templates für Berichts-Zustellung. Implementierung in apps/api/src/lib/scheduler/ mit Node-Cron oder ähnlichem Scheduler.",
+            "status": "pending",
+            "testStrategy": "Test der Cron-Job-Ausführung zu konfigurierten Zeiten. E-Mail-Zustellungstest in verschiedenen E-Mail-Clients. Test der Queue-Verarbeitung bei hoher Last. Validierung der Template-Generierung und -Versendung."
+          }
+        ]
       },
       {
         "id": 11,
         "title": "Mobile-optimierte Touch-Oberfläche erstellen",
-        "description": "Entwicklung von touch-optimierten UI-Komponenten für Mobile mit React + TailwindCSS v4 + shadcn/ui",
+        "description": "Entwicklung von touch-optimierten UI-Komponenten für Mobile mit React + TailwindCSS v4 + shadcn/ui - API-First Architektur: Mobile UI als API-Client",
         "status": "pending",
         "dependencies": [
           1,
           4
         ],
         "priority": "high",
-        "details": "Da React + TailwindCSS v4 + shadcn/ui bereits installiert sind, Fokus auf Mobile-spezifische UI-Komponenten: Erstellung von Bottom-Sheet Komponenten für mobile Interaktionen. Implementierung von Swipe-Gesten für intuitive Navigation. Entwicklung touch-optimierter Service-Auswahl mit großen Touch-Targets (min. 44px). Aufbau von Mobile Navigation Patterns mit Tab-Leiste und Burger-Menü. Erstellung responsiver Layouts für kleine Bildschirme mit mobile-first Ansatz. Integration von Haptic Feedback für iOS/Android über Tauri-APIs. Optimierung der Komponenten für Touch-Interaktionen mit appropriate feedback states.",
-        "testStrategy": "Test auf verschiedenen Gerätegrößen (Smartphones, Tablets). Überprüfung, ob Touch-Ziele das Minimum von 44px erfüllen. Test der Swipe-Gesten auf verschiedenen Touch-Geräten. Validierung der Bottom-Sheet-Funktionalität. Test der responsiven Layouts bei verschiedenen Bildschirmauflösungen. Test des haptischen Feedbacks auf iOS/Android-Geräten.",
+        "details": "Da React + TailwindCSS v4 + shadcn/ui bereits installiert sind, Fokus auf Mobile-spezifische UI-Komponenten mit API-First Architektur - alle Business-Logik läuft in der API: Erstellung von Bottom-Sheet Komponenten für mobile Interaktionen. Implementierung von Swipe-Gesten für intuitive Navigation. Entwicklung touch-optimierter Service-Auswahl mit großen Touch-Targets (min. 44px) über API-Calls. Aufbau von Mobile Navigation Patterns mit Tab-Leiste und Burger-Menü. Erstellung responsiver Layouts für kleine Bildschirme mit mobile-first Ansatz. Integration von Haptic Feedback für iOS/Android über Tauri-APIs. Optimierung der Komponenten für Touch-Interaktionen mit appropriate feedback states. Mobile UI ist nur Präsentationsschicht für API-Daten.",
+        "testStrategy": "Test auf verschiedenen Gerätegrößen (Smartphones, Tablets). Überprüfung, ob Touch-Ziele das Minimum von 44px erfüllen. Test der Swipe-Gesten auf verschiedenen Touch-Geräten. Validierung der Bottom-Sheet-Funktionalität. Test der responsiven Layouts bei verschiedenen Bildschirmauflösungen. Test des haptischen Feedbacks auf iOS/Android-Geräten. Bestätigung dass Mobile UI nur API-Consumer ist.",
         "subtasks": [
           {
             "id": 1,
             "title": "Bottom-Sheet Komponenten erstellen",
-            "description": "Implementierung wiederverwendbarer Bottom-Sheet Komponenten mit shadcn/ui",
+            "description": "Implementierung wiederverwendbarer Bottom-Sheet Komponenten mit shadcn/ui - API-First: Daten über API-Calls",
             "status": "pending",
             "dependencies": [],
-            "details": "Erstellung von Bottom-Sheet Komponenten für mobile Interaktionen: Basis Bottom-Sheet mit Drag-to-dismiss Funktionalität, Modal Bottom-Sheet für wichtige Aktionen, Scrollable Bottom-Sheet für lange Inhalte. Integration mit shadcn/ui Dialog und Sheet Komponenten. Implementierung von Backdrop-Blur-Effekten und smooth Animationen.",
+            "details": "Erstellung von Bottom-Sheet Komponenten für mobile Interaktionen: Basis Bottom-Sheet mit Drag-to-dismiss Funktionalität, Modal Bottom-Sheet für wichtige Aktionen, Scrollable Bottom-Sheet für lange Inhalte. Integration mit shadcn/ui Dialog und Sheet Komponenten. Implementierung von Backdrop-Blur-Effekten und smooth Animationen. Alle Daten über API-Calls.",
             "testStrategy": ""
           },
           {
             "id": 2,
             "title": "Swipe-Gesten implementieren",
-            "description": "Hinzufügen von Swipe-Gesten für intuitive Mobile-Navigation",
+            "description": "Hinzufügen von Swipe-Gesten für intuitive Mobile-Navigation - API-First: Aktionen über API-Calls",
             "status": "pending",
             "dependencies": [],
-            "details": "Implementierung von Swipe-Gesten mit react-swipeable oder framer-motion: Swipe-to-go-back Navigation, Swipe-to-delete für Listen-Items, Swipe-to-refresh für Datenaktualisierung. Konfiguration von Swipe-Thresholds und Feedback-Animationen.",
+            "details": "Implementierung von Swipe-Gesten mit react-swipeable oder framer-motion: Swipe-to-go-back Navigation, Swipe-to-delete für Listen-Items über API, Swipe-to-refresh für Datenaktualisierung von API. Konfiguration von Swipe-Thresholds und Feedback-Animationen.",
             "testStrategy": ""
           },
           {
             "id": 3,
             "title": "Touch-optimierte Service-Auswahl erstellen",
-            "description": "Entwicklung touch-freundlicher Service-Auswahl mit großen Touch-Targets",
+            "description": "Entwicklung touch-freundlicher Service-Auswahl mit großen Touch-Targets - API-First: Service-Daten über API",
             "status": "pending",
             "dependencies": [],
-            "details": "Redesign der Service-Auswahl für Mobile: Große Touch-Buttons (min. 44px), Card-basierte Service-Darstellung, Multi-Select mit visuellen Checkboxes, Touch-optimierte Dropdown-Alternativen mit Bottom-Sheets. Implementierung von Touch-Feedback mit Ripple-Effekten.",
+            "details": "Redesign der Service-Auswahl für Mobile: Große Touch-Buttons (min. 44px), Card-basierte Service-Darstellung mit API-Daten, Multi-Select mit visuellen Checkboxes, Touch-optimierte Dropdown-Alternativen mit Bottom-Sheets. Implementierung von Touch-Feedback mit Ripple-Effekten. Service-Daten nur über API.",
             "testStrategy": ""
           },
           {
             "id": 4,
             "title": "Mobile Navigation Patterns implementieren",
-            "description": "Aufbau responsiver Navigation mit Tab-Leiste und Burger-Menü",
+            "description": "Aufbau responsiver Navigation mit Tab-Leiste und Burger-Menü - API-First: Navigation-Daten über API",
             "status": "pending",
             "dependencies": [],
-            "details": "Implementierung einer mobilen Navigation: Bottom-Tab-Navigation für Hauptbereiche, Collapsible Burger-Menü für Sekundärfunktionen, Breadcrumb-Navigation für tiefe Hierarchien, Floating Action Button für Hauptaktionen. Integration mit TanStack Router für Mobile-optimierte Routen.",
+            "details": "Implementierung einer mobilen Navigation: Bottom-Tab-Navigation für Hauptbereiche, Collapsible Burger-Menü für Sekundärfunktionen, Breadcrumb-Navigation für tiefe Hierarchien, Floating Action Button für Hauptaktionen. Integration mit TanStack Router für Mobile-optimierte Routen. Navigation-Konfiguration über API.",
             "testStrategy": ""
           },
           {
             "id": 5,
             "title": "Responsive Layouts für kleine Bildschirme",
-            "description": "Erstellung mobile-first responsiver Layouts",
+            "description": "Erstellung mobile-first responsiver Layouts - API-First: Layout-Daten über API",
             "status": "pending",
             "dependencies": [],
-            "details": "Entwicklung responsiver Layouts mit TailwindCSS: Mobile-first Breakpoint-Design, Single-Column-Layouts für Smartphones, Optimierte Spacing und Typography für kleine Bildschirme, Adaptive Grid-Systeme für verschiedene Bildschirmgrößen. Implementierung von Container-Queries für komponentenbasierte Responsivität.",
+            "details": "Entwicklung responsiver Layouts mit TailwindCSS: Mobile-first Breakpoint-Design, Single-Column-Layouts für Smartphones, Optimierte Spacing und Typography für kleine Bildschirme, Adaptive Grid-Systeme für verschiedene Bildschirmgrößen. Implementierung von Container-Queries für komponentenbasierte Responsivität. Layout-Konfiguration über API.",
             "testStrategy": ""
           },
           {
             "id": 6,
             "title": "Haptic Feedback Integration",
-            "description": "Integration von haptischem Feedback über Tauri-APIs",
+            "description": "Integration von haptischem Feedback über Tauri-APIs - API-First: Feedback-Konfiguration über API",
             "status": "pending",
             "dependencies": [],
-            "details": "Implementierung von Haptic Feedback für iOS/Android: Tauri-Plugin für Native Haptic APIs, Feedback für Button-Interaktionen, Success/Error Haptic Patterns, Customizable Haptic Intensität. Erstellung einer Haptic-Utility-Library mit TypeScript-Typen für verschiedene Feedback-Arten.",
+            "details": "Implementierung von Haptic Feedback für iOS/Android: Tauri-Plugin für Native Haptic APIs, Feedback für Button-Interaktionen, Success/Error Haptic Patterns, Customizable Haptic Intensität. Erstellung einer Haptic-Utility-Library mit TypeScript-Typen für verschiedene Feedback-Arten. Haptic-Konfiguration über API.",
             "testStrategy": ""
           }
         ]
@@ -400,23 +599,23 @@
       {
         "id": 12,
         "title": "Offline-Synchronisierungssystem implementieren",
-        "description": "Aufbau einer robusten Offline-First-Architektur mit Konfliktlösung und Hintergrundsynchronisierung",
-        "details": "Implementierung eines Service Workers mit Workbox für Offline-Caching. Erstellung einer Sync-Engine mit Background Sync API mit exponentiellem Backoff. Design der Konfliktlösung: Last-Write-Wins für einfache Felder, manuelle Auflösungs-UI für komplexe Konflikte. Implementierung von Delta-Sync zur Minimierung der Datenübertragung. Erstellung eines Offline-Indikators mit Synchronisierungsstatus. Hinzufügen einer Warteschlangenverwaltung für Offline-Aktionen. Implementierung von Datenkompression mit LZ-string. Erstellung von Sync-Analysen für die Überwachung.",
-        "testStrategy": "Test der Offline-Erstellung und -Bearbeitung von Angeboten. Überprüfung der Synchronisierung bei Rückkehr ins Online-Netz. Test von Konfliktlösungsszenarien. Validierung der Datenintegrität nach der Synchronisierung. Test mit intermittierender Konnektivität.",
-        "priority": "high",
+        "description": "Implementierung eines vereinfachten API-First Offline-Systems mit Read-Only Cache und Request-Queueing - API-First Architektur: Cache nur für API-Responses",
+        "status": "pending",
         "dependencies": [
           2,
           11
         ],
-        "status": "pending",
+        "priority": "high",
+        "details": "Vereinfachte Offline-Architektur mit API-First Ansatz - alle Business-Logik läuft in der API: Read-Only Cache von API-Daten über Service Worker/HTTP Cache für sofortige Anzeige bereits geladener Inhalte. Request-Queueing System für API-Calls während Offline-Zeiten mit automatischer Abarbeitung bei Verbindungswiederherstellung. Offline-Indikator mit Queueing-Status (Anzahl wartender Requests). Exponentieller Backoff für Failed Requests. Konfliktlösung erfolgt ausschließlich server-seitig - keine komplexe Client-Side Sync-Logik. Service Worker nur für Caching, nicht für Business-Logik. Implementierung über TanStack Query mit persistentem Cache und Background Refetch. Clients cachen nur API-Responses.",
+        "testStrategy": "Test der Read-Only Funktionalität im Offline-Modus. Überprüfung des Request-Queueing und automatischer Abarbeitung bei Verbindungswiederherstellung. Test von Failed Request Retry-Mechanismen. Validierung der Cache-Persistierung. Test mit intermittierender Konnektivität. Bestätigung dass nur API-Responses gecacht werden.",
         "subtasks": []
       },
       {
         "id": 13,
         "title": "Workflow-Optimierungsfunktionen erstellen",
-        "description": "Erstellung von Produktivitätsfunktionen einschließlich Favoriten, Vorlagen und Schnellaktionen für optimierte Abläufe",
-        "details": "Implementierung eines Favoritensystems für Dienstleistungskombinationen mit Schnellzugriffs-Symbolleiste. Erstellung von Angebotsduplizierung mit intelligenten Feldaktualisierungen. Aufbau eines Express-Modus für Standardpakete mit Ein-Klick-Generierung. Hinzufügen einer Volltextsuche mit MiniSearch über Dienstleistungen, Kunden, Angebote. Implementierung einer Drag-and-Drop-Oberfläche mit dnd-kit für die Dienstleistungsauswahl. Erstellung eines Tastenkürzel-Systems mit Anpassungsmöglichkeiten. Hinzufügen eines Schnellzugriffs auf kürzlich verwendete Elemente. Aufbau intelligenter Vorschläge basierend auf Nutzungsmustern.",
-        "testStrategy": "Test, ob Favoriten korrekt gespeichert und geladen werden. Überprüfung, ob die Vorlagenduplizierung Beziehungen beibehält. Test der Suchgenauigkeit und -leistung. Validierung von Drag-and-Drop über verschiedene Browser hinweg. Test, ob Tastenkürzel nicht in Konflikt geraten.",
+        "description": "Erstellung von Produktivitätsfunktionen einschließlich Favoriten, Vorlagen und Schnellaktionen für optimierte Abläufe - API-First Architektur: Alle Workflow-Logik in der API",
+        "details": "Implementierung eines Favoritensystems für Dienstleistungskombinationen mit API-First Architektur - alle Business-Logik läuft in der API: Schnellzugriffs-Symbolleiste über API-Konfiguration. Erstellung von Angebotsduplizierung mit intelligenten Feldaktualisierungen über API. Aufbau eines Express-Modus für Standardpakete mit Ein-Klick-Generierung über API-Endpoints. Hinzufügen einer Volltextsuche mit MiniSearch über Dienstleistungen, Kunden, Angebote in der API. Implementierung einer Drag-and-Drop-Oberfläche mit dnd-kit für die Dienstleistungsauswahl über API-Calls. Erstellung eines Tastenkürzel-Systems mit Anpassungsmöglichkeiten über API-Konfiguration. Hinzufügen eines Schnellzugriffs auf kürzlich verwendete Elemente über API. Aufbau intelligenter Vorschläge basierend auf Nutzungsmustern über API-Analytik. Clients sind nur Präsentationsschichten.",
+        "testStrategy": "Test, ob Favoriten korrekt gespeichert und geladen werden über API. Überprüfung, ob die Vorlagenduplizierung Beziehungen beibehält. Test der Suchgenauigkeit und -leistung über API. Validierung von Drag-and-Drop über verschiedene Browser hinweg. Test, ob Tastenkürzel nicht in Konflikt geraten. Bestätigung dass alle Workflow-Logik in der API liegt.",
         "priority": "low",
         "dependencies": [
           6,
@@ -428,23 +627,77 @@
       {
         "id": 14,
         "title": "Sicherheits- und Compliance-Funktionen implementieren",
-        "description": "Hinzufügen umfassender Sicherheitsmaßnahmen, Audit-Logging und Compliance-Funktionen für Unternehmensbereitschaft",
-        "details": "Implementierung von zeilenbasierter Sicherheit in PostgreSQL für Multi-Tenant-Isolation. Hinzufügen umfassender Audit-Protokollierung mit unveränderlichem Event-Store. Erstellung von Datenverschlüsselung im Ruhezustand mit AES-256. Implementierung von API-Rate-Limiting mit Redis. Hinzufügen von DSGVO-Compliance-Tools: Datenexport, Recht auf Löschung, Einwilligungsverwaltung. Implementierung von Sicherheits-Headern (CSP, HSTS, X-Frame-Options). Erstellung einer Integration zur Schwachstellenprüfung. Hinzufügen von Zwei-Faktor-Authentifizierungsunterstützung. Implementierung von Sitzungs-Timeout mit Warnung.",
-        "testStrategy": "Durchführung von Penetrationstests auf API-Endpunkten. Test der Vollständigkeit und Unveränderlichkeit des Audit-Logs. Überprüfung der Verschlüsselungs-/Entschlüsselungsleistung. Test des Rate-Limitings unter Last. Validierung der DSGVO-Compliance-Funktionen.",
+        "description": "Hinzufügen umfassender Sicherheitsmaßnahmen, Audit-Logging und Compliance-Funktionen für Unternehmensbereitschaft - API-First Architektur: Alle Sicherheitslogik in der API",
+        "details": "Implementierung von zeilenbasierter Sicherheit in PostgreSQL für Multi-Tenant-Isolation mit API-First Architektur - alle Business-Logik läuft in der API. Hinzufügen umfassender Audit-Protokollierung mit unveränderlichem Event-Store. Erstellung von Datenverschlüsselung im Ruhezustand mit AES-256. Implementierung von API-Rate-Limiting mit Redis. Hinzufügen von DSGVO-Compliance-Tools: Datenexport, Recht auf Löschung, Einwilligungsverwaltung über API-Endpoints. Implementierung von Sicherheits-Headern (CSP, HSTS, X-Frame-Options). Erstellung einer Integration zur Schwachstellenprüfung. Hinzufügen von Zwei-Faktor-Authentifizierungsunterstützung über API. Implementierung von Sitzungs-Timeout mit Warnung über API. Clients implementieren keine Sicherheitslogik.",
+        "testStrategy": "Durchführung von Penetrationstests auf API-Endpunkten. Test der Vollständigkeit und Unveränderlichkeit des Audit-Logs. Überprüfung der Verschlüsselungs-/Entschlüsselungsleistung. Test des Rate-Limitings unter Last. Validierung der DSGVO-Compliance-Funktionen. Bestätigung dass alle Sicherheitslogik in der API liegt.",
         "priority": "high",
         "dependencies": [
           3,
           9
         ],
         "status": "pending",
-        "subtasks": []
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Multi-Tenant Row-Level Security und PostgreSQL Sicherheit implementieren",
+            "description": "Implementierung von PostgreSQL Row-Level Security (RLS) für Multi-Tenant-Isolation und grundlegende Datenbanksicherheit",
+            "dependencies": [],
+            "details": "Konfiguration von PostgreSQL Row-Level Security Policies für alle Tabellen basierend auf tenant_id. Implementierung von Datenverschlüsselung im Ruhezustand mit AES-256 auf Datenbankebene. Erstellung von sicheren Datenbankverbindungen mit SSL/TLS. Setup von Datenbank-Rollen und Berechtigungen. Integration der RLS-Logik in Drizzle ORM Queries mit automatischer tenant_id Filterung.",
+            "status": "pending",
+            "testStrategy": "Test der RLS-Policies mit verschiedenen Tenant-Kontexten. Überprüfung der Datenverschlüsselung auf Datenbankebene. Validierung der SSL-Verbindungen. Test der automatischen Tenant-Filterung in API-Queries."
+          },
+          {
+            "id": 2,
+            "title": "Umfassendes Audit-Logging System mit unveränderlichem Event-Store",
+            "description": "Aufbau eines vollständigen Audit-Logging Systems mit unveränderlichem Event-Store für alle API-Aktionen",
+            "dependencies": [
+              "14.1"
+            ],
+            "details": "Erstellung einer Audit-Log Tabelle mit unveränderlichen Event-Einträgen (INSERT-only, keine UPDATEs/DELETEs). Implementierung von Middleware für automatisches Logging aller API-Requests mit User-Context, Timestamp, Action-Type, und Payload. Integration von strukturiertem Logging mit JSON-Format. Setup von Log-Retention-Policies und Archivierung. Implementierung von Audit-Query-APIs für Compliance-Berichte.",
+            "status": "pending",
+            "testStrategy": "Test der vollständigen Audit-Trail-Erfassung für alle API-Endpunkte. Überprüfung der Unveränderlichkeit der Log-Einträge. Validierung der Log-Retention und Archivierung. Test der Audit-Query-Performance bei großen Datenmengen."
+          },
+          {
+            "id": 3,
+            "title": "API Rate Limiting und Sicherheits-Middleware implementieren",
+            "description": "Implementierung von Redis-basiertem Rate Limiting und essentiellen Sicherheits-Headern für die API",
+            "dependencies": [
+              "14.1"
+            ],
+            "details": "Setup von Redis für Rate Limiting mit verschiedenen Limits pro Endpunkt und User-Rolle. Implementierung von sliding window oder token bucket Algorithmus für Rate Limiting. Konfiguration von Sicherheits-Headern (CSP, HSTS, X-Frame-Options, X-Content-Type-Options). Integration von API-Key-basierter Authentifizierung. Implementierung von IP-Whitelisting für kritische Endpunkte. Setup von DDoS-Schutz-Mechanismen.",
+            "status": "pending",
+            "testStrategy": "Test des Rate Limitings unter verschiedenen Last-Szenarien. Überprüfung der Sicherheits-Header in HTTP-Responses. Validierung der API-Key-Authentifizierung. Test der IP-Whitelisting-Funktionalität. Performance-Tests mit hoher Concurrent-User-Last."
+          },
+          {
+            "id": 4,
+            "title": "DSGVO-Compliance API-Endpunkte implementieren",
+            "description": "Entwicklung aller DSGVO-relevanten API-Endpunkte für Datenschutz-Compliance",
+            "dependencies": [
+              "14.2"
+            ],
+            "details": "Implementierung von API-Endpunkten für Datenexport (vollständiger User-Datenexport als JSON/XML). Erstellung von 'Recht auf Löschung' Endpunkt mit kaskadierender Datenlöschung und Audit-Trail. Implementierung von Consent-Management APIs für Einwillungsverwaltung. Setup von Datenminimierungs-Mechanismen. Implementierung von Pseudonymisierungs- und Anonymisierungslogik. Erstellung von Privacy-Dashboard APIs für User-Datenübersicht.",
+            "status": "pending",
+            "testStrategy": "Test aller DSGVO-Endpunkte mit echten Szenarien. Überprüfung der vollständigen Datenlöschung inklusive Backups. Validierung der Datenexport-Vollständigkeit. Test der Consent-Management-Workflows. Überprüfung der Anonymisierungsqualität."
+          },
+          {
+            "id": 5,
+            "title": "Zwei-Faktor-Authentifizierung und Session-Management implementieren",
+            "description": "Implementierung von 2FA-Support und erweiterten Session-Management-Funktionen über API-Endpunkte",
+            "dependencies": [
+              "14.3"
+            ],
+            "details": "Implementierung von TOTP-basierter 2FA mit QR-Code-Generierung über API. Setup von Backup-Codes für 2FA-Recovery. Implementierung von Session-Timeout mit konfigurierbaren Zeiten pro User-Rolle. Erstellung von Session-Warning APIs vor Ablauf. Implementierung von Concurrent-Session-Limits. Setup von Device-Fingerprinting für verdächtige Login-Erkennung. Integration von Security-Event-Notifications (verdächtige Logins, neue Geräte).",
+            "status": "pending",
+            "testStrategy": "Test der 2FA-Implementierung mit verschiedenen Authenticator-Apps. Überprüfung der Session-Timeout-Funktionalität. Validierung der Backup-Codes-Funktionalität. Test der Device-Fingerprinting-Genauigkeit. Überprüfung der Security-Notifications."
+          }
+        ]
       },
       {
         "id": 15,
         "title": "Test-Suite und Dokumentation erstellen",
-        "description": "Aufbau eines umfassenden Test-Frameworks und Dokumentationssystems für Wartbarkeit",
-        "details": "Einrichtung von Vitest für Unit-Tests mit 80% Abdeckungsziel. Implementierung von Playwright für E2E-Tests über Plattformen hinweg. Erstellung von Storybook für Komponentendokumentation. Verfassen der API-Dokumentation mit TypeDoc. Implementierung von Performance-Tests mit Lighthouse CI. Erstellung einer Lasttestsuite mit k6. Aufbau visueller Regressionstests mit Percy. Generierung von OpenAPI-Dokumentation aus tRPC. Erstellung eines Benutzerhandbuchs mit Docusaurus. Implementierung automatisierter Barrierefreiheitstests.",
-        "testStrategy": "Erreichen von 80% Unit-Test-Abdeckung. Ausführung von E2E-Tests auf allen Plattformen. Überprüfung der Vollständigkeit der Dokumentation. Test, ob Performance-Benchmarks erfüllt werden. Validierung der Einhaltung von Barrierefreiheitsstandards.",
+        "description": "Aufbau eines umfassenden Test-Frameworks und Dokumentationssystems für Wartbarkeit - API-First Architektur: Tests fokussiert auf API-Layer",
+        "details": "Einrichtung von Vitest für Unit-Tests mit 80% Abdeckungsziel mit API-First Fokus - alle Business-Logik läuft in der API. Implementierung von Playwright für E2E-Tests über Plattformen hinweg mit API-Testing. Erstellung von Storybook für Komponentendokumentation. Verfassen der API-Dokumentation mit TypeDoc. Implementierung von Performance-Tests mit Lighthouse CI. Erstellung einer Lasttestsuite mit k6 für API-Endpoints. Aufbau visueller Regressionstests mit Percy. Generierung von OpenAPI-Dokumentation aus tRPC. Erstellung eines Benutzerhandbuchs mit Docusaurus. Implementierung automatisierter Barrierefreiheitstests. Tests fokussieren sich auf API-Layer da dort die Business-Logik liegt.",
+        "testStrategy": "Erreichen von 80% Unit-Test-Abdeckung für API-Layer. Ausführung von E2E-Tests auf allen Plattformen. Überprüfung der Vollständigkeit der Dokumentation. Test, ob Performance-Benchmarks erfüllt werden. Validierung der Einhaltung von Barrierefreiheitsstandards. Fokus auf API-Testing da dort die Business-Logik liegt.",
         "priority": "medium",
         "dependencies": [
           14
@@ -455,9 +708,9 @@
       {
         "id": 16,
         "title": "GDPR-Compliance Features implementieren",
-        "description": "Implementierung aller GDPR-relevanten Funktionen für rechtskonforme Datenverarbeitung",
-        "details": "Umsetzung von GDPR-Anforderungen: Recht auf Datenauskunft (Export aller Kundendaten), Recht auf Löschung (vollständige Datenlöschung mit Audit-Trail), Consent-Management für Datenverarbeitung, Anonymisierung alter Daten, Datenschutzerklärung-Integration, Cookie-Consent (falls Web-Version), Verschlüsselung personenbezogener Daten, Datenverarbeitungsverzeichnis-Export",
-        "testStrategy": "Test aller GDPR-Funktionen mit echten Szenarien, Überprüfung vollständiger Datenlöschung, Test der Datenexport-Funktionalität, Validierung der Verschlüsselung",
+        "description": "Implementierung aller GDPR-relevanten Funktionen für rechtskonforme Datenverarbeitung - API-First Architektur: GDPR-Logik in der API",
+        "details": "Umsetzung von GDPR-Anforderungen mit API-First Architektur - alle Business-Logik läuft in der API: Recht auf Datenauskunft (Export aller Kundendaten über API-Endpoint), Recht auf Löschung (vollständige Datenlöschung mit Audit-Trail über API), Consent-Management für Datenverarbeitung über API, Anonymisierung alter Daten über API-Jobs, Datenschutzerklärung-Integration, Cookie-Consent (falls Web-Version), Verschlüsselung personenbezogener Daten in der API, Datenverarbeitungsverzeichnis-Export über API. Clients implementieren keine GDPR-Logik.",
+        "testStrategy": "Test aller GDPR-Funktionen mit echten Szenarien über API-Endpoints, Überprüfung vollständiger Datenlöschung, Test der Datenexport-Funktionalität über API, Validierung der Verschlüsselung. Bestätigung dass alle GDPR-Logik in der API liegt.",
         "status": "pending",
         "dependencies": [
           2,
@@ -465,14 +718,68 @@
           7
         ],
         "priority": "high",
-        "subtasks": []
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Datenschutz-Schema und Verschlüsselung in API implementieren",
+            "description": "Erweitere das Drizzle-Schema um GDPR-spezifische Tabellen und implementiere Verschlüsselung für personenbezogene Daten in der API",
+            "dependencies": [],
+            "details": "Erstelle consent_records, data_processing_logs, deletion_requests Tabellen in schema.ts. Implementiere AES-256 Verschlüsselung für PII-Felder in der API. Füge encrypted_data Spalten zu relevanten Tabellen hinzu. Erstelle Verschlüsselungs-/Entschlüsselungsfunktionen in src/lib/encryption.ts mit Key-Management über Umgebungsvariablen.",
+            "status": "pending",
+            "testStrategy": "Unit-Tests für Verschlüsselungsfunktionen, Integrationstests für verschlüsselte Datenspeicherung und -abruf über API-Endpoints"
+          },
+          {
+            "id": 2,
+            "title": "Consent-Management API-Endpoints entwickeln",
+            "description": "Implementiere API-Endpoints für Einverständnisverwaltung und Datenverarbeitungszwecke",
+            "dependencies": [
+              "16.1"
+            ],
+            "details": "Erstelle REST-Endpoints in src/rest/routers/gdpr.ts: POST /consent (Einverständnis erfassen), GET /consent/:userId (aktuelles Einverständnis abrufen), PUT /consent/:userId (Einverständnis aktualisieren), DELETE /consent/:userId (Einverständnis widerrufen). Implementiere tRPC-Procedures für dieselben Funktionen. Füge Middleware für automatische Consent-Validierung hinzu.",
+            "status": "pending",
+            "testStrategy": "API-Tests für alle Consent-Endpoints, Test der Middleware-Validierung, Überprüfung der korrekten Speicherung von Consent-Änderungen"
+          },
+          {
+            "id": 3,
+            "title": "Datenauskunfts-API (Right to Access) implementieren",
+            "description": "Entwickle API-Endpoint für vollständigen Export aller Kundendaten gemäß GDPR Art. 15",
+            "dependencies": [
+              "16.1"
+            ],
+            "details": "Erstelle GET /gdpr/data-export/:userId Endpoint in src/rest/routers/gdpr.ts. Implementiere Datensammlung aus allen Tabellen mit Kundenbezug (customers, services, quotes, consent_records). Generiere strukturierten JSON/XML-Export mit allen personenbezogenen Daten. Entschlüssele verschlüsselte Felder für Export. Füge Rate-Limiting und Authentifizierung hinzu.",
+            "status": "pending",
+            "testStrategy": "Test des vollständigen Datenexports für verschiedene Kundenprofile, Validierung der Vollständigkeit aller personenbezogenen Daten, Performance-Test bei großen Datenmengen"
+          },
+          {
+            "id": 4,
+            "title": "Recht auf Löschung (Right to Erasure) API implementieren",
+            "description": "Implementiere vollständige Datenlöschung mit Audit-Trail über API-Endpoint",
+            "dependencies": [
+              "16.1",
+              "16.2"
+            ],
+            "details": "Erstelle DELETE /gdpr/delete-user/:userId Endpoint in src/rest/routers/gdpr.ts. Implementiere kaskadierte Löschung aller kundenbezogenen Daten aus allen Tabellen. Erstelle Audit-Log vor Löschung in deletion_audit Tabelle. Implementiere Anonymisierung statt Löschung für gesetzlich aufbewahrungspflichtige Daten. Füge Bestätigungsworkflow mit Admin-Genehmigung hinzu.",
+            "status": "pending",
+            "testStrategy": "Test der vollständigen Datenlöschung mit Verifikation leerer Tabellen, Test des Audit-Trails, Validierung der Anonymisierungslogik für aufbewahrungspflichtige Daten"
+          },
+          {
+            "id": 5,
+            "title": "Datenverarbeitungsverzeichnis und Anonymisierungs-Jobs",
+            "description": "Implementiere API-Export für Datenverarbeitungsverzeichnis und automatische Datenanonymisierung",
+            "dependencies": [
+              "16.3",
+              "16.4"
+            ],
+            "details": "Erstelle GET /gdpr/processing-records Endpoint für Export des Verarbeitungsverzeichnisses. Implementiere Cron-Job in src/lib/jobs/anonymization.ts für automatische Anonymisierung alter Daten (>24 Monate). Erstelle POST /gdpr/anonymize-old-data Endpoint für manuelle Auslösung. Implementiere Anonymisierungslogik die PII durch Platzhalter ersetzt aber statistische Auswertungen ermöglicht.",
+            "status": "pending",
+            "testStrategy": "Test des Verarbeitungsverzeichnis-Exports, Validierung der Anonymisierungslogik mit Zeitstempel-basierten Tests, Test der Cron-Job-Ausführung"
+          }
+        ]
       },
       {
         "id": 17,
         "title": "Live-Kundengespräch Features implementieren",
-        "description": "Spezielle Features für spontane Preiskalkulationen während aktiver Kundengespräche",
-        "details": "Implementierung von Features für Live-Kundengespräche: Express-Modus für schnelle Kalkulationen, Interaktive Preisanpassung in Echtzeit, Was-wäre-wenn Szenarien mit sofortiger Neuberechnung, Spontane Rabattgewährung mit Berechtigungsprüfung, Sofort-Angebot per E-Mail während des Gesprächs, Offline-Modus für Vor-Ort-Termine ohne Internet, Touch-optimierte Bedienung für Tablet-Nutzung beim Kunden, Kundensignatur-Erfassung für Angebotsakzeptanz",
-        "testStrategy": "Simulation echter Kundengespräch-Szenarien, Test der Offline-Funktionalität, Performance-Test für sofortige Reaktionszeiten, Usability-Test mit Vertriebsmitarbeitern",
+        "description": "Spezielle Features für spontane Preiskalkulationen während aktiver Kundengespräche mit API-First Architektur - API-First Architektur: Alle Live-Features über API",
         "status": "pending",
         "dependencies": [
           6,
@@ -480,27 +787,141 @@
           11
         ],
         "priority": "high",
-        "subtasks": []
+        "details": "Implementierung von API-First Live-Kundengespräch Features - alle Business-Logik läuft in der API: Express-Modus mit optimierten API-Endpoints für schnelle Kalkulationen, Interaktive Preisanpassung über schnelle API-Requests in Echtzeit, Was-wäre-wenn Szenarien mit sofortiger API-basierter Neuberechnung, Spontane Rabattgewährung mit API-Berechtigungsprüfung, Sofort-Angebot per E-Mail während des Gesprächs über API, Offline-Modus zeigt nur gecachte API-Daten ohne lokale Berechnungen, Touch-optimierte Bedienung für Tablet-Nutzung beim Kunden, Kundensignatur-Erfassung für Angebotsakzeptanz mit API-Upload. Native App ist nur Thin Client für API-Consumption.",
+        "testStrategy": "Simulation echter Kundengespräch-Szenarien mit API-Calls, Test der Offline-Cache-Funktionalität ohne lokale Berechnungen, Performance-Test für schnelle API-Response-Zeiten, Usability-Test mit Vertriebsmitarbeitern unter API-First Bedingungen. Bestätigung dass alle Features über API laufen.",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "API-Endpoints für Express-Modus Kalkulationen implementieren",
+            "description": "Implementierung hochperformanter API-Endpoints für schnelle Live-Kalkulationen während Kundengesprächen mit optimierter Response-Zeit",
+            "dependencies": [],
+            "details": "Erstelle spezielle tRPC-Procedures und REST-Endpoints in apps/api/src/trpc/routers/ für Express-Kalkulationen. Implementiere Caching-Layer für häufig verwendete Service-Kombinationen. Optimiere Datenbankqueries für minimale Latenz. Füge Response-Zeit-Monitoring hinzu. Endpoints: /api/express/calculate, /api/express/quick-quote, /api/express/service-bundles",
+            "status": "pending",
+            "testStrategy": "Performance-Tests mit Ziel <200ms Response-Zeit. Load-Tests mit 100 concurrent requests. Validierung der Caching-Funktionalität"
+          },
+          {
+            "id": 2,
+            "title": "Interaktive Preisanpassung API mit Real-Time Updates",
+            "description": "API-System für sofortige Preisanpassungen und Was-wäre-wenn Szenarien mit Echtzeit-Neuberechnung über WebSocket oder Server-Sent Events",
+            "dependencies": [
+              "17.1"
+            ],
+            "details": "Implementiere WebSocket-Verbindung oder Server-Sent Events in Hono.js für Real-Time Updates. Erstelle API-Endpoints für dynamische Preisanpassungen: Rabattanwendung, Service-Mengen-Änderungen, Preismodell-Wechsel. Implementiere Debouncing für häufige Updates. Füge Validierung für erlaubte Preisänderungen hinzu",
+            "status": "pending",
+            "testStrategy": "Real-Time Update Tests mit WebSocket-Verbindungen. Test der Debouncing-Funktionalität. Validierung simultaner Benutzer-Updates"
+          },
+          {
+            "id": 3,
+            "title": "Spontane Rabattgewährung mit API-Berechtigungssystem",
+            "description": "API-System für sofortige Rabattgewährung mit rollenbasierter Berechtigungsprüfung und Genehmigungsworkflow",
+            "dependencies": [
+              "17.1"
+            ],
+            "details": "Implementiere Rabatt-API mit Berechtigungsprüfung basierend auf Benutzerrollen (Admin, Vertriebsleiter, Vertriebsmitarbeiter). Erstelle Genehmigungsworkflow für Rabatte über definierten Schwellenwerten. Implementiere Mindestmargen-Schutz. API-Endpoints: /api/discounts/apply, /api/discounts/approve, /api/discounts/validate-margin",
+            "status": "pending",
+            "testStrategy": "Test verschiedener Benutzerrollen und Rabatt-Limits. Validierung des Genehmigungsworkflows. Test der Mindestmargen-Berechnung"
+          },
+          {
+            "id": 4,
+            "title": "Sofort-Angebot E-Mail System über API",
+            "description": "API-System für automatische Angebotserstellung und E-Mail-Versand während des Kundengesprächs mit PDF-Generierung",
+            "dependencies": [
+              "17.1",
+              "17.2",
+              "17.3"
+            ],
+            "details": "Implementiere API-Endpoint für Sofort-Angebotserstellung mit PDF-Generierung (z.B. mit Puppeteer oder jsPDF). Integriere Resend E-Mail Service für Versand. Erstelle Angebots-Templates mit Firmen-Branding. Implementiere E-Mail-Tracking und Delivery-Status. API-Endpoints: /api/quotes/generate, /api/quotes/send-email, /api/quotes/track",
+            "status": "pending",
+            "testStrategy": "Test der PDF-Generierung mit verschiedenen Angebots-Szenarien. E-Mail-Delivery Tests. Validierung der Template-Darstellung"
+          },
+          {
+            "id": 5,
+            "title": "Touch-optimiertes UI und Kundensignatur-System",
+            "description": "Native App UI-Optimierung für Tablet-Nutzung beim Kunden mit Signatur-Erfassung und API-Upload-Funktionalität",
+            "dependencies": [
+              "17.4"
+            ],
+            "details": "Implementiere Touch-optimierte React-Komponenten in apps/native/src/ für große Buttons, Swipe-Gesten und Tablet-Layout. Integriere Canvas-basierte Signatur-Erfassung mit Tauri-APIs. Erstelle API-Upload für Signaturen als Base64 oder Blob. Implementiere Offline-Cache für bereits geladene API-Daten ohne lokale Berechnungen. Füge Angebotsakzeptanz-Workflow hinzu",
+            "status": "pending",
+            "testStrategy": "Touch-Usability Tests auf verschiedenen Tablet-Größen. Test der Signatur-Erfassung und Upload-Funktionalität. Validierung des Offline-Cache-Verhaltens"
+          }
+        ]
       },
       {
         "id": 18,
         "title": "Multi-Template PDF-System mit Branding erstellen",
-        "description": "Professionelles PDF-Template-System mit Corporate Branding und digitalen Signaturen",
-        "details": "Aufbau eines flexiblen PDF-Template-Systems: Multiple Templates für verschiedene Kundentypen (Privat, KMU, Enterprise), Corporate Branding Integration (Logo, Farben, Schriften), Template-Editor für Administratoren, Digitale Signatur-Integration, QR-Code für Angebots-Tracking, Wasserzeichen für Entwürfe, Multi-Language Support (DE, EN), Barrierefreie PDFs (PDF/A Standard), Anhänge-Integration (AGBs, Produktblätter)",
-        "testStrategy": "Test aller Templates mit verschiedenen Datenmengen, Validierung der digitalen Signaturen, Barrierefreiheits-Tests, Multi-Language Validierung",
+        "description": "Professionelles PDF-Template-System mit Corporate Branding und digitalen Signaturen - API-First Architektur: PDF-System in der API",
+        "details": "Aufbau eines flexiblen PDF-Template-Systems mit API-First Architektur - alle Business-Logik läuft in der API: Multiple Templates für verschiedene Kundentypen (Privat, KMU, Enterprise), Corporate Branding Integration (Logo, Farben, Schriften), Template-Editor für Administratoren über API, Digitale Signatur-Integration in der API, QR-Code für Angebots-Tracking, Wasserzeichen für Entwürfe, Multi-Language Support (DE, EN), Barrierefreie PDFs (PDF/A Standard), Anhänge-Integration (AGBs, Produktblätter). PDF-Generierung und -Verarbeitung erfolgt vollständig in der API.",
+        "testStrategy": "Test aller Templates mit verschiedenen Datenmengen über API, Validierung der digitalen Signaturen, Barrierefreiheits-Tests, Multi-Language Validierung. Bestätigung dass PDF-Erstellung nur in der API erfolgt.",
         "status": "pending",
         "dependencies": [
           8
         ],
         "priority": "high",
-        "subtasks": []
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "PDF Core Infrastructure und Template Engine Setup",
+            "description": "Einrichtung der grundlegenden PDF-Generierungs-Infrastruktur in der API mit Template-Engine und Basis-Konfiguration",
+            "dependencies": [],
+            "details": "Installation und Konfiguration von PDF-Bibliotheken (puppeteer/playwright für HTML-to-PDF oder jsPDF für direkte PDF-Generierung). Setup der Template Engine (Handlebars/Mustache) für dynamische PDF-Inhalte. Erstellung der Basis-PDF-Service-Klasse mit Methoden für Template-Loading, Rendering und PDF-Generierung. Implementierung der Grundkonfiguration für Seitenformat, Ränder und Basis-Layout. API-Endpoints für PDF-Generierung erstellen (/api/pdf/generate).",
+            "status": "pending",
+            "testStrategy": "Unit-Tests für PDF-Service-Klasse, Integration-Tests für Template-Rendering, Performance-Tests für PDF-Generierung mit verschiedenen Datenmengen"
+          },
+          {
+            "id": 2,
+            "title": "Multi-Template System und Corporate Branding Integration",
+            "description": "Entwicklung des flexiblen Template-Systems mit Corporate Branding für verschiedene Kundentypen (Privat, KMU, Enterprise)",
+            "dependencies": [
+              "18.1"
+            ],
+            "details": "Erstellung von Template-Strukturen für Privat-, KMU- und Enterprise-Kunden mit unterschiedlichen Layouts und Feldern. Integration von Corporate Branding-Elementen: Logo-Upload und -Positionierung, Farbschema-Konfiguration, Custom-Fonts-Integration. Implementierung eines Template-Manager-Service für Template-Auswahl basierend auf Kundensegment. API-Endpoints für Branding-Konfiguration (/api/pdf/branding) und Template-Verwaltung (/api/pdf/templates). Erstellung von Template-Vorschau-Funktionalität.",
+            "status": "pending",
+            "testStrategy": "Validierung aller Template-Typen mit Testdaten, Branding-Konsistenz-Tests, Template-Switching-Tests basierend auf Kundensegment"
+          },
+          {
+            "id": 3,
+            "title": "Template-Editor API und Administratoren-Interface",
+            "description": "Entwicklung einer API-basierten Template-Editor-Funktionalität für Administratoren zur dynamischen Template-Anpassung",
+            "dependencies": [
+              "18.2"
+            ],
+            "details": "Implementierung von Template-Editor-API-Endpoints (/api/pdf/editor) für CRUD-Operationen an Templates. Entwicklung einer Template-Struktur-Definition (JSON-Schema) für Felder, Layout und Styling. Erstellung von Template-Validierung und -Vorschau-Services. Implementierung von Template-Versionierung für Rollback-Funktionalität. API-Endpoints für Template-Import/Export und Duplikation. Integration von Echtzeit-Vorschau über WebSocket oder Polling.",
+            "status": "pending",
+            "testStrategy": "CRUD-Tests für Template-Operationen, Validierungs-Tests für Template-Struktur, Versionierungs-Tests, Performance-Tests für Template-Rendering"
+          },
+          {
+            "id": 4,
+            "title": "Digitale Signaturen und QR-Code Integration",
+            "description": "Implementation von digitalen Signaturen, QR-Code-Generierung für Tracking und Wasserzeichen-Funktionalität",
+            "dependencies": [
+              "18.1",
+              "18.2"
+            ],
+            "details": "Integration einer digitalen Signatur-Bibliothek (node-signpdf oder ähnlich) für PDF-Signierung in der API. Implementierung von QR-Code-Generierung für Angebots-Tracking mit eindeutigen IDs. Entwicklung von Wasserzeichen-Funktionalität für Entwürfe (Text/Bild-Overlays). API-Endpoints für Signatur-Anfragen (/api/pdf/sign), QR-Code-Generierung (/api/pdf/qr) und Tracking (/api/pdf/track). Erstellung von Signatur-Zertifikat-Management und -Validierung.",
+            "status": "pending",
+            "testStrategy": "Validierung digitaler Signaturen mit verschiedenen PDF-Viewern, QR-Code-Funktionalitäts-Tests, Wasserzeichen-Positionierungs-Tests"
+          },
+          {
+            "id": 5,
+            "title": "Multi-Language Support und Barrierefreiheit (PDF/A)",
+            "description": "Implementierung von Multi-Language-Support (DE/EN), PDF/A-Standard für Barrierefreiheit und Anhänge-Integration",
+            "dependencies": [
+              "18.2",
+              "18.3"
+            ],
+            "details": "Erstellung eines Internationalisierungs-Systems für Template-Texte mit i18n-Bibliothek. Implementierung von PDF/A-Standard-Compliance für barrierefreie PDFs mit strukturierten Tags. Entwicklung von Anhänge-Integration für AGBs, Produktblätter und weitere Dokumente. API-Endpoints für Sprach-Konfiguration (/api/pdf/i18n) und Anhänge-Management (/api/pdf/attachments). Implementierung von Alt-Text für Bilder und strukturierte Inhalts-Tags für Screen-Reader-Kompatibilität.",
+            "status": "pending",
+            "testStrategy": "Multi-Language-Tests mit verschiedenen Zeichensätzen, PDF/A-Validierung mit Accessibility-Tools, Anhänge-Integration-Tests, Screen-Reader-Kompatibilitäts-Tests"
+          }
+        ]
       },
       {
         "id": 19,
         "title": "Erweiterte Bundle-Rabatt-Engine implementieren",
-        "description": "Komplexe Bundle-Rabatt-Logik mit automatischer Erkennung und Stacking-Regeln",
-        "details": "Implementierung einer erweiterten Rabatt-Engine: Automatische Bundle-Erkennung bei Service-Kombinationen, Mehrstufige Rabatte (z.B. 3 Services = 5%, 5 Services = 10%), Zeitbasierte Rabatte (Aktionsangebote), Kundengruppen-spezifische Rabatte, Rabatt-Stacking-Regeln (welche Rabatte kombinierbar sind), Mindestmargen-Schutz (Rabatte nie unter Kostpreis), Rabatt-Genehmigungsworkflow für große Nachlässe, Rabatt-Historie und Analyse-Dashboard",
-        "testStrategy": "Test komplexer Rabatt-Kombinationen, Validierung der Mindestmargen, Test des Genehmigungsworkflows, Performance-Tests mit vielen Rabatten",
+        "description": "Komplexe Bundle-Rabatt-Logik mit automatischer Erkennung und Stacking-Regeln - API-First Architektur: Rabatt-Engine in der API",
+        "details": "Implementierung einer erweiterten Rabatt-Engine mit API-First Architektur - alle Business-Logik läuft in der API: Automatische Bundle-Erkennung bei Service-Kombinationen, Mehrstufige Rabatte (z.B. 3 Services = 5%, 5 Services = 10%), Zeitbasierte Rabatte (Aktionsangebote), Kundengruppen-spezifische Rabatte, Rabatt-Stacking-Regeln (welche Rabatte kombinierbar sind), Mindestmargen-Schutz (Rabatte nie unter Kostpreis), Rabatt-Genehmigungsworkflow für große Nachlässe, Rabatt-Historie und Analyse-Dashboard. Alle Rabattberechnungen und -validierungen erfolgen in der API.",
+        "testStrategy": "Test komplexer Rabatt-Kombinationen über API, Validierung der Mindestmargen, Test des Genehmigungsworkflows, Performance-Tests mit vielen Rabatten. Bestätigung dass alle Rabattlogik in der API liegt.",
         "status": "pending",
         "dependencies": [
           6
@@ -511,9 +932,9 @@
       {
         "id": 20,
         "title": "Import/Export-System für Massendaten erstellen",
-        "description": "Bulk-Import/Export für Services, Kunden und Preise mit Validierung",
-        "details": "Entwicklung eines Import/Export-Systems: CSV/Excel-Import für Service-Katalog, Kunden-Import aus CRM-Systemen (vCard, CSV), Preis-Updates via Excel-Upload, Validierung und Fehlerbehandlung beim Import, Rollback-Funktionalität bei fehlerhaften Imports, Export-Templates zum Download, Scheduled Exports für regelmäßige Backups, API-Endpunkte für Drittanbieter-Integration",
-        "testStrategy": "Test mit großen Datenmengen (10k+ Einträge), Validierung der Fehlerbehandlung, Test der Rollback-Funktionalität, Performance-Tests",
+        "description": "Bulk-Import/Export für Services, Kunden und Preise mit Validierung - API-First Architektur: Import/Export-Logik in der API",
+        "details": "Entwicklung eines Import/Export-Systems mit API-First Architektur - alle Business-Logik läuft in der API: CSV/Excel-Import für Service-Katalog über API-Endpoints, Kunden-Import aus CRM-Systemen (vCard, CSV) über API, Preis-Updates via Excel-Upload über API, Validierung und Fehlerbehandlung beim Import in der API, Rollback-Funktionalität bei fehlerhaften Imports über API, Export-Templates zum Download über API, Scheduled Exports für regelmäßige Backups über API-Jobs, API-Endpunkte für Drittanbieter-Integration. Alle Datenverarbeitung erfolgt in der API.",
+        "testStrategy": "Test mit großen Datenmengen (10k+ Einträge) über API-Endpoints, Validierung der Fehlerbehandlung, Test der Rollback-Funktionalität, Performance-Tests. Bestätigung dass alle Import/Export-Logik in der API liegt.",
         "status": "pending",
         "dependencies": [
           5,
@@ -521,11 +942,38 @@
         ],
         "priority": "medium",
         "subtasks": []
+      },
+      {
+        "id": 21,
+        "title": "tRPC Client Integration in Native App",
+        "description": "tRPC Client Setup für API-First Architektur - alle Features müssen über API laufen - API-First Architektur: Native App als reiner tRPC-Client",
+        "details": "Integration des tRPC Clients in die Native App für echte API-First Architektur - alle Business-Logik läuft in der API: Setup von @trpc/client und @trpc/react-query, Konfiguration der API-Endpunkte (localhost:3003 für Dev, Produktions-URL), Type-safe API consumption mit automatischer Type-Inferenz, Authentication Header Integration (Bearer Token), Error Handling und Retry-Logic, Request/Response Logging für Debugging. WICHTIG: Keine Business-Logik in der Native App - sie ist nur eine dünne Präsentationsschicht die ausschließlich tRPC-Endpoints konsumiert!",
+        "testStrategy": "Test aller API-Calls von Native App, Validierung dass keine lokale Business-Logik existiert, Type-Safety Tests. Bestätigung dass Native App nur tRPC-Client ist ohne eigene Business-Logik.",
+        "status": "pending",
+        "dependencies": [
+          4
+        ],
+        "priority": "high",
+        "subtasks": []
+      },
+      {
+        "id": 22,
+        "title": "Web-App als zweite Frontend-Plattform vorbereiten",
+        "description": "Architektur-Vorbereitung für zukünftige Web-App die dieselbe API nutzt",
+        "details": "Sicherstellung der API-First Architektur für einfache Web-App-Erstellung: Dokumentation aller API-Endpoints mit OpenAPI/Swagger, CORS-Konfiguration für Web-Clients erweitern, Authentication-Flow für Web (JWT in Cookies + LocalStorage), Shared UI-Komponenten in packages/ui für Web+Native Wiederverwendung, API-Client-Abstraktion die in beiden Plattformen funktioniert, File-Upload-Handling über API für Web, WebSocket-Abstraktion für Plattform-unabhängige Echtzeit-Updates, Progressive Web App (PWA) Vorbereitung",
+        "testStrategy": "Test der API mit einem minimalen Web-Client, CORS-Tests von verschiedenen Domains, Authentication-Flow-Test für Web, Shared Components in Storybook testen",
+        "status": "pending",
+        "dependencies": [
+          4,
+          21
+        ],
+        "priority": "medium",
+        "subtasks": []
       }
     ],
     "metadata": {
       "created": "2025-07-23T13:00:08.684Z",
-      "updated": "2025-07-23T15:27:40.360Z",
+      "updated": "2025-07-23T19:23:39.893Z",
       "description": "Aufgaben für den Master-Kontext"
     }
   }

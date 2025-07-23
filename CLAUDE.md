@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Preiskalkulator is a Turborepo monorepo containing a price calculator application with:
+Durchrechnen is a Turborepo monorepo containing a price calculator application with:
 - **API App**: Hono.js + tRPC backend with PostgreSQL/Drizzle ORM
 - **Native App**: Tauri v2 + React cross-platform application (desktop, iOS, Android)
 

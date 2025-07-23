@@ -12,7 +12,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@preiskalkulator/ui": "workspace:*",
+    "@durchrechnen/ui": "workspace:*",
     "lucide-react": "^0.525.0",
     "next": "^15.4.3",
     "next-themes": "^0.4.6",
@@ -23,7 +23,7 @@
     "@types/node": "^24.1.0",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
-    "@preiskalkulator/tsconfig": "workspace:*",
+    "@durchrechnen/tsconfig": "workspace:*",
     "typescript": "^5.8.3"
   }
 }

@@ -1,99 +1,93 @@
-import { trpcServer } from "@hono/trpc-server";
-import { OpenAPIHono } from "@hono/zod-openapi";
-import { Scalar } from "@scalar/hono-api-reference";
+import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { secureHeaders } from "hono/secure-headers";
-import { routers } from "./rest/routers";
-import type { Context } from "./rest/types";
-import { createTRPCContext } from "./trpc/init";
-import { appRouter } from "./trpc/routers/_app";
+import { auth } from "./lib/auth";
 import { checkHealth } from "./utils/health";
 
-const app = new OpenAPIHono<Context>();
+// Define context type with Better-Auth session
+type Variables = {
+  user: typeof auth.$Infer.Session.user | null;
+  session: typeof auth.$Infer.Session.session | null;
+};
+
+const app = new Hono<{ Variables: Variables }>();
 
 app.use(secureHeaders());
 
+// CORS for Better-Auth routes
 app.use(
-  "/trpc/*",
+  "/api/auth/**",
   cors({
-    origin: process.env.ALLOWED_API_ORIGINS?.split(",") ?? [],
+    origin: process.env.CORS_ORIGINS?.split(",") || [],
+    allowMethods: ["POST", "GET", "OPTIONS"],
+    allowHeaders: ["Content-Type", "Authorization"],
+    exposeHeaders: ["Content-Length"],
+    maxAge: 600,
+    credentials: true,
+  }),
+);
+
+// Better-Auth route handler
+app.on(["POST", "GET"], "/api/auth/**", (c) => {
+  return auth.handler(c.req.raw);
+});
+
+// Global CORS for all other routes
+app.use(
+  "*",
+  cors({
+    origin: process.env.CORS_ORIGINS?.split(",") || [],
     allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
     allowHeaders: [
       "Authorization",
       "Content-Type",
       "accept-language",
-      "x-trpc-source",
-      "x-user-locale",
-      "x-user-timezone",
-      "x-user-country",
     ],
     exposeHeaders: ["Content-Length"],
     maxAge: 86400,
+    credentials: true,
   }),
 );
 
-app.use(
-  "/trpc/*",
-  trpcServer({
-    router: appRouter,
-    createContext: createTRPCContext,
-  }),
-);
+// Better-Auth session middleware
+app.use("*", async (c, next) => {
+  const session = await auth.api.getSession({ headers: c.req.raw.headers });
 
+  if (!session) {
+    c.set("user", null);
+    c.set("session", null);
+    return next();
+  }
+
+  c.set("user", session.user);
+  c.set("session", session.session);
+  return next();
+});
+
+// Health check
 app.get("/health", async (c) => {
   try {
     await checkHealth();
-
     return c.json({ status: "ok" }, 200);
   } catch (error) {
     return c.json({ status: "error" }, 500);
   }
 });
 
-app.doc("/openapi", {
-  openapi: "3.1.0",
-  info: {
-    version: "0.0.1",
-    title: "Midday API",
-    description:
-      "Midday is a platform for Invoicing, Time tracking, File reconciliation, Storage, Financial Overview & your own Assistant.",
-    contact: {
-      name: "Midday Support",
-      email: "engineer@midday.ai",
-      url: "https://midday.ai",
-    },
-    license: {
-      name: "AGPL-3.0 license",
-      url: "https://github.com/midday-ai/midday/blob/main/LICENSE",
-    },
-  },
-  servers: [
-    {
-      url: "https://api.midday.ai",
-      description: "Production API",
-    },
-  ],
-  security: [
-    {
-      token: [],
-    },
-  ],
+// Protected session endpoint
+app.get("/api/session", (c) => {
+  const session = c.get("session");
+  const user = c.get("user");
+  
+  if (!user) {
+    return c.body(null, 401);
+  }
+
+  return c.json({
+    session,
+    user
+  });
 });
-
-// Register security scheme
-app.openAPIRegistry.registerComponent("securitySchemes", "token", {
-  type: "http",
-  scheme: "bearer",
-  description: "Default authentication mechanism",
-  "x-speakeasy-example": "MIDDAY_API_KEY",
-});
-
-app.get(
-  "/",
-  Scalar({ url: "/openapi", pageTitle: "Midday API", theme: "saturn" }),
-);
-
-app.route("/", routers);
 
 export default {
   port: process.env.PORT ? Number.parseInt(process.env.PORT) : 3000,

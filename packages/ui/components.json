@@ -11,10 +11,10 @@
   },
   "iconLibrary": "lucide",
   "aliases": {
-    "components": "@preiskalkulator/ui/components",
-    "utils": "@preiskalkulator/ui/lib/utils",
-    "hooks": "@preiskalkulator/ui/hooks",
-    "lib": "@preiskalkulator/ui/lib",
-    "ui": "@preiskalkulator/ui/components"
+    "components": "@durchrechnen/ui/components",
+    "utils": "@durchrechnen/ui/lib/utils",
+    "hooks": "@durchrechnen/ui/hooks",
+    "lib": "@durchrechnen/ui/lib",
+    "ui": "@durchrechnen/ui/components"
   }
 }

@@ -1,9 +1,9 @@
 {
-  "extends": "@preiskalkulator/tsconfig/react-library.json",
+  "extends": "@durchrechnen/tsconfig/react-library.json",
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@preiskalkulator/ui/*": ["./src/*"]
+      "@durchrechnen/ui/*": ["./src/*"]
     }
   },
   "include": ["."],

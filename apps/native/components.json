@@ -14,7 +14,7 @@
      "components": "@/components",
      "hooks": "@/hooks",
      "lib": "@/lib",
-     "utils": "@preiskalkulator/ui/lib/utils",
-     "ui": "@preiskalkulator/ui/components"
+     "utils": "@durchrechnen/ui/lib/utils",
+     "ui": "@durchrechnen/ui/components"
    }
  } 

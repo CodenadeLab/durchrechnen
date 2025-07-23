@@ -1,10 +1,7 @@
-import type { Database } from "@api/db";
-import type { Session } from "@api/utils/auth";
+import type { db } from "../db";
 
 export type Context = {
   Variables: {
-    db: Database;
-    session: Session;
-    organisationId: string;
+    db: typeof db;
   };
 };

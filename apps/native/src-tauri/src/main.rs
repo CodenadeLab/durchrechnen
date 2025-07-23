@@ -2,5 +2,5 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 fn main() {
-    preiskalkulator_lib::run()
+    durchrechnen_lib::run()
 }
