@@ -2,12 +2,7 @@
 // AUTH SCHEMA MODULE - Better-Auth Google Workspace Integration
 // =============================================================================
 
-import {
-  pgTable,
-  text,
-  timestamp,
-  boolean,
-} from "drizzle-orm/pg-core";
+import { boolean, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -81,14 +76,16 @@ export const verification = pgTable("verification", {
 export const insertUserSchema = createInsertSchema(user, {
   email: z.string().email("Invalid email format"),
   name: z.string().min(2, "Name must be at least 2 characters"),
-  role: z.enum(["admin", "sales_manager", "sales_employee"]).default("sales_employee"),
+  role: z
+    .enum(["admin", "sales_manager", "sales_employee"])
+    .default("sales_employee"),
 });
 
 export const selectUserSchema = createSelectSchema(user);
 
-export const updateUserSchema = insertUserSchema.partial().omit({ 
-  id: true, 
-  createdAt: true 
+export const updateUserSchema = insertUserSchema.partial().omit({
+  id: true,
+  createdAt: true,
 });
 
 // =============================================================================

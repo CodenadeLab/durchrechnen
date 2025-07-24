@@ -1,19 +1,21 @@
-import { defineConfig } from "vite";
+import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
-import path from "path"
-import tailwindcss from "@tailwindcss/vite"
+import path from "path";
+import { defineConfig } from "vite";
+import { TanStackRouterVite } from '@tanstack/router-vite-plugin';
 
 const host = process.env.TAURI_DEV_HOST;
 
 // https://vitejs.dev/config/
 export default defineConfig(async () => ({
-  plugins: [react(), tailwindcss()],
+  plugins: [react(), tailwindcss(), TanStackRouterVite()],
 
   resolve: {
-   alias: {
-     "@": path.resolve(__dirname, "./src"),
-   },
- },
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+      "@durchrechnen/ui": path.resolve(__dirname, "../../packages/ui/src"),
+    },
+  },
 
   // Vite options tailored for Tauri development and only applied in `tauri dev` or `tauri build`
   //

@@ -13,6 +13,7 @@
     "./trpc/routers/_app": "./src/trpc/routers/_app.ts"
   },
   "dependencies": {
+    "@durchrechnen/utils": "workspace:*",
     "@date-fns/utc": "^2.1.0",
     "@hono/trpc-server": "^0.4.0",
     "@hono/zod-openapi": "^1.0.2",
