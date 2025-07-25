@@ -3,12 +3,16 @@
 // =============================================================================
 
 import { OpenAPIHono } from "@hono/zod-openapi";
+import { oauthRouter } from "./oauth";
 import type { Context } from "../types";
 
-// Create minimal router for now
+// Create main REST router
 export const routers = new OpenAPIHono<Context>();
 
-// Health check endpoint (temporary)
+// Mount OAuth routes
+routers.route("/", oauthRouter);
+
+// Health check endpoint
 routers.get("/api/status", (c) => {
   return c.json({ 
     status: "ok", 

@@ -33,18 +33,9 @@ function SignInPage() {
           return;
         }
 
-        // Use Deep Link URLs for Tauri (works in dev and production with proper config)
-        const callbackURL = "durchrechnen://dashboard"
-        const errorCallbackURL = "durchrechnen://sign-in?error=auth_failed"
+        // Direct browser OAuth approach with our custom success page
+        logger.info('Starting OAuth with direct browser approach');
         
-        logger.info('Preparing OAuth request', { 
-          callbackURL, 
-          errorCallbackURL,
-          provider: 'google'
-        });
-
-        // Make direct API call to get Google OAuth URL (like web app does)
-        logger.info('Starting Google OAuth with direct API call');
         
         try {
           const response = await fetch(`${apiUrl}/api/auth/sign-in/social`, {
@@ -55,6 +46,7 @@ function SignInPage() {
             credentials: 'include',
             body: JSON.stringify({
               provider: 'google',
+              callbackURL: `${apiUrl}/oauth/success`,
             }),
           });
 
@@ -79,15 +71,16 @@ function SignInPage() {
             // Open OAuth URL in external browser using opener plugin
             const { openUrl } = await import('@tauri-apps/plugin-opener');
             await openUrl(data.url);
-            logger.info('OAuth URL opened successfully');
+            logger.info('OAuth URL opened successfully - user will see our custom success page');
           } else {
             logger.error('No URL in OAuth response', { data });
           }
         } catch (authError) {
-          logger.error('OAuth API call error', { 
+          logger.error('OAuth approach failed', { 
             error: (authError as Error).message,
             stack: (authError as Error).stack 
           });
+          return;
         }
       } catch (error) {
         logger.error('Error during Google sign-in', { error: (error as Error).message });
