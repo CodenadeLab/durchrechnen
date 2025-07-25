@@ -2,13 +2,10 @@ import { CanvasRevealEffect } from "@durchrechnen/ui/components/canvas-reveal-ef
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "motion/react";
 import { useState } from "react";
-import { requireGuest } from "../lib/auth-guards";
+import { GuestGuard } from "../lib/auth-guards";
 import { logger } from "../lib/logger";
 
 export const Route = createFileRoute("/sign-in")({
-  beforeLoad: async () => {
-    await requireGuest()
-  },
   component: SignInPage,
 });
 
@@ -46,51 +43,60 @@ function SignInPage() {
           provider: 'google'
         });
 
-        const response = await fetch(`${apiUrl}/api/auth/sign-in/social`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            provider: "google",
-            callbackURL,
-            errorCallbackURL,
-          }),
-        });
+        // Make direct API call to get Google OAuth URL (like web app does)
+        logger.info('Starting Google OAuth with direct API call');
+        
+        try {
+          const response = await fetch(`${apiUrl}/api/auth/sign-in/social`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+            body: JSON.stringify({
+              provider: 'google',
+            }),
+          });
 
-        logger.httpRequest(
-          { method: 'POST', url: `${apiUrl}/api/auth/sign-in/social` },
-          { statusCode: response.status },
-        );
+          logger.info('OAuth API response', { 
+            status: response.status, 
+            statusText: response.statusText 
+          });
 
-        if (response.ok) {
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+          }
+
           const data = await response.json();
-          logger.info('OAuth response received', { hasUrl: !!data.url });
-          
+          logger.info('OAuth response received', { 
+            hasUrl: !!data.url, 
+            data: JSON.stringify(data, null, 2) 
+          });
+
           if (data.url) {
             logger.info('Opening OAuth URL in external browser', { url: data.url });
-            // Open OAuth URL in external browser
+            
+            // Open OAuth URL in external browser using opener plugin
             const { openUrl } = await import('@tauri-apps/plugin-opener');
             await openUrl(data.url);
             logger.info('OAuth URL opened successfully');
           } else {
             logger.error('No URL in OAuth response', { data });
           }
-        } else {
-          const errorText = await response.text();
-          logger.httpError(
-            { method: 'POST', url: `${apiUrl}/api/auth/sign-in/social` },
-            new Error(`OAuth request failed: ${errorText}`),
-            response.status
-          );
+        } catch (authError) {
+          logger.error('OAuth API call error', { 
+            error: (authError as Error).message,
+            stack: (authError as Error).stack 
+          });
         }
       } catch (error) {
-        logger.withError(error as Error).error('Error during Google sign-in');
+        logger.error('Error during Google sign-in', { error: (error as Error).message });
       }
     }, 1500);
   };
 
   return (
+    <GuestGuard>
     <div className="flex w-full flex-col min-h-screen bg-black relative">
       <div className="absolute inset-0 z-0">
         {initialCanvasVisible && (
@@ -157,5 +163,6 @@ function SignInPage() {
         </div>
       </div>
     </div>
+    </GuestGuard>
   );
 }

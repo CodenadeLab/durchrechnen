@@ -71,20 +71,37 @@ export async function requireAuth(): Promise<void> {
 export async function requireGuest(): Promise<void> {
   try {
     const apiUrl = import.meta.env.VITE_API_URL
+    console.log('🔒 requireGuest: Checking if user should be redirected', { apiUrl });
+    
     if (!apiUrl) {
+      console.log('🔒 requireGuest: No API URL, allowing access');
       return // Allow access if API URL not configured
     }
 
     const response = await fetch(`${apiUrl}/api/session`, {
       credentials: 'include',
     })
+    
+    console.log('🔒 requireGuest: Session check response', { 
+      ok: response.ok, 
+      status: response.status 
+    });
 
     if (response.ok) {
+      console.log('🔒 requireGuest: User is authenticated, redirecting to dashboard');
       throw redirect({
         to: '/dashboard',
       })
     }
+    
+    console.log('🔒 requireGuest: User not authenticated, allowing access to sign-in');
   } catch (error) {
+    // Check if this is a redirect error by looking for redirect properties
+    if (error && typeof error === 'object' && 'to' in error) {
+      console.log('🔒 requireGuest: Re-throwing redirect', { to: (error as any).to });
+      throw error; // Re-throw redirect errors
+    }
+    console.log('🔒 requireGuest: Session check failed, allowing access', { error: (error as Error).message });
     // Allow access if session check fails
     return
   }

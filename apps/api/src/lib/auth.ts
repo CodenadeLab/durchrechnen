@@ -17,6 +17,9 @@ export const auth = betterAuth({
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      // Force account selection on every login
+      prompt: "select_account",
+      accessType: "offline",
     },
   },
   session: {
@@ -42,6 +45,12 @@ export const auth = betterAuth({
   trustedOrigins: process.env.TRUSTED_ORIGINS?.split(",") || [],
   rateLimit: {
     enabled: true,
+  },
+  // Advanced configuration for dynamic redirects
+  advanced: {
+    crossSubDomainCookies: {
+      enabled: true,
+    },
   },
 });
 

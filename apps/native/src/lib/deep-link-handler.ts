@@ -22,16 +22,17 @@ class DeepLinkManager implements DeepLinkHandler {
 
       // Listen for deep link events while app is running
       this.unlistener = await onOpenUrl((urls) => {
-        logger.info('Deep link received while running', { urls });
+        logger.info('🔗 Deep link received while running', { urls });
         
         for (const url of urls) {
+          logger.info('🔗 Processing individual deep link', { url });
           this.handleDeepLink(url)
         }
       })
       
       logger.info('Deep link handler initialized successfully');
     } catch (error) {
-      logger.withError(error as Error).error('Failed to initialize deep link handler');
+      logger.error('Failed to initialize deep link handler', { error: (error as Error).message });
     }
   }
 
@@ -118,7 +119,7 @@ class DeepLinkManager implements DeepLinkHandler {
           throw new Error(`Session validation failed with status ${sessionResponse.status}`)
         }
       } catch (error) {
-        logger.withError(error as Error).error('OAuth session validation failed');
+        logger.error('OAuth session validation failed', { error: (error as Error).message });
         window.location.href = '/sign-in?error=session_failed'
       }
     } else {

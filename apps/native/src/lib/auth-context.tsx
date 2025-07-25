@@ -53,7 +53,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         logger.authEvent('session_invalid', undefined, { statusCode: response.status });
       }
     } catch (error) {
-      logger.withError(error as Error).error('Session check failed');
+      logger.error('Session check failed', { error: (error as Error).message });
       setUser(null)
     } finally {
       setLoading(false)
@@ -77,7 +77,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         );
       }
     } catch (error) {
-      logger.withError(error as Error).error('Sign out failed');
+      logger.error('Sign out failed', { error: (error as Error).message });
     } finally {
       setUser(null)
       logger.authEvent('sign_out_completed', user?.id);
@@ -92,7 +92,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // Initialize deep links for OAuth callbacks
     logger.info('Initializing Deep Links for OAuth callbacks');
     initializeDeepLinks().catch((error) => {
-      logger.withError(error).error('Failed to initialize Deep Links');
+      logger.error('Failed to initialize Deep Links', { error: (error as Error).message });
     })
     
     // Cleanup on unmount

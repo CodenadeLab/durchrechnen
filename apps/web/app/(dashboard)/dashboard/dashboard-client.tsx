@@ -37,11 +37,19 @@ export function DashboardClient() {
   }, [])
 
   const handleSignOut = async () => {
+    console.log('🚪 Starting sign out process...')
+    
     try {
-      await authClient.signOut()
+      console.log('📤 Calling authClient.signOut()...')
+      const result = await authClient.signOut()
+      console.log('✅ authClient.signOut() completed:', result)
+      
+      console.log('🔄 Redirecting to sign-in...')
       window.location.href = '/sign-in'
     } catch (error) {
-      console.error('Sign out failed:', error)
+      console.error('❌ Sign out failed:', error)
+      console.log('🔄 Force redirecting to sign-in anyway...')
+      window.location.href = '/sign-in'
     }
   }
 
