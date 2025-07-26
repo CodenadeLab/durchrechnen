@@ -6,8 +6,8 @@
   "scripts": {
     "dev:web": "vite",
     "dev": "tauri dev",
-    "dev:ios": "tauri dev ios",
-    "dev:android": "tauri dev android",
+    "dev:ios": "tauri ios dev",
+    "dev:android": "tauri android dev",
     "lint": "biome check .",
     "format": "biome format --write .",
     "typecheck": "tsc --noEmit",
