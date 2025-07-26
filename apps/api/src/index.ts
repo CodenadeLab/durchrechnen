@@ -5,6 +5,7 @@ import { auth } from "./lib/auth";
 import { checkHealth } from "./utils/health";
 import { routers } from "./rest/routers";
 import { appRouter } from "./trpc/routers/_app";
+// Removed tauri-middleware import
 
 // Define context type with Better-Auth session
 type Variables = {
@@ -20,15 +21,17 @@ app.use(secureHeaders());
 app.use(
   "/api/auth/**",
   cors({
-    origin: process.env.CORS_ORIGINS?.split(",") || [],
+    origin: process.env.CORS_ORIGINS?.split(",") || ["http://localhost:1420"],
     allowMethods: ["POST", "GET", "OPTIONS"],
-    allowHeaders: ["Content-Type", "Authorization", "X-Client-Type"],
+    allowHeaders: ["Content-Type", "Authorization", "X-Client-Type", "Platform"],
     exposeHeaders: ["Content-Length"],
     maxAge: 600,
     credentials: true,
   }),
 );
 
+
+// Removed Tauri middleware
 
 // Better-Auth route handler
 app.on(["POST", "GET"], "/api/auth/**", (c) => {
@@ -46,6 +49,7 @@ app.use(
       "Content-Type",
       "accept-language",
       "X-Client-Type",
+      "Platform",
     ],
     exposeHeaders: ["Content-Length"],
     maxAge: 86400,

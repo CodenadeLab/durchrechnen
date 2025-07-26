@@ -1,12 +1,13 @@
-import type { FC } from 'hono/jsx'
+import type { FC } from "hono/jsx";
 
 export const OAuthSuccess: FC = () => {
   return (
-    <html>
+    <html lang="de">
       <head>
         <title>Erfolgreich angemeldet</title>
-        <style dangerouslySetInnerHTML={{
-          __html: `
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
             body { 
               font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
               background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -86,33 +87,58 @@ export const OAuthSuccess: FC = () => {
                 opacity: 1;
               }
             }
-          `
-        }} />
+          `,
+          }}
+        />
       </head>
       <body>
         <div className="container">
           <div className="checkmark"></div>
           <h1>Erfolgreich angemeldet!</h1>
-          <p>Du wurdest erfolgreich in deinem Durchrechnen-Account angemeldet.</p>
-          
+          <p>
+            Du wurdest erfolgreich in deinem Durchrechnen-Account angemeldet.
+          </p>
+
           <a href="durchrechnen://dashboard" className="app-link">
             Zurück zur App
           </a>
-          
+
           <div className="close-info">
             Du kannst dieses Fenster jetzt schließen.
           </div>
         </div>
 
-        <script dangerouslySetInnerHTML={{
-          __html: `
-            // Auto-redirect after 3 seconds
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+            // Get authorization code from URL params and pass it via deep link
+            const urlParams = new URLSearchParams(window.location.search);
+            const code = urlParams.get('code');
+            const state = urlParams.get('state');
+            
+            let deepLink = 'durchrechnen:///api/auth/callback/google';
+            if (code) {
+              deepLink += '?code=' + encodeURIComponent(code);
+              if (state) {
+                deepLink += '&state=' + encodeURIComponent(state);
+              }
+            }
+            
+            console.log('Authorization code found:', !!code);
+            console.log('URL params:', window.location.search);
+            console.log('Triggering deep link:', deepLink);
+            
+            // Try immediate redirect
+            window.location.href = deepLink;
+            
+            // Auto-redirect after 3 seconds as fallback
             setTimeout(() => {
-              window.location.href = 'durchrechnen://dashboard';
+              window.location.href = deepLink;
             }, 3000);
-          `
-        }} />
+          `,
+          }}
+        />
       </body>
     </html>
-  )
-}
+  );
+};

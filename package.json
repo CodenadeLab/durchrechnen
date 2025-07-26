@@ -23,5 +23,8 @@
   "trustedDependencies": [
     "@tailwindcss/oxide",
     "core-js-pure"
-  ]
+  ],
+  "dependencies": {
+    "@daveyplate/better-auth-tauri": "^0.0.24"
+  }
 }

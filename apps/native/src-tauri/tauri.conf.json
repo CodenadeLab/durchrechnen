@@ -36,7 +36,10 @@
     "deep-link": {
       "desktop": {
         "schemes": ["durchrechnen"]
-      }
+      },
+      "mobile": [
+        { "host": "codenade.com", "pathPrefix": ["/durchrechnen"] }
+      ]
     }
   }
 }

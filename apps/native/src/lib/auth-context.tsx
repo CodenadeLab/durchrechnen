@@ -1,5 +1,4 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
-import { initializeDeepLinks, cleanupDeepLinks } from './deep-link-handler'
 import { logger } from './logger'
 
 interface User {
@@ -88,18 +87,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     checkSession()
-    
-    // Initialize deep links for OAuth callbacks
-    logger.info('Initializing Deep Links for OAuth callbacks');
-    initializeDeepLinks().catch((error) => {
-      logger.error('Failed to initialize Deep Links', { error: (error as Error).message });
-    })
-    
-    // Cleanup on unmount
-    return () => {
-      logger.debug('Cleaning up Deep Links');
-      cleanupDeepLinks()
-    }
   }, [])
 
   return (

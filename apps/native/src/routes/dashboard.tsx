@@ -1,16 +1,41 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useAuth } from '../lib/auth-context'
-import { requireAuth } from '../lib/auth-guards'
 
 export const Route = createFileRoute('/dashboard')({
-  beforeLoad: async () => {
-    await requireAuth()
-  },
   component: DashboardPage,
 })
 
 function DashboardPage() {
-  const { user, signOut } = useAuth()
+  const { user, loading, signOut } = useAuth()
+
+  // Show loading while checking auth
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    )
+  }
+
+  // If not authenticated, show sign-in prompt with dark theme
+  if (!user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-black">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold mb-4 text-white">Nicht angemeldet</h1>
+          <p className="mb-4 text-white/80">Du musst dich anmelden, um das Dashboard zu sehen.</p>
+          <a 
+            href="/sign-in" 
+            className="backdrop-blur-[2px] inline-flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 text-white border border-white/10 py-3 px-6 transition-colors"
+          >
+            Anmelden
+          </a>
+        </div>
+      </div>
+    )
+  }
+
+  // User is authenticated, show dashboard
   return (
     <div className="min-h-screen bg-gray-50 p-8">
       <div className="max-w-4xl mx-auto">

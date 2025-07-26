@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as AuthSuccessRouteImport } from './routes/auth-success'
 import { Route as IndexRouteImport } from './routes/index'
 
 const SignInRoute = SignInRouteImport.update({
@@ -23,6 +24,11 @@ const DashboardRoute = DashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthSuccessRoute = AuthSuccessRouteImport.update({
+  id: '/auth-success',
+  path: '/auth-success',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -31,30 +37,34 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth-success': typeof AuthSuccessRoute
   '/dashboard': typeof DashboardRoute
   '/sign-in': typeof SignInRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth-success': typeof AuthSuccessRoute
   '/dashboard': typeof DashboardRoute
   '/sign-in': typeof SignInRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/auth-success': typeof AuthSuccessRoute
   '/dashboard': typeof DashboardRoute
   '/sign-in': typeof SignInRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/dashboard' | '/sign-in'
+  fullPaths: '/' | '/auth-success' | '/dashboard' | '/sign-in'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dashboard' | '/sign-in'
-  id: '__root__' | '/' | '/dashboard' | '/sign-in'
+  to: '/' | '/auth-success' | '/dashboard' | '/sign-in'
+  id: '__root__' | '/' | '/auth-success' | '/dashboard' | '/sign-in'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthSuccessRoute: typeof AuthSuccessRoute
   DashboardRoute: typeof DashboardRoute
   SignInRoute: typeof SignInRoute
 }
@@ -75,6 +85,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth-success': {
+      id: '/auth-success'
+      path: '/auth-success'
+      fullPath: '/auth-success'
+      preLoaderRoute: typeof AuthSuccessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -87,6 +104,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthSuccessRoute: AuthSuccessRoute,
   DashboardRoute: DashboardRoute,
   SignInRoute: SignInRoute,
 }

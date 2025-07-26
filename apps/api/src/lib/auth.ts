@@ -1,9 +1,10 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { db } from "../db";
+import { getApiUrl } from "@durchrechnen/utils";
 
 export const auth = betterAuth({
-  baseURL: process.env.BASE_URL || "http://localhost:3003",
+  baseURL: process.env.BASE_URL || getApiUrl(),
   secret: process.env.AUTH_SECRET!,
   database: drizzleAdapter(db, {
     provider: "pg",
@@ -17,6 +18,8 @@ export const auth = betterAuth({
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      // Standard redirect - funktioniert für Web und Native Development
+      // Native Production verwendet callbackURL im POST Request
       // Force account selection on every login
       prompt: "select_account",
       accessType: "offline",

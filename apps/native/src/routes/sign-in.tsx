@@ -1,9 +1,12 @@
 import { CanvasRevealEffect } from "@durchrechnen/ui/components/canvas-reveal-effect";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { motion } from "motion/react";
-import { useState } from "react";
-import { GuestGuard } from "../lib/auth-guards";
+import { useState, useEffect } from "react";
+import { openUrl } from "@tauri-apps/plugin-opener";
+import { getCurrent, onOpenUrl } from "@tauri-apps/plugin-deep-link";
+import { usePlatform } from "../hooks/use-platform";
 import { logger } from "../lib/logger";
+import { getApiUrl, getOAuthCallbackUrl } from "@durchrechnen/utils";
 
 export const Route = createFileRoute("/sign-in")({
   component: SignInPage,
@@ -12,9 +15,96 @@ export const Route = createFileRoute("/sign-in")({
 function SignInPage() {
   const [initialCanvasVisible, setInitialCanvasVisible] = useState(true);
   const [reverseCanvasVisible, setReverseCanvasVisible] = useState(false);
+  const navigate = useNavigate();
+  const { platform, isDesktop, isMobile } = usePlatform();
+
+  // Debug-Info beim App-Start
+  logger.info('App Debug Info', {
+    protocol: window.location.protocol,
+    href: window.location.href,
+    platform: platform,
+    userAgent: navigator.userAgent
+  });
+
+  // Custom Tauri OAuth Deep Link Handler
+  useEffect(() => {
+
+    const handleDeepLink = async (urls: string[] | null) => {
+      if (!urls?.length) return;
+      const url = urls[0];
+      
+      logger.info('Deep link received', { url });
+      
+      // Check if it's an OAuth callback deep link
+      if (url.startsWith('durchrechnen://oauth-callback')) {
+        logger.info('OAuth callback deep link received', { url });
+        
+        try {
+          // Parse the deep link URL
+          const urlObj = new URL(url);
+          const code = urlObj.searchParams.get('code');
+          const state = urlObj.searchParams.get('state');
+          
+          if (code) {
+            logger.info('Authorization code received, exchanging for session');
+            
+            // Exchange code for session durch direkten Aufruf des Auth Callbacks
+            const response = await fetch(`${getApiUrl()}/api/auth/callback/google`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              credentials: 'include',
+              body: JSON.stringify({
+                code: code,
+                state: state || ''
+              })
+            });
+            
+            if (response.ok) {
+              logger.info('Token exchange successful');
+              
+              // Check if session is available
+              const sessionResponse = await fetch(`${getApiUrl()}/api/session`, {
+                credentials: 'include'
+              });
+              
+              if (sessionResponse.ok) {
+                const session = await sessionResponse.json();
+                logger.info('Session created successfully', { user: session.user?.email });
+                navigate({ to: '/dashboard' });
+              } else {
+                logger.error('No session after OAuth callback');
+                navigate({ to: '/sign-in', search: { error: 'Session not created' } });
+              }
+            } else {
+              logger.error('OAuth callback failed', { status: response.status });
+              navigate({ to: '/sign-in', search: { error: 'OAuth failed' } });
+            }
+          } else {
+            logger.error('No code in deep link');
+            navigate({ to: '/sign-in', search: { error: 'No authorization code' } });
+          }
+        } catch (error) {
+          logger.error('OAuth processing failed', { error });
+          navigate({ to: '/sign-in', search: { error: 'OAuth error' } });
+        }
+      }
+    };
+
+    // Check for initial URL on app start
+    getCurrent().then(handleDeepLink);
+
+    // Listen for new deep links
+    const unlisten = onOpenUrl(handleDeepLink);
+
+    return () => {
+      unlisten.then((f) => f());
+    };
+  }, [navigate]);
 
   const handleGoogleSignIn = async () => {
-    logger.info('Google sign-in initiated');
+    logger.info('Google OAuth initiated');
     
     // Show reverse animation on click
     setReverseCanvasVisible(true);
@@ -22,74 +112,67 @@ function SignInPage() {
       setInitialCanvasVisible(false);
     }, 50);
 
-    // Get Google OAuth URL and open in browser after animation
+    // OAuth flow after animation
     setTimeout(async () => {
       try {
-        const apiUrl = import.meta.env.VITE_API_URL;
-        logger.debug('Using API URL', { apiUrl });
+        logger.info('Starting OAuth flow', { platform, isDesktop, isMobile });
         
-        if (!apiUrl) {
-          logger.error('VITE_API_URL is not configured');
-          return;
-        }
-
-        // Direct browser OAuth approach with our custom success page
-        logger.info('Starting OAuth with direct browser approach');
+        // Development vs Production OAuth Flow (wie im Supabase Beispiel)
+        const isDev = import.meta.env.DEV;
+        const redirectUrl = isDev 
+          ? `${window.location.origin}/auth-success` 
+          : getOAuthCallbackUrl(isMobile ? 'mobile' : 'desktop');
         
+        logger.info('Getting OAuth URL from Better-Auth', { redirectUrl, platform, isDev });
         
         try {
-          const response = await fetch(`${apiUrl}/api/auth/sign-in/social`, {
+          // POST Request an Better-Auth für OAuth URL 
+          const response = await fetch(`${getApiUrl()}/api/auth/sign-in/social`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
-            credentials: 'include',
             body: JSON.stringify({
               provider: 'google',
-              callbackURL: `${apiUrl}/oauth/success`,
+              callbackURL: redirectUrl,
+              disableRedirect: true // Wichtig: verhindert automatische Weiterleitung
             }),
           });
-
-          logger.info('OAuth API response', { 
-            status: response.status, 
-            statusText: response.statusText 
-          });
-
+          
           if (!response.ok) {
-            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            throw new Error(`HTTP error! status: ${response.status}`);
           }
-
+          
           const data = await response.json();
-          logger.info('OAuth response received', { 
-            hasUrl: !!data.url, 
-            data: JSON.stringify(data, null, 2) 
-          });
-
-          if (data.url) {
-            logger.info('Opening OAuth URL in external browser', { url: data.url });
+          
+          if (data?.url) {
+            logger.info('Opening OAuth URL', { url: data.url, isDev });
             
-            // Open OAuth URL in external browser using opener plugin
-            const { openUrl } = await import('@tauri-apps/plugin-opener');
-            await openUrl(data.url);
-            logger.info('OAuth URL opened successfully - user will see our custom success page');
+            if (isDev) {
+              // Development: OAuth im Webview
+              window.location.href = data.url;
+            } else {
+              // Production: OAuth im externen Browser
+              await openUrl(data.url);
+            }
+            
+            logger.info('OAuth URL opened successfully');
           } else {
-            logger.error('No URL in OAuth response', { data });
+            throw new Error('No OAuth URL received from Better-Auth');
           }
-        } catch (authError) {
-          logger.error('OAuth approach failed', { 
-            error: (authError as Error).message,
-            stack: (authError as Error).stack 
-          });
-          return;
+        } catch (error) {
+          logger.error('Failed to get/open OAuth URL', { error: (error as Error).message });
         }
+        
       } catch (error) {
-        logger.error('Error during Google sign-in', { error: (error as Error).message });
+        logger.error('OAuth failed', { 
+          error: (error as Error).message
+        });
       }
     }, 1500);
   };
 
   return (
-    <GuestGuard>
     <div className="flex w-full flex-col min-h-screen bg-black relative">
       <div className="absolute inset-0 z-0">
         {initialCanvasVisible && (
@@ -156,6 +239,5 @@ function SignInPage() {
         </div>
       </div>
     </div>
-    </GuestGuard>
   );
 }

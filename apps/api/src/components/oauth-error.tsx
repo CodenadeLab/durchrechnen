@@ -1,16 +1,19 @@
-import type { FC } from 'hono/jsx'
+import type { FC } from "hono/jsx";
 
 interface OAuthErrorProps {
-  errorMessage?: string
+  errorMessage?: string;
 }
 
-export const OAuthError: FC<OAuthErrorProps> = ({ errorMessage = "Bei der Anmeldung ist ein Fehler aufgetreten." }) => {
+export const OAuthError: FC<OAuthErrorProps> = ({
+  errorMessage = "Bei der Anmeldung ist ein Fehler aufgetreten.",
+}) => {
   return (
-    <html>
+    <html lang="de">
       <head>
         <title>Anmeldung fehlgeschlagen</title>
-        <style dangerouslySetInnerHTML={{
-          __html: `
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
             body { 
               font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
               background: linear-gradient(135deg, #ff6b6b 0%, #c44569 100%);
@@ -90,33 +93,36 @@ export const OAuthError: FC<OAuthErrorProps> = ({ errorMessage = "Bei der Anmeld
                 opacity: 1;
               }
             }
-          `
-        }} />
+          `,
+          }}
+        />
       </head>
       <body>
         <div className="container">
           <div className="error-icon"></div>
           <h1>Anmeldung fehlgeschlagen</h1>
           <p>{errorMessage}</p>
-          
+
           <a href="durchrechnen://sign-in" className="retry-link">
             Erneut versuchen
           </a>
-          
+
           <div className="close-info">
             Du kannst dieses Fenster jetzt schließen.
           </div>
         </div>
 
-        <script dangerouslySetInnerHTML={{
-          __html: `
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
             // Auto-close after 10 seconds
             setTimeout(() => {
               window.close();
             }, 10000);
-          `
-        }} />
+          `,
+          }}
+        />
       </body>
     </html>
-  )
-}
+  );
+};

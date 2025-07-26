@@ -24,7 +24,8 @@
         "noArrayIndexKey": "off"
       },
       "security": {
-        "noBlankTarget": "off"
+        "noBlankTarget": "off",
+        "noDangerouslySetInnerHtml": "off"
       }
     }
   },
