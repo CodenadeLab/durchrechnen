@@ -2,9 +2,9 @@
 // CUSTOMER VALIDATION LIBRARY - E-Mail, Telefon & Business Logic
 // =============================================================================
 
-import { db } from "../db/index";
-import { customers, customerContacts } from "../db/schema";
 import { eq } from "drizzle-orm";
+import { db } from "../db/index";
+import { customerContacts, customers } from "../db/schema";
 
 // =============================================================================
 // EMAIL & PHONE VALIDATION
@@ -13,14 +13,18 @@ import { eq } from "drizzle-orm";
 /**
  * Validates email addresses using RFC 5322 compliant regex
  */
-export function validateEmail(email: string): { isValid: boolean; error?: string } {
+export function validateEmail(email: string): {
+  isValid: boolean;
+  error?: string;
+} {
   if (!email || email.trim().length === 0) {
     return { isValid: false, error: "Email is required" };
   }
 
   // RFC 5322 compliant email regex (simplified but robust)
-  const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-  
+  const emailRegex =
+    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+
   if (!emailRegex.test(email.trim())) {
     return { isValid: false, error: "Invalid email format" };
   }
@@ -34,14 +38,17 @@ export function validateEmail(email: string): { isValid: boolean; error?: string
   if (emailParts.length !== 2) {
     return { isValid: false, error: "Invalid email format" };
   }
-  
+
   const [localPart, domain] = emailParts;
   if (!localPart || !domain) {
     return { isValid: false, error: "Invalid email format" };
   }
-  
+
   if (localPart.length > 64) {
-    return { isValid: false, error: "Email local part too long (max 64 characters)" };
+    return {
+      isValid: false,
+      error: "Email local part too long (max 64 characters)",
+    };
   }
 
   // Check for blocked domains (spam/temporary email providers)
@@ -50,11 +57,14 @@ export function validateEmail(email: string): { isValid: boolean; error?: string
     "10minutemail.com",
     "guerrillamail.com",
     "mailinator.com",
-    "throwaway.email"
+    "throwaway.email",
   ];
 
   if (blockedDomains.includes(domain.toLowerCase())) {
-    return { isValid: false, error: "Temporary email addresses are not allowed" };
+    return {
+      isValid: false,
+      error: "Temporary email addresses are not allowed",
+    };
   }
 
   return { isValid: true };
@@ -63,35 +73,39 @@ export function validateEmail(email: string): { isValid: boolean; error?: string
 /**
  * Validates phone numbers (German and international formats)
  */
-export function validatePhone(phone: string): { isValid: boolean; error?: string; normalizedPhone?: string } {
+export function validatePhone(phone: string): {
+  isValid: boolean;
+  error?: string;
+  normalizedPhone?: string;
+} {
   if (!phone || phone.trim().length === 0) {
     return { isValid: false, error: "Phone number is required" };
   }
 
   // Remove all non-digit characters except + for international prefix
-  const cleanPhone = phone.replace(/[\s\-\(\)\.]/g, "");
-  
+  const cleanPhone = phone.replace(/[\s\-().]/g, "");
+
   // German mobile numbers: +49 1XX XXXXXXXX or 01XX XXXXXXXX
   const germanMobileRegex = /^(\+49|0049|0)1[5-7][0-9]{8,9}$/;
-  
+
   // German landline numbers: +49 XXX XXXXXXX or 0XXX XXXXXXX
   const germanLandlineRegex = /^(\+49|0049|0)[2-9][0-9]{1,4}[0-9]{4,8}$/;
-  
+
   // International format: +XX XXXXXXXXX (simplified)
   const internationalRegex = /^\+[1-9][0-9]{6,14}$/;
 
   if (germanMobileRegex.test(cleanPhone)) {
     // Normalize German mobile number to international format
-    const normalizedPhone = cleanPhone.startsWith("+49") 
-      ? cleanPhone 
+    const normalizedPhone = cleanPhone.startsWith("+49")
+      ? cleanPhone
       : cleanPhone.replace(/^(0049|0)/, "+49");
     return { isValid: true, normalizedPhone };
   }
 
   if (germanLandlineRegex.test(cleanPhone)) {
     // Normalize German landline to international format
-    const normalizedPhone = cleanPhone.startsWith("+49") 
-      ? cleanPhone 
+    const normalizedPhone = cleanPhone.startsWith("+49")
+      ? cleanPhone
       : cleanPhone.replace(/^(0049|0)/, "+49");
     return { isValid: true, normalizedPhone };
   }
@@ -100,9 +114,10 @@ export function validatePhone(phone: string): { isValid: boolean; error?: string
     return { isValid: true, normalizedPhone: cleanPhone };
   }
 
-  return { 
-    isValid: false, 
-    error: "Invalid phone number format. Please use German (+49...) or international (+XX...) format" 
+  return {
+    isValid: false,
+    error:
+      "Invalid phone number format. Please use German (+49...) or international (+XX...) format",
   };
 }
 
@@ -114,7 +129,6 @@ export function validatePhone(phone: string): { isValid: boolean; error?: string
  * Validates customer business logic and constraints
  */
 export class CustomerBusinessValidator {
-  
   /**
    * Validates customer data before creation/update
    */
@@ -156,24 +170,34 @@ export class CustomerBusinessValidator {
     switch (customerData.segment) {
       case "private":
         // Private customers should not have company-specific fields
-        if (customerData.companyName || customerData.taxId || customerData.commercialRegister) {
+        if (
+          customerData.companyName ||
+          customerData.taxId ||
+          customerData.commercialRegister
+        ) {
           errors.push("Private customers cannot have company information");
         }
         break;
 
       case "sme":
         // SME customers should have company name
-        if (!customerData.companyName || customerData.companyName.trim().length < 2) {
+        if (
+          !customerData.companyName ||
+          customerData.companyName.trim().length < 2
+        ) {
           errors.push("SME customers must have a valid company name");
         }
         break;
 
       case "enterprise":
         // Enterprise customers must have complete company information
-        if (!customerData.companyName || customerData.companyName.trim().length < 2) {
+        if (
+          !customerData.companyName ||
+          customerData.companyName.trim().length < 2
+        ) {
           errors.push("Enterprise customers must have a valid company name");
         }
-        
+
         if (!customerData.taxId || customerData.taxId.trim().length < 5) {
           errors.push("Enterprise customers must have a valid tax ID");
         }
@@ -190,7 +214,7 @@ export class CustomerBusinessValidator {
 
     return {
       isValid: errors.length === 0,
-      errors
+      errors,
     };
   }
 
@@ -241,20 +265,23 @@ export class CustomerBusinessValidator {
 
     return {
       isValid: errors.length === 0,
-      errors
+      errors,
     };
   }
 
   /**
    * Validates email uniqueness across customers
    */
-  async validateEmailUniqueness(email: string, excludeCustomerId?: string): Promise<{ isUnique: boolean; error?: string }> {
+  async validateEmailUniqueness(
+    email: string,
+    excludeCustomerId?: string,
+  ): Promise<{ isUnique: boolean; error?: string }> {
     const emailValidation = validateEmail(email);
     if (!emailValidation.isValid) {
       return { isUnique: false, error: emailValidation.error };
     }
 
-    let query = db
+    const query = db
       .select({ id: customers.id })
       .from(customers)
       .where(eq(customers.email, email.toLowerCase()));
@@ -266,7 +293,10 @@ export class CustomerBusinessValidator {
       if (excludeCustomerId && existingCustomer[0]?.id === excludeCustomerId) {
         return { isUnique: true };
       }
-      return { isUnique: false, error: "Email already exists for another customer" };
+      return {
+        isUnique: false,
+        error: "Email already exists for another customer",
+      };
     }
 
     return { isUnique: true };
@@ -298,13 +328,16 @@ export class CustomerBusinessValidator {
       }
     }
 
-    if (address.country && !["Deutschland", "Germany", "DE"].includes(address.country)) {
+    if (
+      address.country &&
+      !["Deutschland", "Germany", "DE"].includes(address.country)
+    ) {
       errors.push("Currently only German addresses are supported");
     }
 
     return {
       isValid: errors.length === 0,
-      errors
+      errors,
     };
   }
 }
@@ -317,20 +350,21 @@ export class CustomerBusinessValidator {
  * Validates customer segment transitions and rules
  */
 export class CustomerSegmentValidator {
-  
   /**
    * Validates if a customer segment transition is allowed
    */
   validateSegmentTransition(
     currentSegment: "private" | "sme" | "enterprise",
-    newSegment: "private" | "sme" | "enterprise"
+    newSegment: "private" | "sme" | "enterprise",
   ): { isValid: boolean; error?: string } {
-    
     // Define allowed transitions
-    const allowedTransitions: Record<"private" | "sme" | "enterprise", ("private" | "sme" | "enterprise")[]> = {
+    const allowedTransitions: Record<
+      "private" | "sme" | "enterprise",
+      ("private" | "sme" | "enterprise")[]
+    > = {
       private: ["sme"], // Private can upgrade to SME
       sme: ["enterprise"], // SME can upgrade to Enterprise
-      enterprise: [] // Enterprise cannot downgrade
+      enterprise: [], // Enterprise cannot downgrade
     };
 
     if (currentSegment === newSegment) {
@@ -341,9 +375,9 @@ export class CustomerSegmentValidator {
       return { isValid: true };
     }
 
-    return { 
-      isValid: false, 
-      error: `Segment transition from ${currentSegment} to ${newSegment} is not allowed. Only upgrades are permitted.` 
+    return {
+      isValid: false,
+      error: `Segment transition from ${currentSegment} to ${newSegment} is not allowed. Only upgrades are permitted.`,
     };
   }
 
@@ -352,7 +386,7 @@ export class CustomerSegmentValidator {
    */
   validateSegmentPricingRules(
     segment: "private" | "sme" | "enterprise",
-    customPricingRules?: Record<string, string | number | boolean>
+    customPricingRules?: Record<string, string | number | boolean>,
   ): { isValid: boolean; errors: string[] } {
     const errors: string[] = [];
 
@@ -363,36 +397,40 @@ export class CustomerSegmentValidator {
     // Validate discount percentages
     if (customPricingRules.discountPercentage) {
       const discount = Number(customPricingRules.discountPercentage);
-      
-      if (isNaN(discount) || discount < 0 || discount > 100) {
+
+      if (Number.isNaN(discount) || discount < 0 || discount > 100) {
         errors.push("Discount percentage must be between 0 and 100");
       }
 
       // Segment-specific discount limits
       const maxDiscounts = { private: 5, sme: 15, enterprise: 25 };
       if (discount > maxDiscounts[segment]) {
-        errors.push(`Maximum discount for ${segment} customers is ${maxDiscounts[segment]}%`);
+        errors.push(
+          `Maximum discount for ${segment} customers is ${maxDiscounts[segment]}%`,
+        );
       }
     }
 
     // Validate fixed discount amounts
     if (customPricingRules.fixedDiscount) {
       const fixedDiscount = Number(customPricingRules.fixedDiscount);
-      
-      if (isNaN(fixedDiscount) || fixedDiscount < 0) {
+
+      if (Number.isNaN(fixedDiscount) || fixedDiscount < 0) {
         errors.push("Fixed discount must be a positive number");
       }
 
       // Segment-specific limits
       const maxFixedDiscounts = { private: 100, sme: 1000, enterprise: 5000 };
       if (fixedDiscount > maxFixedDiscounts[segment]) {
-        errors.push(`Maximum fixed discount for ${segment} customers is €${maxFixedDiscounts[segment]}`);
+        errors.push(
+          `Maximum fixed discount for ${segment} customers is €${maxFixedDiscounts[segment]}`,
+        );
       }
     }
 
     return {
       isValid: errors.length === 0,
-      errors
+      errors,
     };
   }
 }
@@ -429,11 +467,23 @@ export const validateCompleteCustomer = async (customerData: {
   customPricingRules?: Record<string, string | number | boolean>;
 }) => {
   const validators = createCustomerValidators();
-  
-  const [businessValidation, segmentValidation, addressValidation, emailUniqueness] = await Promise.all([
+
+  const [
+    businessValidation,
+    segmentValidation,
+    addressValidation,
+    emailUniqueness,
+  ] = await Promise.all([
     validators.business.validateCustomerData(customerData),
-    validators.segment.validateSegmentPricingRules(customerData.segment, customerData.customPricingRules),
-    Promise.resolve(customerData.address ? validators.business.validateAddress(customerData.address) : { isValid: true, errors: [] }),
+    validators.segment.validateSegmentPricingRules(
+      customerData.segment,
+      customerData.customPricingRules,
+    ),
+    Promise.resolve(
+      customerData.address
+        ? validators.business.validateAddress(customerData.address)
+        : { isValid: true, errors: [] },
+    ),
     validators.business.validateEmailUniqueness(customerData.email),
   ]);
 
@@ -441,7 +491,9 @@ export const validateCompleteCustomer = async (customerData: {
     ...businessValidation.errors,
     ...segmentValidation.errors,
     ...addressValidation.errors,
-    ...(emailUniqueness.isUnique ? [] : [emailUniqueness.error || "Email validation failed"])
+    ...(emailUniqueness.isUnique
+      ? []
+      : [emailUniqueness.error || "Email validation failed"]),
   ];
 
   return {
@@ -452,7 +504,7 @@ export const validateCompleteCustomer = async (customerData: {
       segment: segmentValidation,
       address: addressValidation,
       emailUniqueness,
-    }
+    },
   };
 };
 

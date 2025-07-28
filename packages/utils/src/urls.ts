@@ -54,7 +54,6 @@ export function getWebUrl() {
   return "http://localhost:3000";
 }
 
-
 /**
  * Get the marketing website URL
  */
@@ -88,9 +87,15 @@ export function getWebsiteUrl() {
 export function getGoogleClientId() {
   // Browser environment - Next.js client-side
   if (typeof globalThis !== "undefined" && "window" in globalThis) {
-    return process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '956360384452-esnuj8b12b71numekpns9ba9cpcm1n5f.apps.googleusercontent.com';
+    return (
+      process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ||
+      "956360384452-esnuj8b12b71numekpns9ba9cpcm1n5f.apps.googleusercontent.com"
+    );
   }
 
   // Node.js environment (API server)
-  return process.env.GOOGLE_CLIENT_ID || '956360384452-esnuj8b12b71numekpns9ba9cpcm1n5f.apps.googleusercontent.com';
+  return (
+    process.env.GOOGLE_CLIENT_ID ||
+    "956360384452-esnuj8b12b71numekpns9ba9cpcm1n5f.apps.googleusercontent.com"
+  );
 }

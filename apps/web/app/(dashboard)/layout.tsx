@@ -1,7 +1,7 @@
 export default async function DashboardLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   // Session validation is handled by middleware
 
@@ -12,7 +12,10 @@ export default async function DashboardLayout({
           <div className="flex justify-between items-center py-4">
             <h1 className="text-2xl font-bold text-gray-900">Durchrechnen</h1>
             <nav className="flex space-x-4">
-              <a href="/dashboard" className="text-gray-600 hover:text-gray-900">
+              <a
+                href="/dashboard"
+                className="text-gray-600 hover:text-gray-900"
+              >
                 Dashboard
               </a>
               <a href="/settings" className="text-gray-600 hover:text-gray-900">
@@ -26,5 +29,5 @@ export default async function DashboardLayout({
         {children}
       </main>
     </div>
-  )
+  );
 }

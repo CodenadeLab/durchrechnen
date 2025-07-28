@@ -4,6 +4,9 @@
     "includes": ["**/*.js", "**/*.ts", "**/*.jsx", "**/*.tsx", "**/*.json"],
     "ignoreUnknown": true
   },
+  "vcs": {
+    "useIgnoreFile": true
+  },
   "linter": {
     "enabled": true,
     "rules": {
@@ -22,6 +25,9 @@
       "suspicious": {
         "noExplicitAny": "off",
         "noArrayIndexKey": "off"
+      },
+      "complexity": {
+        "useLiteralKeys": "off"
       },
       "security": {
         "noBlankTarget": "off",

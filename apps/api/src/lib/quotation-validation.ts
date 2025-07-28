@@ -2,9 +2,14 @@
 // QUOTATION VALIDATION LIBRARY - Status-Workflow & Business Logic
 // =============================================================================
 
+import { and, desc, eq } from "drizzle-orm";
 import { db } from "../db/index";
-import { quotations, quotationItems, quotationHistory, customers, services } from "../db/schema";
-import { eq, and, desc } from "drizzle-orm";
+import {
+  customers,
+  quotationHistory,
+  quotations,
+  services,
+} from "../db/schema";
 
 // =============================================================================
 // UNIQUE QUOTE NUMBER GENERATOR
@@ -15,14 +20,13 @@ import { eq, and, desc } from "drizzle-orm";
  * Where YYYY is the current year and XXX is an incrementing number
  */
 export class QuoteNumberGenerator {
-  
   /**
    * Generates a unique quote number
    */
   async generateQuoteNumber(): Promise<string> {
     const currentYear = new Date().getFullYear();
     const yearPrefix = `Q-${currentYear}-`;
-    
+
     // Find the highest quote number for current year
     const latestQuote = await db
       .select({ quoteNumber: quotations.quoteNumber })
@@ -32,12 +36,12 @@ export class QuoteNumberGenerator {
       .limit(1);
 
     let nextNumber = 1;
-    
+
     if (latestQuote.length > 0) {
       // Extract number from quote like "Q-2024-123" -> 123
       const quoteNumber = latestQuote[0]?.quoteNumber;
       if (quoteNumber) {
-        const quoteParts = quoteNumber.split('-');
+        const quoteParts = quoteNumber.split("-");
         const lastNumber = quoteParts[2];
         if (lastNumber) {
           nextNumber = parseInt(lastNumber, 10) + 1;
@@ -46,38 +50,41 @@ export class QuoteNumberGenerator {
     }
 
     // Format with leading zeros (minimum 3 digits)
-    const formattedNumber = nextNumber.toString().padStart(3, '0');
+    const formattedNumber = nextNumber.toString().padStart(3, "0");
     return `${yearPrefix}${formattedNumber}`;
   }
 
   /**
    * Validates quote number format
    */
-  validateQuoteNumberFormat(quoteNumber: string): { isValid: boolean; error?: string } {
+  validateQuoteNumberFormat(quoteNumber: string): {
+    isValid: boolean;
+    error?: string;
+  } {
     // Format: Q-YYYY-XXX where YYYY is year and XXX is 3+ digit number
     const quoteNumberRegex = /^Q-\d{4}-\d{3,}$/;
-    
+
     if (!quoteNumberRegex.test(quoteNumber)) {
-      return { 
-        isValid: false, 
-        error: "Quote number must be in format Q-YYYY-XXX (e.g., Q-2024-001)" 
+      return {
+        isValid: false,
+        error: "Quote number must be in format Q-YYYY-XXX (e.g., Q-2024-001)",
       };
     }
 
     // Validate year is reasonable (not in future, not too old)
-    const quoteParts = quoteNumber.split('-');
+    const quoteParts = quoteNumber.split("-");
     const yearStr = quoteParts[1];
     if (!yearStr) {
       return { isValid: false, error: "Invalid quote number format" };
     }
-    
+
     const year = parseInt(yearStr, 10);
     const currentYear = new Date().getFullYear();
-    
+
     if (year > currentYear || year < currentYear - 10) {
-      return { 
-        isValid: false, 
-        error: "Quote year must be within the last 10 years" 
+      return {
+        isValid: false,
+        error: "Quote year must be within the last 10 years",
       };
     }
 
@@ -87,14 +94,17 @@ export class QuoteNumberGenerator {
   /**
    * Checks if quote number is unique
    */
-  async isQuoteNumberUnique(quoteNumber: string, excludeQuoteId?: string): Promise<boolean> {
-    let query = db
+  async isQuoteNumberUnique(
+    quoteNumber: string,
+    excludeQuoteId?: string,
+  ): Promise<boolean> {
+    const query = db
       .select({ id: quotations.id })
       .from(quotations)
       .where(eq(quotations.quoteNumber, quoteNumber));
 
     const existingQuote = await query.limit(1);
-    
+
     if (existingQuote.length > 0) {
       // If we're updating and it's the same quote, that's ok
       if (excludeQuoteId && existingQuote[0]?.id === excludeQuoteId) {
@@ -115,7 +125,6 @@ export class QuoteNumberGenerator {
  * Manages quotation status transitions and workflow rules
  */
 export class QuotationStatusWorkflow {
-  
   // Define valid status transitions
   private readonly statusTransitions: Record<string, string[]> = {
     draft: ["sent", "cancelled"],
@@ -123,7 +132,7 @@ export class QuotationStatusWorkflow {
     accepted: ["cancelled"], // Can only cancel accepted quotes in special cases
     rejected: [], // Final state
     expired: ["sent"], // Can resend expired quotes
-    cancelled: [] // Final state
+    cancelled: [], // Final state
   };
 
   /**
@@ -131,26 +140,25 @@ export class QuotationStatusWorkflow {
    */
   validateStatusTransition(
     currentStatus: string,
-    newStatus: string
+    newStatus: string,
   ): { isValid: boolean; error?: string } {
-    
     if (currentStatus === newStatus) {
       return { isValid: true }; // No change
     }
 
     const allowedTransitions = this.statusTransitions[currentStatus];
-    
+
     if (!allowedTransitions) {
-      return { 
-        isValid: false, 
-        error: `Invalid current status: ${currentStatus}` 
+      return {
+        isValid: false,
+        error: `Invalid current status: ${currentStatus}`,
       };
     }
 
     if (!allowedTransitions.includes(newStatus)) {
-      return { 
-        isValid: false, 
-        error: `Cannot transition from ${currentStatus} to ${newStatus}. Allowed: ${allowedTransitions.join(', ') || 'None'}` 
+      return {
+        isValid: false,
+        error: `Cannot transition from ${currentStatus} to ${newStatus}. Allowed: ${allowedTransitions.join(", ") || "None"}`,
       };
     }
 
@@ -160,22 +168,25 @@ export class QuotationStatusWorkflow {
   /**
    * Automatically expires quotes that are past their valid_until date
    */
-  async expireOverdueQuotes(): Promise<{ expiredCount: number; expiredQuotes: string[] }> {
+  async expireOverdueQuotes(): Promise<{
+    expiredCount: number;
+    expiredQuotes: string[];
+  }> {
     const now = new Date();
-    
+
     // Find quotes that should be expired
     const overdueQuotes = await db
-      .select({ 
-        id: quotations.id, 
+      .select({
+        id: quotations.id,
         quoteNumber: quotations.quoteNumber,
-        validUntil: quotations.validUntil 
+        validUntil: quotations.validUntil,
       })
       .from(quotations)
       .where(
         and(
           eq(quotations.status, "sent"),
           // validUntil < now (quote is overdue)
-        )
+        ),
       );
 
     const expiredQuoteNumbers: string[] = [];
@@ -185,9 +196,9 @@ export class QuotationStatusWorkflow {
       if (quote.validUntil < now) {
         await db
           .update(quotations)
-          .set({ 
+          .set({
             status: "expired",
-            updatedAt: now
+            updatedAt: now,
           })
           .where(eq(quotations.id, quote.id));
 
@@ -197,7 +208,7 @@ export class QuotationStatusWorkflow {
           "sent",
           "expired",
           "system",
-          "Automatically expired due to overdue date"
+          "Automatically expired due to overdue date",
         );
 
         expiredQuoteNumbers.push(quote.quoteNumber);
@@ -206,7 +217,7 @@ export class QuotationStatusWorkflow {
 
     return {
       expiredCount: expiredQuoteNumbers.length,
-      expiredQuotes: expiredQuoteNumbers
+      expiredQuotes: expiredQuoteNumbers,
     };
   }
 
@@ -218,12 +229,13 @@ export class QuotationStatusWorkflow {
     oldStatus: string,
     newStatus: string,
     performedBy: string,
-    description?: string
+    description?: string,
   ): Promise<void> {
     await db.insert(quotationHistory).values({
       quotationId,
       action: "updated",
-      description: description || `Status changed from ${oldStatus} to ${newStatus}`,
+      description:
+        description || `Status changed from ${oldStatus} to ${newStatus}`,
       oldValues: { status: oldStatus },
       newValues: { status: newStatus },
       performedBy,
@@ -234,42 +246,45 @@ export class QuotationStatusWorkflow {
   /**
    * Gets the complete status workflow for display
    */
-  getStatusWorkflow(): Record<string, { 
-    allowedTransitions: string[]; 
-    description: string; 
-    isFinal: boolean 
-  }> {
+  getStatusWorkflow(): Record<
+    string,
+    {
+      allowedTransitions: string[];
+      description: string;
+      isFinal: boolean;
+    }
+  > {
     return {
       draft: {
         allowedTransitions: this.statusTransitions.draft || [],
         description: "Quote is being prepared and can be edited",
-        isFinal: false
+        isFinal: false,
       },
       sent: {
         allowedTransitions: this.statusTransitions.sent || [],
         description: "Quote has been sent to customer and awaits response",
-        isFinal: false
+        isFinal: false,
       },
       accepted: {
         allowedTransitions: this.statusTransitions.accepted || [],
         description: "Customer has accepted the quote",
-        isFinal: false
+        isFinal: false,
       },
       rejected: {
         allowedTransitions: this.statusTransitions.rejected || [],
         description: "Customer has rejected the quote",
-        isFinal: true
+        isFinal: true,
       },
       expired: {
         allowedTransitions: this.statusTransitions.expired || [],
         description: "Quote validity period has expired",
-        isFinal: false
+        isFinal: false,
       },
       cancelled: {
         allowedTransitions: this.statusTransitions.cancelled || [],
         description: "Quote has been cancelled",
-        isFinal: true
-      }
+        isFinal: true,
+      },
     };
   }
 }
@@ -282,7 +297,6 @@ export class QuotationStatusWorkflow {
  * Validates quotation business logic and constraints
  */
 export class QuotationBusinessValidator {
-  
   /**
    * Validates quotation data before creation/update
    */
@@ -331,50 +345,59 @@ export class QuotationBusinessValidator {
     const tax = parseFloat(quotationData.taxAmount);
     const total = parseFloat(quotationData.totalAmount);
 
-    if (isNaN(subtotal) || subtotal < 0) {
+    if (Number.isNaN(subtotal) || subtotal < 0) {
       errors.push("Subtotal amount must be a valid positive number");
     }
 
-    if (isNaN(discount) || discount < 0) {
+    if (Number.isNaN(discount) || discount < 0) {
       errors.push("Discount amount must be a valid positive number");
     }
 
-    if (isNaN(tax) || tax < 0) {
+    if (Number.isNaN(tax) || tax < 0) {
       errors.push("Tax amount must be a valid positive number");
     }
 
-    if (isNaN(total) || total < 0) {
+    if (Number.isNaN(total) || total < 0) {
       errors.push("Total amount must be a valid positive number");
     }
 
     // Validate calculation logic
-    if (!isNaN(subtotal) && !isNaN(discount) && !isNaN(tax) && !isNaN(total)) {
+    if (
+      !Number.isNaN(subtotal) &&
+      !Number.isNaN(discount) &&
+      !Number.isNaN(tax) &&
+      !Number.isNaN(total)
+    ) {
       const expectedTotal = subtotal - discount + tax;
       const tolerance = 0.01; // 1 cent tolerance for rounding
-      
+
       if (Math.abs(total - expectedTotal) > tolerance) {
-        errors.push(`Total amount (${total}) doesn't match calculation (${expectedTotal.toFixed(2)})`);
+        errors.push(
+          `Total amount (${total}) doesn't match calculation (${expectedTotal.toFixed(2)})`,
+        );
       }
     }
 
     return {
       isValid: errors.length === 0,
-      errors
+      errors,
     };
   }
 
   /**
    * Validates quotation items
    */
-  async validateQuotationItems(items: Array<{
-    serviceId: string;
-    quantity: number;
-    unitPrice: string;
-    totalPrice: string;
-    discountPercentage?: string;
-    discountAmount?: string;
-    finalPrice: string;
-  }>): Promise<{ isValid: boolean; errors: string[] }> {
+  async validateQuotationItems(
+    items: Array<{
+      serviceId: string;
+      quantity: number;
+      unitPrice: string;
+      totalPrice: string;
+      discountPercentage?: string;
+      discountAmount?: string;
+      finalPrice: string;
+    }>,
+  ): Promise<{ isValid: boolean; errors: string[] }> {
     const errors: string[] = [];
 
     if (items.length === 0) {
@@ -385,7 +408,7 @@ export class QuotationBusinessValidator {
     for (let i = 0; i < items.length; i++) {
       const item = items[i];
       if (!item) continue;
-      
+
       const itemPrefix = `Item ${i + 1}:`;
 
       // Validate service exists
@@ -410,45 +433,61 @@ export class QuotationBusinessValidator {
       const totalPrice = parseFloat(item.totalPrice);
       const finalPrice = parseFloat(item.finalPrice);
 
-      if (isNaN(unitPrice) || unitPrice < 0) {
+      if (Number.isNaN(unitPrice) || unitPrice < 0) {
         errors.push(`${itemPrefix} Unit price must be a valid positive number`);
       }
 
-      if (isNaN(totalPrice) || totalPrice < 0) {
-        errors.push(`${itemPrefix} Total price must be a valid positive number`);
+      if (Number.isNaN(totalPrice) || totalPrice < 0) {
+        errors.push(
+          `${itemPrefix} Total price must be a valid positive number`,
+        );
       }
 
-      if (isNaN(finalPrice) || finalPrice < 0) {
-        errors.push(`${itemPrefix} Final price must be a valid positive number`);
+      if (Number.isNaN(finalPrice) || finalPrice < 0) {
+        errors.push(
+          `${itemPrefix} Final price must be a valid positive number`,
+        );
       }
 
       // Validate calculation
-      if (!isNaN(unitPrice) && !isNaN(totalPrice)) {
+      if (!Number.isNaN(unitPrice) && !Number.isNaN(totalPrice)) {
         const expectedTotal = unitPrice * item.quantity;
         const tolerance = 0.01;
-        
+
         if (Math.abs(totalPrice - expectedTotal) > tolerance) {
-          errors.push(`${itemPrefix} Total price doesn't match unit price × quantity`);
+          errors.push(
+            `${itemPrefix} Total price doesn't match unit price × quantity`,
+          );
         }
       }
 
       // Validate discount calculation
       if (item.discountPercentage || item.discountAmount) {
         if (item.discountPercentage && item.discountAmount) {
-          errors.push(`${itemPrefix} Cannot have both percentage and fixed discount`);
+          errors.push(
+            `${itemPrefix} Cannot have both percentage and fixed discount`,
+          );
         }
 
         if (item.discountPercentage) {
           const discountPct = parseFloat(item.discountPercentage);
-          if (isNaN(discountPct) || discountPct < 0 || discountPct > 100) {
-            errors.push(`${itemPrefix} Discount percentage must be between 0 and 100`);
+          if (
+            Number.isNaN(discountPct) ||
+            discountPct < 0 ||
+            discountPct > 100
+          ) {
+            errors.push(
+              `${itemPrefix} Discount percentage must be between 0 and 100`,
+            );
           }
         }
 
         if (item.discountAmount) {
           const discountAmt = parseFloat(item.discountAmount);
-          if (isNaN(discountAmt) || discountAmt < 0) {
-            errors.push(`${itemPrefix} Discount amount must be a positive number`);
+          if (Number.isNaN(discountAmt) || discountAmt < 0) {
+            errors.push(
+              `${itemPrefix} Discount amount must be a positive number`,
+            );
           }
         }
       }
@@ -456,7 +495,7 @@ export class QuotationBusinessValidator {
 
     return {
       isValid: errors.length === 0,
-      errors
+      errors,
     };
   }
 
@@ -485,7 +524,9 @@ export class QuotationBusinessValidator {
         if (parentVersion !== undefined) {
           const expectedVersion = parentVersion + 1;
           if (quotationData.version !== expectedVersion) {
-            errors.push(`Version should be ${expectedVersion} (parent version + 1)`);
+            errors.push(
+              `Version should be ${expectedVersion} (parent version + 1)`,
+            );
           }
         }
       }
@@ -498,7 +539,7 @@ export class QuotationBusinessValidator {
 
     return {
       isValid: errors.length === 0,
-      errors
+      errors,
     };
   }
 }
@@ -542,12 +583,13 @@ export const validateCompleteQuotation = async (quotationData: {
   }>;
 }) => {
   const validators = createQuotationValidators();
-  
-  const [businessValidation, itemsValidation, versioningValidation] = await Promise.all([
-    validators.business.validateQuotationData(quotationData),
-    validators.business.validateQuotationItems(quotationData.items),
-    validators.business.validateVersioning(quotationData),
-  ]);
+
+  const [businessValidation, itemsValidation, versioningValidation] =
+    await Promise.all([
+      validators.business.validateQuotationData(quotationData),
+      validators.business.validateQuotationItems(quotationData.items),
+      validators.business.validateVersioning(quotationData),
+    ]);
 
   const allErrors = [
     ...businessValidation.errors,
@@ -562,7 +604,7 @@ export const validateCompleteQuotation = async (quotationData: {
       business: businessValidation,
       items: itemsValidation,
       versioning: versioningValidation,
-    }
+    },
   };
 };
 

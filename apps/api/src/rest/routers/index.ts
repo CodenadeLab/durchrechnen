@@ -10,9 +10,9 @@ export const routers = new OpenAPIHono<Context>();
 
 // Health check endpoint
 routers.get("/api/status", (c) => {
-  return c.json({ 
-    status: "ok", 
+  return c.json({
+    status: "ok",
     service: "Durchrechnen API",
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   });
 });

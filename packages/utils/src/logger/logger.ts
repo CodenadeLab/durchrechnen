@@ -82,7 +82,7 @@ export async function createLogger(
   if (transports.length === 0) {
     transports.push(new ConsoleTransport({ logger: console }));
   }
-  
+
   const baseLogger: ILogLayer = new LogLayer({
     errorSerializer: serializeError,
     transport: transports[0]!,

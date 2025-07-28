@@ -5,6 +5,8 @@
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
+    "lint:fix": "turbo run lint:fix",
+    "format": "turbo run format",
     "typecheck": "turbo run typecheck",
     "deploy:api": "fly deploy --remote-only --config apps/api/fly.toml --dockerfile apps/api/Dockerfile"
   },

@@ -3,15 +3,15 @@
 // =============================================================================
 
 import { db } from "./index";
-import { 
-  serviceCategories, 
-  services, 
-  serviceDependencies,
-  customers, 
+import {
   customerContacts,
-  quotations,
+  customers,
+  discountRules,
   quotationItems,
-  discountRules
+  quotations,
+  serviceCategories,
+  serviceDependencies,
+  services,
 } from "./schema";
 
 // =============================================================================
@@ -22,49 +22,56 @@ const seedServiceCategories = [
   {
     name: "Web-Entwicklung & Basis-Websites",
     slug: "web-entwicklung-basis-websites",
-    description: "Grundlegende Webentwicklung, Websites und Online-Präsenzen für Unternehmen",
+    description:
+      "Grundlegende Webentwicklung, Websites und Online-Präsenzen für Unternehmen",
     sortOrder: 1,
   },
   {
     id: "cat-2-ecommerce",
-    name: "E-Commerce & Online-Handel", 
+    name: "E-Commerce & Online-Handel",
     slug: "e-commerce-online-handel",
-    description: "Online-Shops, E-Commerce-Lösungen und digitale Verkaufsplattformen",
+    description:
+      "Online-Shops, E-Commerce-Lösungen und digitale Verkaufsplattformen",
     sortOrder: 2,
   },
   {
     id: "cat-3-hosting",
     name: "Hosting & Technische Infrastruktur",
-    slug: "hosting-technische-infrastruktur", 
-    description: "Server-Hosting, Cloud-Services und technische Infrastrukturlösungen",
+    slug: "hosting-technische-infrastruktur",
+    description:
+      "Server-Hosting, Cloud-Services und technische Infrastrukturlösungen",
     sortOrder: 3,
   },
   {
     id: "cat-4-integration",
     name: "Integration & Automatisierung",
     slug: "integration-automatisierung",
-    description: "API-Integrationen, Workflow-Automatisierung und Systemverbindungen",
+    description:
+      "API-Integrationen, Workflow-Automatisierung und Systemverbindungen",
     sortOrder: 4,
   },
   {
     id: "cat-5-support",
     name: "Wartung, Support & Marketing",
     slug: "wartung-support-marketing",
-    description: "Laufende Betreuung, technischer Support und digitales Marketing",
+    description:
+      "Laufende Betreuung, technischer Support und digitales Marketing",
     sortOrder: 5,
   },
   {
     id: "cat-6-consulting",
     name: "Beratung, Compliance & Zusatzservices",
     slug: "beratung-compliance-zusatzservices",
-    description: "Beratungsleistungen, Compliance-Services und zusätzliche Dienstleistungen",
+    description:
+      "Beratungsleistungen, Compliance-Services und zusätzliche Dienstleistungen",
     sortOrder: 6,
   },
   {
     id: "cat-7-business",
     name: "Unternehmensberatung",
     slug: "unternehmensberatung",
-    description: "Strategische Beratung, Digitalisierung und Geschäftsprozessoptimierung",
+    description:
+      "Strategische Beratung, Digitalisierung und Geschäftsprozessoptimierung",
     sortOrder: 7,
   },
 ];
@@ -94,7 +101,7 @@ const seedServices = [
   {
     id: "svc-landing-page",
     name: "Landing Page",
-    slug: "landing-page", 
+    slug: "landing-page",
     description: "Optimierte Landing Page für Marketing-Kampagnen",
     shortDescription: "Conversion-optimierte Landing Page",
     categoryId: "cat-1-web-dev",
@@ -108,7 +115,8 @@ const seedServices = [
     id: "svc-cms-integration",
     name: "CMS Integration",
     slug: "cms-integration",
-    description: "Content Management System Integration (WordPress, Strapi, etc.)",
+    description:
+      "Content Management System Integration (WordPress, Strapi, etc.)",
     shortDescription: "CMS für einfache Inhaltspflege",
     categoryId: "cat-1-web-dev",
     pricingModel: "project" as const,
@@ -143,7 +151,8 @@ const seedServices = [
     id: "svc-payment-integration",
     name: "Payment Integration",
     slug: "payment-integration",
-    description: "Integration von Zahlungsdienstleistern (Stripe, PayPal, etc.)",
+    description:
+      "Integration von Zahlungsdienstleistern (Stripe, PayPal, etc.)",
     shortDescription: "Sichere Zahlungsabwicklung",
     categoryId: "cat-2-ecommerce",
     pricingModel: "fixed" as const,
@@ -221,7 +230,7 @@ const seedServices = [
     name: "SEO Optimierung",
     slug: "seo-optimization",
     description: "Suchmaschinenoptimierung für bessere Rankings",
-    shortDescription: "Professionelle SEO-Betreuung", 
+    shortDescription: "Professionelle SEO-Betreuung",
     categoryId: "cat-5-support",
     pricingModel: "monthly" as const,
     basePrice: "300.00",
@@ -244,7 +253,7 @@ const seedServiceDependencies = [
     reason: "CMS benötigt eine bestehende Website als Grundlage",
   },
   {
-    id: "dep-shop-website", 
+    id: "dep-shop-website",
     serviceId: "svc-online-shop",
     dependentServiceId: "svc-responsive-website",
     isRequired: true,
@@ -252,7 +261,7 @@ const seedServiceDependencies = [
   },
   {
     id: "dep-maintenance-website",
-    serviceId: "svc-website-maintenance", 
+    serviceId: "svc-website-maintenance",
     dependentServiceId: "svc-responsive-website",
     isRequired: false,
     reason: "Wartung setzt normalerweise eine bestehende Website voraus",
@@ -271,9 +280,9 @@ const seedCustomers = [
     phone: "+49 89 123456789",
     address: {
       street: "Maximilianstraße 15",
-      city: "München", 
+      city: "München",
       postalCode: "80539",
-      country: "Deutschland"
+      country: "Deutschland",
     },
     companyName: "Müller GmbH",
     taxId: "DE123456789",
@@ -292,8 +301,8 @@ const seedCustomers = [
     address: {
       street: "Friedrichstraße 123",
       city: "Berlin",
-      postalCode: "10117", 
-      country: "Deutschland"
+      postalCode: "10117",
+      country: "Deutschland",
     },
     companyName: "StartupTech GmbH",
     segment: "sme" as const,
@@ -302,13 +311,13 @@ const seedCustomers = [
   {
     id: "cust-enterprise-corp",
     name: "Dr. Michael Weber",
-    email: "m.weber@enterprise-corp.de", 
+    email: "m.weber@enterprise-corp.de",
     phone: "+49 40 555777999",
     address: {
       street: "Speicherstadt 45",
       city: "Hamburg",
       postalCode: "20457",
-      country: "Deutschland"
+      country: "Deutschland",
     },
     companyName: "Enterprise Corp AG",
     taxId: "DE987654321",
@@ -318,8 +327,8 @@ const seedCustomers = [
       discountPercentage: 15,
       specialRules: {
         volumeDiscount: true,
-        preferredCustomer: true
-      }
+        preferredCustomer: true,
+      },
     },
     tags: ["enterprise", "volume"],
     isVip: true,
@@ -343,7 +352,7 @@ const seedCustomerContacts = [
     id: "contact-mueller-tech",
     customerId: "cust-mueller-gmbh",
     name: "Lisa Müller",
-    email: "lisa.mueller@mueller-gmbh.de", 
+    email: "lisa.mueller@mueller-gmbh.de",
     phone: "+49 89 123456790",
     role: "technical" as const,
     department: "IT",
@@ -394,7 +403,7 @@ const seedDiscountRules = [
     type: "bundle" as const,
     value: "15.00",
     conditions: {
-      bundleServices: ["svc-responsive-website", "svc-online-shop"]
+      bundleServices: ["svc-responsive-website", "svc-online-shop"],
     },
     priority: 200,
     tags: ["bundle", "website", "shop"],
@@ -423,7 +432,7 @@ const seedQuotations = [
   },
   {
     id: "quote-startup-shop",
-    quoteNumber: "Q-2024-002", 
+    quoteNumber: "Q-2024-002",
     title: "E-Commerce Lösung für StartupTech",
     customerId: "cust-startup-tech",
     validFrom: new Date(),
@@ -458,14 +467,14 @@ const seedQuotationItems = [
   {
     id: "item-startup-website",
     quotationId: "quote-startup-shop",
-    serviceId: "svc-responsive-website", 
+    serviceId: "svc-responsive-website",
     name: "Responsive Website",
     description: "Basis-Website für E-Commerce Integration",
     quantity: 1,
     unitPrice: "2500.00",
     totalPrice: "2500.00",
     finalPrice: "2500.00",
-    complexity: "standard", 
+    complexity: "standard",
     position: 1,
   },
   {
@@ -475,7 +484,7 @@ const seedQuotationItems = [
     name: "Online Shop",
     description: "E-Commerce Shop mit Zahlungsabwicklung",
     quantity: 1,
-    unitPrice: "4500.00", 
+    unitPrice: "4500.00",
     totalPrice: "4500.00",
     finalPrice: "4500.00",
     complexity: "standard",
@@ -489,7 +498,7 @@ const seedQuotationItems = [
 
 export async function seedDatabase() {
   console.log("🌱 Starting comprehensive database seeding...");
-  
+
   try {
     // Clear existing data (for development)
     console.log("🧹 Clearing existing data...");
@@ -501,47 +510,51 @@ export async function seedDatabase() {
     await db.delete(serviceDependencies);
     await db.delete(services);
     await db.delete(serviceCategories);
-    
+
     // Seed Service Categories
     console.log("📂 Seeding service categories...");
     await db.insert(serviceCategories).values(seedServiceCategories);
-    console.log(`✅ Inserted ${seedServiceCategories.length} service categories`);
-    
+    console.log(
+      `✅ Inserted ${seedServiceCategories.length} service categories`,
+    );
+
     // Seed Services
     console.log("🛠️  Seeding services...");
     await db.insert(services).values(seedServices);
     console.log(`✅ Inserted ${seedServices.length} services`);
-    
+
     // Seed Service Dependencies
     console.log("🔗 Seeding service dependencies...");
     await db.insert(serviceDependencies).values(seedServiceDependencies);
-    console.log(`✅ Inserted ${seedServiceDependencies.length} service dependencies`);
-    
+    console.log(
+      `✅ Inserted ${seedServiceDependencies.length} service dependencies`,
+    );
+
     // Seed Customers
     console.log("👥 Seeding customers...");
     await db.insert(customers).values(seedCustomers);
     console.log(`✅ Inserted ${seedCustomers.length} customers`);
-    
-    // Seed Customer Contacts  
+
+    // Seed Customer Contacts
     console.log("📞 Seeding customer contacts...");
     await db.insert(customerContacts).values(seedCustomerContacts);
     console.log(`✅ Inserted ${seedCustomerContacts.length} customer contacts`);
-    
+
     // Seed Discount Rules
     console.log("💰 Seeding discount rules...");
     await db.insert(discountRules).values(seedDiscountRules);
     console.log(`✅ Inserted ${seedDiscountRules.length} discount rules`);
-    
+
     // Seed Quotations
     console.log("📄 Seeding quotations...");
     await db.insert(quotations).values(seedQuotations);
     console.log(`✅ Inserted ${seedQuotations.length} quotations`);
-    
+
     // Seed Quotation Items
     console.log("📋 Seeding quotation items...");
     await db.insert(quotationItems).values(seedQuotationItems);
     console.log(`✅ Inserted ${seedQuotationItems.length} quotation items`);
-    
+
     console.log("🎉 Database seeding completed successfully!");
     console.log("📊 Sample data summary:");
     console.log(`   • ${seedServiceCategories.length} service categories`);
@@ -549,7 +562,6 @@ export async function seedDatabase() {
     console.log(`   • ${seedCustomers.length} customers`);
     console.log(`   • ${seedQuotations.length} quotations`);
     console.log(`   • ${seedDiscountRules.length} discount rules`);
-    
   } catch (error) {
     console.error("❌ Error seeding database:", error);
     throw error;

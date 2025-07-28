@@ -2,16 +2,16 @@
 // SERVICES SCHEMA MODULE - 7 Service Categories with Hierarchical Structure
 // =============================================================================
 
-import { 
-  boolean, 
-  integer, 
-  json, 
-  numeric, 
+import {
+  boolean,
+  integer,
+  json,
+  numeric,
   pgEnum,
-  pgTable, 
-  text, 
+  pgTable,
+  text,
   timestamp,
-  uuid 
+  uuid,
 } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
@@ -23,15 +23,15 @@ import { user } from "./auth";
 
 export const pricingModelEnum = pgEnum("pricing_model", [
   "fixed",
-  "hourly", 
+  "hourly",
   "monthly",
-  "project"
+  "project",
 ]);
 
 export const complexityLevelEnum = pgEnum("complexity_level", [
   "basic",
-  "standard", 
-  "premium"
+  "standard",
+  "premium",
 ]);
 
 // =============================================================================
@@ -39,14 +39,20 @@ export const complexityLevelEnum = pgEnum("complexity_level", [
 // =============================================================================
 
 export const serviceCategories = pgTable("service_categories", {
-  id: uuid("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
+  id: uuid("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
   name: text("name").notNull(),
   slug: text("slug").notNull().unique(),
   description: text("description"),
   sortOrder: integer("sort_order").notNull().default(0),
   isActive: boolean("is_active").notNull().default(true),
-  createdAt: timestamp("created_at").$defaultFn(() => new Date()).notNull(),
-  updatedAt: timestamp("updated_at").$defaultFn(() => new Date()).notNull(),
+  createdAt: timestamp("created_at")
+    .$defaultFn(() => new Date())
+    .notNull(),
+  updatedAt: timestamp("updated_at")
+    .$defaultFn(() => new Date())
+    .notNull(),
 });
 
 // =============================================================================
@@ -54,49 +60,57 @@ export const serviceCategories = pgTable("service_categories", {
 // =============================================================================
 
 export const services = pgTable("services", {
-  id: uuid("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
-  
+  id: uuid("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+
   // Basic Info
   name: text("name").notNull(),
   slug: text("slug").notNull().unique(),
   description: text("description"),
   shortDescription: text("short_description"),
-  
+
   // Category Relation
   categoryId: uuid("category_id")
     .notNull()
     .references(() => serviceCategories.id, { onDelete: "cascade" }),
-    
+
   // Pricing Configuration
   pricingModel: pricingModelEnum("pricing_model").notNull(),
   basePrice: numeric("base_price", { precision: 10, scale: 2 }).notNull(),
-  
+
   // Hourly/Project specific fields
   minHours: integer("min_hours"),
   maxHours: integer("max_hours"),
-  
+
   // Complexity multipliers
-  complexityMultiplier: json("complexity_multiplier").$type<{
-    basic: number;
-    standard: number; 
-    premium: number;
-  }>().default({ basic: 1.0, standard: 1.5, premium: 2.0 }),
-  
+  complexityMultiplier: json("complexity_multiplier")
+    .$type<{
+      basic: number;
+      standard: number;
+      premium: number;
+    }>()
+    .default({ basic: 1.0, standard: 1.5, premium: 2.0 }),
+
   // Service Dependencies (JSON array of service IDs)
   dependencies: json("dependencies").$type<string[]>().default([]),
-  
+
   // Service Configuration
   isActive: boolean("is_active").notNull().default(true),
   isPopular: boolean("is_popular").notNull().default(false),
   sortOrder: integer("sort_order").notNull().default(0),
-  
+
   // Metadata
   tags: json("tags").$type<string[]>().default([]),
   metadata: json("metadata").$type<Record<string, any>>().default({}),
-  
+
   // Audit fields
-  createdAt: timestamp("created_at").$defaultFn(() => new Date()).notNull(),
-  updatedAt: timestamp("updated_at").$defaultFn(() => new Date()).notNull(),
+  createdAt: timestamp("created_at")
+    .$defaultFn(() => new Date())
+    .notNull(),
+  updatedAt: timestamp("updated_at")
+    .$defaultFn(() => new Date())
+    .notNull(),
   createdBy: text("created_by").references(() => user.id),
 });
 
@@ -105,20 +119,24 @@ export const services = pgTable("services", {
 // =============================================================================
 
 export const serviceDependencies = pgTable("service_dependencies", {
-  id: uuid("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
-  
+  id: uuid("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+
   serviceId: uuid("service_id")
     .notNull()
     .references(() => services.id, { onDelete: "cascade" }),
-    
+
   dependentServiceId: uuid("dependent_service_id")
     .notNull()
     .references(() => services.id, { onDelete: "cascade" }),
-    
+
   isRequired: boolean("is_required").notNull().default(true),
   reason: text("reason"), // Why this dependency exists
-  
-  createdAt: timestamp("created_at").$defaultFn(() => new Date()).notNull(),
+
+  createdAt: timestamp("created_at")
+    .$defaultFn(() => new Date())
+    .notNull(),
 });
 
 // =============================================================================
@@ -126,27 +144,33 @@ export const serviceDependencies = pgTable("service_dependencies", {
 // =============================================================================
 
 export const pricingRules = pgTable("pricing_rules", {
-  id: uuid("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
-  
+  id: uuid("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+
   serviceId: uuid("service_id")
     .notNull()
     .references(() => services.id, { onDelete: "cascade" }),
-    
+
   // Rule Configuration
   name: text("name").notNull(),
   description: text("description"),
-  
+
   // Rule Logic (JSON-based rule engine)
   conditions: json("conditions").$type<Record<string, any>>().notNull(),
   actions: json("actions").$type<Record<string, any>>().notNull(),
-  
+
   // Rule Metadata
   priority: integer("priority").notNull().default(0),
   isActive: boolean("is_active").notNull().default(true),
-  
+
   // Audit fields
-  createdAt: timestamp("created_at").$defaultFn(() => new Date()).notNull(),
-  updatedAt: timestamp("updated_at").$defaultFn(() => new Date()).notNull(),
+  createdAt: timestamp("created_at")
+    .$defaultFn(() => new Date())
+    .notNull(),
+  updatedAt: timestamp("updated_at")
+    .$defaultFn(() => new Date())
+    .notNull(),
   createdBy: text("created_by").references(() => user.id),
 });
 
@@ -155,23 +179,35 @@ export const pricingRules = pgTable("pricing_rules", {
 // =============================================================================
 
 // Service Category Schemas
-export const insertServiceCategorySchema = createInsertSchema(serviceCategories, {
-  name: z.string().min(2, "Category name must be at least 2 characters"),
-  slug: z.string().regex(/^[a-z0-9-]+$/, "Slug must be lowercase with hyphens only"),
-  sortOrder: z.number().int().min(0),
-});
+export const insertServiceCategorySchema = createInsertSchema(
+  serviceCategories,
+  {
+    name: z.string().min(2, "Category name must be at least 2 characters"),
+    slug: z
+      .string()
+      .regex(/^[a-z0-9-]+$/, "Slug must be lowercase with hyphens only"),
+    sortOrder: z.number().int().min(0),
+  },
+);
 
-export const selectServiceCategorySchema = createSelectSchema(serviceCategories);
-export const updateServiceCategorySchema = insertServiceCategorySchema.partial().omit({ 
-  id: true, 
-  createdAt: true 
-});
+export const selectServiceCategorySchema =
+  createSelectSchema(serviceCategories);
+export const updateServiceCategorySchema = insertServiceCategorySchema
+  .partial()
+  .omit({
+    id: true,
+    createdAt: true,
+  });
 
 // Service Schemas
 export const insertServiceSchema = createInsertSchema(services, {
   name: z.string().min(2, "Service name must be at least 2 characters"),
-  slug: z.string().regex(/^[a-z0-9-]+$/, "Slug must be lowercase with hyphens only"),
-  basePrice: z.string().regex(/^\d+(\.\d{1,2})?$/, "Price must be valid decimal"),
+  slug: z
+    .string()
+    .regex(/^[a-z0-9-]+$/, "Slug must be lowercase with hyphens only"),
+  basePrice: z
+    .string()
+    .regex(/^\d+(\.\d{1,2})?$/, "Price must be valid decimal"),
   minHours: z.number().int().positive().optional(),
   maxHours: z.number().int().positive().optional(),
   dependencies: z.array(z.string().uuid()).default([]),
@@ -179,22 +215,28 @@ export const insertServiceSchema = createInsertSchema(services, {
 });
 
 export const selectServiceSchema = createSelectSchema(services);
-export const updateServiceSchema = insertServiceSchema.partial().omit({ 
-  id: true, 
-  createdAt: true 
+export const updateServiceSchema = insertServiceSchema.partial().omit({
+  id: true,
+  createdAt: true,
 });
 
 // Service Dependencies Schemas
-export const insertServiceDependencySchema = createInsertSchema(serviceDependencies, {
-  serviceId: z.string().uuid(),
-  dependentServiceId: z.string().uuid(),
-  reason: z.string().optional(),
-});
+export const insertServiceDependencySchema = createInsertSchema(
+  serviceDependencies,
+  {
+    serviceId: z.string().uuid(),
+    dependentServiceId: z.string().uuid(),
+    reason: z.string().optional(),
+  },
+);
 
 // Pricing Rules Schemas
 export const insertPricingRuleSchema = createInsertSchema(pricingRules, {
   name: z.string().min(2, "Rule name must be at least 2 characters"),
-  conditions: z.record(z.string(), z.union([z.string(), z.number(), z.boolean(), z.array(z.string())])),
+  conditions: z.record(
+    z.string(),
+    z.union([z.string(), z.number(), z.boolean(), z.array(z.string())]),
+  ),
   actions: z.record(z.string(), z.union([z.string(), z.number(), z.boolean()])),
   priority: z.number().int().min(0).default(0),
 });
@@ -211,7 +253,7 @@ export type Service = typeof services.$inferSelect;
 export type NewService = typeof services.$inferInsert;
 export type UpdateService = z.infer<typeof updateServiceSchema>;
 
-export type ServiceDependency = typeof serviceDependencies.$inferSelect;  
+export type ServiceDependency = typeof serviceDependencies.$inferSelect;
 export type NewServiceDependency = typeof serviceDependencies.$inferInsert;
 
 export type PricingRule = typeof pricingRules.$inferSelect;

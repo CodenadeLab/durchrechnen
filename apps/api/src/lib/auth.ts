@@ -1,7 +1,7 @@
+import { getApiUrl } from "@durchrechnen/utils";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { db } from "../db";
-import { getApiUrl } from "@durchrechnen/utils";
 
 export const auth = betterAuth({
   baseURL: process.env.BASE_URL || getApiUrl(),
@@ -40,7 +40,7 @@ export const auth = betterAuth({
         },
       },
       isActive: {
-        type: "boolean", 
+        type: "boolean",
         defaultValue: true,
       },
     },

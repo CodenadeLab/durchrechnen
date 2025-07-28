@@ -2,7 +2,7 @@
 // TRPC APP ROUTER - Type-safe API endpoints
 // =============================================================================
 
-import { router, publicProcedure } from "../init";
+import { publicProcedure, router } from "../init";
 
 // Create minimal tRPC router for now
 export const appRouter = router({

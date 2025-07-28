@@ -2,16 +2,16 @@
 // QUOTATIONS SCHEMA MODULE - Quote Management with Versioning & Status
 // =============================================================================
 
-import { 
-  boolean, 
+import {
+  boolean,
   integer,
-  json, 
+  json,
   numeric,
   pgEnum,
-  pgTable, 
-  text, 
+  pgTable,
+  text,
   timestamp,
-  uuid 
+  uuid,
 } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
@@ -24,24 +24,24 @@ import { services } from "./services";
 // =============================================================================
 
 export const quotationStatusEnum = pgEnum("quotation_status", [
-  "draft",      // Entwurf
-  "sent",       // Versendet
-  "accepted",   // Angenommen
-  "rejected",   // Abgelehnt
-  "expired",    // Abgelaufen
-  "cancelled"   // Storniert
+  "draft", // Entwurf
+  "sent", // Versendet
+  "accepted", // Angenommen
+  "rejected", // Abgelehnt
+  "expired", // Abgelaufen
+  "cancelled", // Storniert
 ]);
 
 export const quotationActionEnum = pgEnum("quotation_action", [
   "created",
-  "updated", 
+  "updated",
   "sent",
   "accepted",
   "rejected",
   "expired",
   "cancelled",
   "duplicated",
-  "pdf_generated"
+  "pdf_generated",
 ]);
 
 // =============================================================================
@@ -49,51 +49,67 @@ export const quotationActionEnum = pgEnum("quotation_action", [
 // =============================================================================
 
 export const quotations = pgTable("quotations", {
-  id: uuid("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
-  
+  id: uuid("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+
   // Quote Identification
   quoteNumber: text("quote_number").notNull().unique(), // e.g., "Q-2024-001"
   title: text("title"), // Optional quote title
-  
+
   // Customer Relation
   customerId: uuid("customer_id")
     .notNull()
     .references(() => customers.id, { onDelete: "cascade" }),
-    
+
   // Validity Period
-  validFrom: timestamp("valid_from").$defaultFn(() => new Date()).notNull(),
+  validFrom: timestamp("valid_from")
+    .$defaultFn(() => new Date())
+    .notNull(),
   validUntil: timestamp("valid_until").notNull(), // Must be set
-  
+
   // Status Management
   status: quotationStatusEnum("status").notNull().default("draft"),
-  
+
   // Pricing Information
-  subtotalAmount: numeric("subtotal_amount", { precision: 10, scale: 2 }).notNull().default("0.00"),
-  discountAmount: numeric("discount_amount", { precision: 10, scale: 2 }).notNull().default("0.00"),
-  taxAmount: numeric("tax_amount", { precision: 10, scale: 2 }).notNull().default("0.00"),
-  totalAmount: numeric("total_amount", { precision: 10, scale: 2 }).notNull().default("0.00"),
-  
+  subtotalAmount: numeric("subtotal_amount", { precision: 10, scale: 2 })
+    .notNull()
+    .default("0.00"),
+  discountAmount: numeric("discount_amount", { precision: 10, scale: 2 })
+    .notNull()
+    .default("0.00"),
+  taxAmount: numeric("tax_amount", { precision: 10, scale: 2 })
+    .notNull()
+    .default("0.00"),
+  totalAmount: numeric("total_amount", { precision: 10, scale: 2 })
+    .notNull()
+    .default("0.00"),
+
   // Versioning (for quote revisions)
   version: integer("version").notNull().default(1),
   parentQuoteId: uuid("parent_quote_id"), // For revisions - reference added in schema.ts
-  
+
   // Additional Information
   notes: text("notes"), // Internal notes
   customerNotes: text("customer_notes"), // Notes visible to customer
   termsConditions: text("terms_conditions"), // Specific T&C for this quote
-  
+
   // PDF Configuration
   templateId: text("template_id"), // Which PDF template to use
   pdfGenerated: boolean("pdf_generated").notNull().default(false),
   pdfUrl: text("pdf_url"), // URL to generated PDF
-  
+
   // Metadata
   tags: json("tags").$type<string[]>().default([]),
   metadata: json("metadata").$type<Record<string, any>>().default({}),
-  
+
   // Audit fields
-  createdAt: timestamp("created_at").$defaultFn(() => new Date()).notNull(),
-  updatedAt: timestamp("updated_at").$defaultFn(() => new Date()).notNull(),
+  createdAt: timestamp("created_at")
+    .$defaultFn(() => new Date())
+    .notNull(),
+  updatedAt: timestamp("updated_at")
+    .$defaultFn(() => new Date())
+    .notNull(),
   createdBy: text("created_by").references(() => user.id),
 });
 
@@ -102,42 +118,56 @@ export const quotations = pgTable("quotations", {
 // =============================================================================
 
 export const quotationItems = pgTable("quotation_items", {
-  id: uuid("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
-  
+  id: uuid("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+
   quotationId: uuid("quotation_id")
     .notNull()
     .references(() => quotations.id, { onDelete: "cascade" }),
-    
+
   serviceId: uuid("service_id")
     .notNull()
     .references(() => services.id, { onDelete: "cascade" }),
-    
+
   // Item Details
   name: text("name").notNull(), // Service name at time of quote (for history)
   description: text("description"),
-  
+
   // Quantity & Pricing
   quantity: integer("quantity").notNull().default(1),
   unitPrice: numeric("unit_price", { precision: 10, scale: 2 }).notNull(),
   totalPrice: numeric("total_price", { precision: 10, scale: 2 }).notNull(),
-  
+
   // Discounts
-  discountPercentage: numeric("discount_percentage", { precision: 5, scale: 2 }).default("0.00"),
-  discountAmount: numeric("discount_amount", { precision: 10, scale: 2 }).default("0.00"),
+  discountPercentage: numeric("discount_percentage", {
+    precision: 5,
+    scale: 2,
+  }).default("0.00"),
+  discountAmount: numeric("discount_amount", {
+    precision: 10,
+    scale: 2,
+  }).default("0.00"),
   finalPrice: numeric("final_price", { precision: 10, scale: 2 }).notNull(),
-  
+
   // Item Configuration
   complexity: text("complexity"), // "basic", "standard", "premium"
-  customConfiguration: json("custom_configuration").$type<Record<string, any>>().default({}),
-  
+  customConfiguration: json("custom_configuration")
+    .$type<Record<string, any>>()
+    .default({}),
+
   // Position & Status
   position: integer("position").notNull().default(0), // Order in quote
   isOptional: boolean("is_optional").notNull().default(false),
   notes: text("notes"),
-  
+
   // Audit fields
-  createdAt: timestamp("created_at").$defaultFn(() => new Date()).notNull(),
-  updatedAt: timestamp("updated_at").$defaultFn(() => new Date()).notNull(),
+  createdAt: timestamp("created_at")
+    .$defaultFn(() => new Date())
+    .notNull(),
+  updatedAt: timestamp("updated_at")
+    .$defaultFn(() => new Date())
+    .notNull(),
 });
 
 // =============================================================================
@@ -145,26 +175,30 @@ export const quotationItems = pgTable("quotation_items", {
 // =============================================================================
 
 export const quotationHistory = pgTable("quotation_history", {
-  id: uuid("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
-  
+  id: uuid("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+
   quotationId: uuid("quotation_id")
     .notNull()
     .references(() => quotations.id, { onDelete: "cascade" }),
-    
+
   // Action Information
   action: quotationActionEnum("action").notNull(),
   description: text("description"),
-  
+
   // Change Details
   oldValues: json("old_values").$type<Record<string, any>>(),
   newValues: json("new_values").$type<Record<string, any>>(),
-  
+
   // Context
   ipAddress: text("ip_address"),
   userAgent: text("user_agent"),
-  
+
   // Audit fields
-  performedAt: timestamp("performed_at").$defaultFn(() => new Date()).notNull(),
+  performedAt: timestamp("performed_at")
+    .$defaultFn(() => new Date())
+    .notNull(),
   performedBy: text("performed_by").references(() => user.id),
 });
 
@@ -176,9 +210,15 @@ export const quotationHistory = pgTable("quotation_history", {
 export const insertQuotationSchema = createInsertSchema(quotations, {
   quoteNumber: z.string().min(1, "Quote number is required"),
   customerId: z.string().uuid("Invalid customer ID"),
-  validUntil: z.date().min(new Date(), "Valid until date must be in the future"),
-  subtotalAmount: z.string().regex(/^\d+(\.\d{1,2})?$/, "Invalid amount format"),
-  discountAmount: z.string().regex(/^\d+(\.\d{1,2})?$/, "Invalid amount format"),
+  validUntil: z
+    .date()
+    .min(new Date(), "Valid until date must be in the future"),
+  subtotalAmount: z
+    .string()
+    .regex(/^\d+(\.\d{1,2})?$/, "Invalid amount format"),
+  discountAmount: z
+    .string()
+    .regex(/^\d+(\.\d{1,2})?$/, "Invalid amount format"),
   taxAmount: z.string().regex(/^\d+(\.\d{1,2})?$/, "Invalid amount format"),
   totalAmount: z.string().regex(/^\d+(\.\d{1,2})?$/, "Invalid amount format"),
   version: z.number().int().positive().default(1),
@@ -186,10 +226,10 @@ export const insertQuotationSchema = createInsertSchema(quotations, {
 });
 
 export const selectQuotationSchema = createSelectSchema(quotations);
-export const updateQuotationSchema = insertQuotationSchema.partial().omit({ 
-  id: true, 
+export const updateQuotationSchema = insertQuotationSchema.partial().omit({
+  id: true,
   createdAt: true,
-  quoteNumber: true // Quote number should not be updatable
+  quoteNumber: true, // Quote number should not be updatable
 });
 
 // Quotation Item Schemas
@@ -205,16 +245,21 @@ export const insertQuotationItemSchema = createInsertSchema(quotationItems, {
 });
 
 export const selectQuotationItemSchema = createSelectSchema(quotationItems);
-export const updateQuotationItemSchema = insertQuotationItemSchema.partial().omit({ 
-  id: true, 
-  createdAt: true 
-});
+export const updateQuotationItemSchema = insertQuotationItemSchema
+  .partial()
+  .omit({
+    id: true,
+    createdAt: true,
+  });
 
 // Quotation History Schemas
-export const insertQuotationHistorySchema = createInsertSchema(quotationHistory, {
-  quotationId: z.string().uuid("Invalid quotation ID"),
-  description: z.string().optional(),
-});
+export const insertQuotationHistorySchema = createInsertSchema(
+  quotationHistory,
+  {
+    quotationId: z.string().uuid("Invalid quotation ID"),
+    description: z.string().optional(),
+  },
+);
 
 // =============================================================================
 // TYPE EXPORTS
@@ -235,8 +280,23 @@ export type NewQuotationHistory = typeof quotationHistory.$inferInsert;
 // UTILITY TYPES & CONSTANTS
 // =============================================================================
 
-export type QuotationStatus = "draft" | "sent" | "accepted" | "rejected" | "expired" | "cancelled";
-export type QuotationAction = "created" | "updated" | "sent" | "accepted" | "rejected" | "expired" | "cancelled" | "duplicated" | "pdf_generated";
+export type QuotationStatus =
+  | "draft"
+  | "sent"
+  | "accepted"
+  | "rejected"
+  | "expired"
+  | "cancelled";
+export type QuotationAction =
+  | "created"
+  | "updated"
+  | "sent"
+  | "accepted"
+  | "rejected"
+  | "expired"
+  | "cancelled"
+  | "duplicated"
+  | "pdf_generated";
 
 // Quote Number Generation Helper Type
 export type QuoteNumberFormat = {

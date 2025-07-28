@@ -1,4 +1,4 @@
-import { redactionPlugin } from 'loglayer';
+import { redactionPlugin } from "loglayer";
 
 export function createRedactionPlugin(config: {
   paths: string[];
@@ -6,6 +6,6 @@ export function createRedactionPlugin(config: {
 }) {
   return redactionPlugin({
     paths: config.paths,
-    censor: config.censor || '[REDACTED]',
+    censor: config.censor || "[REDACTED]",
   });
 }

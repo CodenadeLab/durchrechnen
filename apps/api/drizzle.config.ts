@@ -3,7 +3,7 @@ import type { Config } from "drizzle-kit";
 // Determine database URL based on deployment scope
 const getDatabaseUrl = () => {
   const deploymentScope = process.env.DEPLOYMENT_SCOPE || "germany";
-  
+
   switch (deploymentScope) {
     case "europe":
       // Multi-region European deployment
@@ -11,7 +11,6 @@ const getDatabaseUrl = () => {
     case "global":
       // Global deployment (Europe + Americas)
       return process.env.DATABASE_GLOBAL_POOLER!;
-    case "germany":
     default:
       // Single-region Germany deployment (current)
       return process.env.DATABASE_URL!;

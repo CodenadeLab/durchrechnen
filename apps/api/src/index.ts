@@ -2,9 +2,8 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { secureHeaders } from "hono/secure-headers";
 import { auth } from "./lib/auth";
-import { checkHealth } from "./utils/health";
 import { routers } from "./rest/routers";
-import { appRouter } from "./trpc/routers/_app";
+import { checkHealth } from "./utils/health";
 
 // Define context type with Better-Auth session
 type Variables = {
@@ -22,7 +21,12 @@ app.use(
   cors({
     origin: process.env.CORS_ORIGINS?.split(",") || ["http://localhost:3000"],
     allowMethods: ["POST", "GET", "OPTIONS"],
-    allowHeaders: ["Content-Type", "Authorization", "X-Client-Type", "Platform"],
+    allowHeaders: [
+      "Content-Type",
+      "Authorization",
+      "X-Client-Type",
+      "Platform",
+    ],
     exposeHeaders: ["Content-Length"],
     maxAge: 600,
     credentials: true,
@@ -68,7 +72,6 @@ app.use("*", async (c, next) => {
   return next();
 });
 
-
 // Mount REST routers (includes OAuth pages and API endpoints)
 app.route("/", routers);
 
@@ -77,7 +80,7 @@ app.get("/health", async (c) => {
   try {
     await checkHealth();
     return c.json({ status: "ok" }, 200);
-  } catch (error) {
+  } catch (_error) {
     return c.json({ status: "error" }, 500);
   }
 });
@@ -86,14 +89,14 @@ app.get("/health", async (c) => {
 app.get("/api/session", (c) => {
   const session = c.get("session");
   const user = c.get("user");
-  
+
   if (!user) {
     return c.body(null, 401);
   }
 
   return c.json({
     session,
-    user
+    user,
   });
 });
 
