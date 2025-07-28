@@ -15,6 +15,13 @@
       "when": 1753698736398,
       "tag": "0001_low_skaar",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1753727409787,
+      "tag": "0002_superb_stepford_cuckoos",
+      "breakpoints": true
     }
   ]
 }

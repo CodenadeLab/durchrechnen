@@ -1,5 +1,5 @@
 // =============================================================================
-// DATABASE SEED SCRIPT - Complete Sample Data for Development & Testing
+// DATABASE SEED SCRIPT - Based on Detailed Service Documentation
 // =============================================================================
 
 import { db } from "./index";
@@ -15,7 +15,7 @@ import {
 } from "./schema";
 
 // =============================================================================
-// SERVICE CATEGORIES SEED DATA (7 Main Categories)
+// SERVICE CATEGORIES SEED DATA (7 Main Categories from Documentation)
 // =============================================================================
 
 const seedServiceCategories = [
@@ -23,258 +23,385 @@ const seedServiceCategories = [
     name: "Web-Entwicklung & Basis-Websites",
     slug: "web-entwicklung-basis-websites",
     description:
-      "Grundlegende Webentwicklung, Websites und Online-Präsenzen für Unternehmen",
+      "WordPress, HTML, Landing Pages, PWAs, SPAs, React, Next.js - vollständige Web-Lösungen",
     sortOrder: 1,
   },
   {
-    id: "cat-2-ecommerce",
     name: "E-Commerce & Online-Handel",
     slug: "e-commerce-online-handel",
     description:
-      "Online-Shops, E-Commerce-Lösungen und digitale Verkaufsplattformen",
+      "WooCommerce, Shopware, Custom Shops, Payment-Integration, Marktplatz-Anbindungen",
     sortOrder: 2,
   },
   {
-    id: "cat-3-hosting",
     name: "Hosting & Technische Infrastruktur",
     slug: "hosting-technische-infrastruktur",
     description:
-      "Server-Hosting, Cloud-Services und technische Infrastrukturlösungen",
+      "Web-Hosting, Cloud Setup, Server-Management, SSL, Backups und Infrastruktur",
     sortOrder: 3,
   },
   {
-    id: "cat-4-integration",
     name: "Integration & Automatisierung",
     slug: "integration-automatisierung",
     description:
-      "API-Integrationen, Workflow-Automatisierung und Systemverbindungen",
+      "API-Integrationen, Workflow-Automatisierung, Datenbank-Anbindungen, Custom Plugins",
     sortOrder: 4,
   },
   {
-    id: "cat-5-support",
     name: "Wartung, Support & Marketing",
     slug: "wartung-support-marketing",
     description:
-      "Laufende Betreuung, technischer Support und digitales Marketing",
+      "Website-Wartung, SEO, Content-Management, technischer Support und Digital Marketing",
     sortOrder: 5,
   },
   {
-    id: "cat-6-consulting",
     name: "Beratung, Compliance & Zusatzservices",
     slug: "beratung-compliance-zusatzservices",
     description:
-      "Beratungsleistungen, Compliance-Services und zusätzliche Dienstleistungen",
+      "DSGVO, BFSG-Compliance, Beratung, Audits, Zertifizierungen und Rechtskonformität",
     sortOrder: 6,
   },
   {
-    id: "cat-7-business",
     name: "Unternehmensberatung",
     slug: "unternehmensberatung",
     description:
-      "Strategische Beratung, Digitalisierung und Geschäftsprozessoptimierung",
+      "Digitalisierung, Prozessoptimierung, Technologie-Beratung und strategische Planung",
     sortOrder: 7,
   },
 ];
 
 // =============================================================================
-// SERVICES SEED DATA (Sample services per category with realistic pricing)
+// DETAILED SERVICES SEED DATA (From Category Documentation)
 // =============================================================================
 
-const seedServices = [
-  // Web-Entwicklung & Basis-Websites
+const seedServicesDetailed = [
+  // =============================================================================
+  // KATEGORIE 1: WEB-ENTWICKLUNG & BASIS-WEBSITES
+  // =============================================================================
+
+  // WordPress Websites
   {
-    id: "svc-responsive-website",
-    name: "Responsive Website",
-    slug: "responsive-website",
-    description: "Mobile-first responsive Website mit modernem Design",
-    shortDescription: "Responsive Website für alle Geräte",
-    categoryId: "cat-1-web-dev",
-    pricingModel: "project" as const,
-    basePrice: "2500.00",
-    minHours: 40,
-    maxHours: 80,
-    complexityMultiplier: { basic: 1.0, standard: 1.5, premium: 2.2 },
+    name: "WordPress Starter Website",
+    slug: "wordpress-starter-website",
+    description:
+      "5-seitige WordPress Website mit Standard-Theme und Basis-Features",
+    shortDescription: "WordPress Starter (5 Seiten)",
+    categorySlug: "web-entwicklung-basis-websites",
+    pricingModel: "fixed" as const,
+    basePrice: "437.00", // Markt €450 -3% = €437
+    minHours: 8,
+    maxHours: 12,
+    complexityMultiplier: { basic: 1.0, standard: 1.2, premium: 1.5 },
+    tags: ["wordpress", "starter", "basic", "cms"],
     isPopular: true,
-    tags: ["website", "responsive", "mobile"],
     sortOrder: 1,
   },
   {
-    id: "svc-landing-page",
-    name: "Landing Page",
-    slug: "landing-page",
-    description: "Optimierte Landing Page für Marketing-Kampagnen",
-    shortDescription: "Conversion-optimierte Landing Page",
-    categoryId: "cat-1-web-dev",
+    name: "WordPress Professional Website",
+    slug: "wordpress-professional-website",
+    description:
+      "10-seitige WordPress Website mit Custom-Design und erweiterten Features",
+    shortDescription: "WordPress Professional (10 Seiten)",
+    categorySlug: "web-entwicklung-basis-websites",
     pricingModel: "fixed" as const,
-    basePrice: "850.00",
+    basePrice: "1843.00", // Markt €1,900 -3% = €1,843
+    minHours: 24,
+    maxHours: 35,
     complexityMultiplier: { basic: 1.0, standard: 1.3, premium: 1.8 },
-    tags: ["landing", "marketing", "conversion"],
+    tags: ["wordpress", "professional", "custom-design"],
+    isPopular: true,
     sortOrder: 2,
   },
   {
-    id: "svc-cms-integration",
-    name: "CMS Integration",
-    slug: "cms-integration",
+    name: "WordPress Business Website",
+    slug: "wordpress-business-website",
     description:
-      "Content Management System Integration (WordPress, Strapi, etc.)",
-    shortDescription: "CMS für einfache Inhaltspflege",
-    categoryId: "cat-1-web-dev",
-    pricingModel: "project" as const,
-    basePrice: "1200.00",
-    minHours: 15,
-    maxHours: 40,
+      "20-seitige Business WordPress Website mit umfangreichen Features",
+    shortDescription: "WordPress Business (20 Seiten)",
+    categorySlug: "web-entwicklung-basis-websites",
+    pricingModel: "fixed" as const,
+    basePrice: "3298.00", // Markt €3,400 -3% = €3,298
+    minHours: 40,
+    maxHours: 60,
     complexityMultiplier: { basic: 1.0, standard: 1.4, premium: 2.0 },
-    dependencies: ["svc-responsive-website"],
-    tags: ["cms", "wordpress", "content"],
+    tags: ["wordpress", "business", "enterprise"],
     sortOrder: 3,
   },
 
-  // E-Commerce & Online-Handel
+  // Landing Pages
   {
-    id: "svc-online-shop",
-    name: "Online Shop",
-    slug: "online-shop",
-    description: "Vollständiger E-Commerce Shop mit Zahlungsabwicklung",
-    shortDescription: "Kompletter Online-Shop",
-    categoryId: "cat-2-ecommerce",
+    name: "Express Landing Page",
+    slug: "express-landing-page",
+    description:
+      "Schnelle Landing Page für Marketing-Kampagnen mit Conversion-Optimierung",
+    shortDescription: "Express Landing Page (2h Express)",
+    categorySlug: "web-entwicklung-basis-websites",
+    pricingModel: "fixed" as const,
+    basePrice: "242.00", // Markt €249 -3% = €242
+    minHours: 2,
+    maxHours: 4,
+    complexityMultiplier: { basic: 1.0, standard: 1.3, premium: 1.6 },
+    tags: ["landing", "express", "marketing", "conversion"],
+    sortOrder: 4,
+  },
+  {
+    name: "Custom Landing Page",
+    slug: "custom-landing-page",
+    description:
+      "Individuelle Landing Page mit Custom-Design und A/B-Testing Setup",
+    shortDescription: "Custom Landing Page",
+    categorySlug: "web-entwicklung-basis-websites",
+    pricingModel: "fixed" as const,
+    basePrice: "484.00", // Markt €499 -3% = €484
+    minHours: 6,
+    maxHours: 10,
+    complexityMultiplier: { basic: 1.0, standard: 1.4, premium: 1.8 },
+    tags: ["landing", "custom", "ab-testing"],
+    sortOrder: 5,
+  },
+
+  // Progressive Web Apps
+  {
+    name: "PWA Starter",
+    slug: "pwa-starter",
+    description:
+      "Progressive Web App Starter mit Offline-Funktionalität und Push-Notifications",
+    shortDescription: "PWA mit Offline-Support",
+    categorySlug: "web-entwicklung-basis-websites",
     pricingModel: "project" as const,
-    basePrice: "4500.00",
-    minHours: 80,
-    maxHours: 160,
-    complexityMultiplier: { basic: 1.0, standard: 1.6, premium: 2.5 },
-    dependencies: ["svc-responsive-website"],
+    basePrice: "2716.00", // Markt €2,800 -3% = €2,716
+    minHours: 40,
+    maxHours: 60,
+    complexityMultiplier: { basic: 1.0, standard: 1.5, premium: 2.2 },
+    tags: ["pwa", "offline", "mobile", "notifications"],
+    sortOrder: 6,
+  },
+
+  // React Development
+  {
+    name: "React Starter Projekt",
+    slug: "react-starter-projekt",
+    description:
+      "React-basierte Single Page Application mit modernem Tech-Stack",
+    shortDescription: "React SPA Starter",
+    categorySlug: "web-entwicklung-basis-websites",
+    pricingModel: "project" as const,
+    basePrice: "14550.00", // Markt €15,000 -3% = €14,550
+    minHours: 160,
+    maxHours: 220,
+    complexityMultiplier: { basic: 1.0, standard: 1.4, premium: 2.0 },
+    tags: ["react", "spa", "javascript", "frontend"],
     isPopular: true,
-    tags: ["shop", "e-commerce", "payment"],
+    sortOrder: 7,
+  },
+
+  // Next.js Development
+  {
+    name: "Next.js Website",
+    slug: "nextjs-website",
+    description:
+      "Server-Side Rendered Website mit Next.js und optimaler Performance",
+    shortDescription: "Next.js SSR Website",
+    categorySlug: "web-entwicklung-basis-websites",
+    pricingModel: "project" as const,
+    basePrice: "11640.00", // Markt €12,000 -3% = €11,640
+    minHours: 120,
+    maxHours: 180,
+    complexityMultiplier: { basic: 1.0, standard: 1.5, premium: 2.2 },
+    tags: ["nextjs", "ssr", "performance", "react"],
+    sortOrder: 8,
+  },
+
+  // =============================================================================
+  // KATEGORIE 2: E-COMMERCE & ONLINE-HANDEL
+  // =============================================================================
+
+  // WooCommerce Shops
+  {
+    name: "WooCommerce Shop Klein",
+    slug: "woocommerce-shop-klein",
+    description:
+      "WooCommerce Setup für bis zu 50 Produkte mit Standard-Features",
+    shortDescription: "WooCommerce Klein (bis 50 Produkte)",
+    categorySlug: "e-commerce-online-handel",
+    pricingModel: "fixed" as const,
+    basePrice: "970.00", // Markt €1,000 -3% = €970
+    minHours: 16,
+    maxHours: 25,
+    complexityMultiplier: { basic: 1.0, standard: 1.3, premium: 1.8 },
+    tags: ["woocommerce", "shop", "ecommerce", "small"],
+    isPopular: true,
     sortOrder: 1,
   },
   {
-    id: "svc-payment-integration",
-    name: "Payment Integration",
-    slug: "payment-integration",
+    name: "WooCommerce Shop Mittel",
+    slug: "woocommerce-shop-mittel",
     description:
-      "Integration von Zahlungsdienstleistern (Stripe, PayPal, etc.)",
-    shortDescription: "Sichere Zahlungsabwicklung",
-    categoryId: "cat-2-ecommerce",
+      "WooCommerce Setup für ca. 500 Produkte mit erweiterten E-Commerce Features",
+    shortDescription: "WooCommerce Mittel (ca. 500 Produkte)",
+    categorySlug: "e-commerce-online-handel",
     pricingModel: "fixed" as const,
-    basePrice: "800.00",
-    complexityMultiplier: { basic: 1.0, standard: 1.3, premium: 1.7 },
-    tags: ["payment", "stripe", "paypal"],
+    basePrice: "3395.00", // Markt €3,500 -3% = €3,395
+    minHours: 40,
+    maxHours: 60,
+    complexityMultiplier: { basic: 1.0, standard: 1.4, premium: 2.0 },
+    tags: ["woocommerce", "shop", "ecommerce", "medium"],
     sortOrder: 2,
   },
 
-  // Hosting & Technische Infrastruktur
+  // Shopware Shops
   {
-    id: "svc-web-hosting",
-    name: "Web Hosting",
-    slug: "web-hosting",
-    description: "Professionelles Web-Hosting mit SSL und Backups",
-    shortDescription: "Zuverlässiges Web-Hosting",
-    categoryId: "cat-3-hosting",
+    name: "Shopware 6 Shop Klein",
+    slug: "shopware-6-shop-klein",
+    description: "Shopware 6 Installation und Anpassung für bis zu 50 Produkte",
+    shortDescription: "Shopware 6 Klein (bis 50 Produkte)",
+    categorySlug: "e-commerce-online-handel",
+    pricingModel: "project" as const,
+    basePrice: "5820.00", // Markt €6,000 -3% = €5,820
+    minHours: 60,
+    maxHours: 90,
+    complexityMultiplier: { basic: 1.0, standard: 1.3, premium: 1.8 },
+    tags: ["shopware", "shop", "ecommerce", "professional"],
+    sortOrder: 3,
+  },
+
+  // Payment Integration
+  {
+    name: "Payment Integration Multi",
+    slug: "payment-integration-multi",
+    description: "Integration von 3 Payment-Anbietern (PayPal, Stripe, Klarna)",
+    shortDescription: "Multi-Payment Setup (3 Anbieter)",
+    categorySlug: "e-commerce-online-handel",
+    pricingModel: "fixed" as const,
+    basePrice: "776.00", // Markt €800 -3% = €776
+    minHours: 10,
+    maxHours: 15,
+    complexityMultiplier: { basic: 1.0, standard: 1.2, premium: 1.6 },
+    tags: ["payment", "integration", "paypal", "stripe", "klarna"],
+    sortOrder: 4,
+  },
+
+  // =============================================================================
+  // KATEGORIE 3: HOSTING & TECHNISCHE INFRASTRUKTUR
+  // =============================================================================
+
+  {
+    name: "Web Hosting Professional",
+    slug: "web-hosting-professional",
+    description: "Professionelles Web-Hosting mit SSL, Backups und Support",
+    shortDescription: "Web-Hosting mit SSL & Backups",
+    categorySlug: "hosting-technische-infrastruktur",
     pricingModel: "monthly" as const,
-    basePrice: "25.00",
+    basePrice: "25.00", // Markt €25 bereits günstig
     complexityMultiplier: { basic: 1.0, standard: 2.0, premium: 4.0 },
+    tags: ["hosting", "ssl", "backup", "support"],
     isPopular: true,
-    tags: ["hosting", "ssl", "backup"],
     sortOrder: 1,
   },
   {
-    id: "svc-cloud-setup",
     name: "Cloud Infrastructure Setup",
     slug: "cloud-infrastructure-setup",
-    description: "Cloud-Infrastruktur Setup (AWS, Google Cloud, etc.)",
-    shortDescription: "Professionelle Cloud-Infrastruktur",
-    categoryId: "cat-3-hosting",
+    description:
+      "Professionelle Cloud-Infrastruktur Setup (AWS, Google Cloud, Azure)",
+    shortDescription: "Cloud Setup (AWS/GCP/Azure)",
+    categorySlug: "hosting-technische-infrastruktur",
     pricingModel: "project" as const,
-    basePrice: "1500.00",
+    basePrice: "1455.00", // Markt €1,500 -3% = €1,455
     minHours: 20,
     maxHours: 60,
     complexityMultiplier: { basic: 1.0, standard: 1.8, premium: 3.0 },
-    tags: ["cloud", "aws", "infrastructure"],
+    tags: ["cloud", "aws", "gcp", "azure", "infrastructure"],
     sortOrder: 2,
   },
 
-  // Integration & Automatisierung
+  // =============================================================================
+  // KATEGORIE 4: INTEGRATION & AUTOMATISIERUNG
+  // =============================================================================
+
   {
-    id: "svc-api-integration",
-    name: "API Integration",
-    slug: "api-integration",
-    description: "Integration externer APIs und Services",
-    shortDescription: "Nahtlose API-Verbindungen",
-    categoryId: "cat-4-integration",
+    name: "API Integration Standard",
+    slug: "api-integration-standard",
+    description: "Integration externer APIs und Services in bestehende Systeme",
+    shortDescription: "Standard API-Integration",
+    categorySlug: "integration-automatisierung",
     pricingModel: "hourly" as const,
-    basePrice: "120.00",
+    basePrice: "116.00", // Markt €120 -3% = €116 (gerundet)
     minHours: 8,
     maxHours: 40,
     complexityMultiplier: { basic: 1.0, standard: 1.4, premium: 2.0 },
-    tags: ["api", "integration", "automation"],
+    tags: ["api", "integration", "automation", "rest"],
     sortOrder: 1,
   },
 
-  // Wartung, Support & Marketing
+  // =============================================================================
+  // KATEGORIE 5: WARTUNG, SUPPORT & MARKETING
+  // =============================================================================
+
   {
-    id: "svc-website-maintenance",
-    name: "Website Wartung",
-    slug: "website-maintenance",
-    description: "Regelmäßige Website-Wartung und Updates",
-    shortDescription: "Laufende Website-Betreuung",
-    categoryId: "cat-5-support",
+    name: "Website Wartung Professional",
+    slug: "website-wartung-professional",
+    description: "Monatliche Website-Wartung mit Updates, Backups und Support",
+    shortDescription: "Professional Website-Wartung",
+    categorySlug: "wartung-support-marketing",
     pricingModel: "monthly" as const,
-    basePrice: "150.00",
+    basePrice: "291.00", // Markt €300 -3% = €291
     complexityMultiplier: { basic: 1.0, standard: 1.5, premium: 2.2 },
+    tags: ["wartung", "support", "updates", "backup"],
     isPopular: true,
-    tags: ["wartung", "support", "updates"],
     sortOrder: 1,
   },
   {
-    id: "svc-seo-optimization",
     name: "SEO Optimierung",
-    slug: "seo-optimization",
-    description: "Suchmaschinenoptimierung für bessere Rankings",
-    shortDescription: "Professionelle SEO-Betreuung",
-    categoryId: "cat-5-support",
+    slug: "seo-optimierung",
+    description: "Professionelle Suchmaschinenoptimierung für bessere Rankings",
+    shortDescription: "SEO-Optimierung & Betreuung",
+    categorySlug: "wartung-support-marketing",
     pricingModel: "monthly" as const,
-    basePrice: "300.00",
+    basePrice: "291.00", // Markt €300 -3% = €291
     complexityMultiplier: { basic: 1.0, standard: 1.4, premium: 2.0 },
-    tags: ["seo", "marketing", "ranking"],
+    tags: ["seo", "marketing", "ranking", "google"],
     sortOrder: 2,
   },
 ];
 
 // =============================================================================
-// SERVICE DEPENDENCIES SEED DATA
+// SERVICE DEPENDENCIES SEED DATA (Logical Dependencies)
 // =============================================================================
 
 const seedServiceDependencies = [
   {
-    id: "dep-cms-website",
-    serviceId: "svc-cms-integration",
-    dependentServiceId: "svc-responsive-website",
+    serviceSlug: "woocommerce-shop-klein",
+    dependentServiceSlug: "wordpress-starter-website",
     isRequired: true,
-    reason: "CMS benötigt eine bestehende Website als Grundlage",
+    reason: "WooCommerce benötigt WordPress als Grundlage",
   },
   {
-    id: "dep-shop-website",
-    serviceId: "svc-online-shop",
-    dependentServiceId: "svc-responsive-website",
+    serviceSlug: "woocommerce-shop-mittel",
+    dependentServiceSlug: "wordpress-professional-website",
     isRequired: true,
-    reason: "Online Shop basiert auf responsiver Website-Struktur",
+    reason:
+      "Größere WooCommerce Shops benötigen professionelle WordPress-Basis",
   },
   {
-    id: "dep-maintenance-website",
-    serviceId: "svc-website-maintenance",
-    dependentServiceId: "svc-responsive-website",
+    serviceSlug: "payment-integration-multi",
+    dependentServiceSlug: "woocommerce-shop-klein",
     isRequired: false,
-    reason: "Wartung setzt normalerweise eine bestehende Website voraus",
+    reason: "Payment Integration erweitert Shop-Funktionalität",
+  },
+  {
+    serviceSlug: "website-wartung-professional",
+    dependentServiceSlug: "wordpress-professional-website",
+    isRequired: false,
+    reason: "Wartung setzt eine bestehende Website voraus",
   },
 ];
 
 // =============================================================================
-// CUSTOMERS SEED DATA (Different segments)
+// ENHANCED CUSTOMERS SEED DATA
 // =============================================================================
 
-const seedCustomers = [
+const seedCustomersEnhanced = [
   {
-    id: "cust-mueller-gmbh",
     name: "Thomas Müller",
     email: "thomas.mueller@mueller-gmbh.de",
     phone: "+49 89 123456789",
@@ -289,12 +416,12 @@ const seedCustomers = [
     segment: "sme" as const,
     customPricingRules: {
       discountPercentage: 5,
+      preferredCustomer: true,
     },
-    tags: ["stammkunde", "bayern"],
+    tags: ["stammkunde", "bayern", "handwerk"],
     isVip: true,
   },
   {
-    id: "cust-startup-tech",
     name: "Sarah Schmidt",
     email: "sarah@startup-tech.com",
     phone: "+49 30 987654321",
@@ -306,10 +433,9 @@ const seedCustomers = [
     },
     companyName: "StartupTech GmbH",
     segment: "sme" as const,
-    tags: ["startup", "tech"],
+    tags: ["startup", "tech", "berlin"],
   },
   {
-    id: "cust-enterprise-corp",
     name: "Dr. Michael Weber",
     email: "m.weber@enterprise-corp.de",
     phone: "+49 40 555777999",
@@ -328,167 +454,83 @@ const seedCustomers = [
       specialRules: {
         volumeDiscount: true,
         preferredCustomer: true,
+        contractDiscount: 10,
       },
     },
-    tags: ["enterprise", "volume"],
+    tags: ["enterprise", "volume", "hamburg"],
     isVip: true,
   },
   {
-    id: "cust-private-kunde",
-    name: "Anna Privatkundin",
-    email: "anna.private@email.de",
-    phone: "+49 171 1234567",
-    segment: "private" as const,
-    tags: ["privat"],
+    name: "Lisa Kleinmann",
+    email: "lisa@boutique-online.de",
+    phone: "+49 221 4455667",
+    address: {
+      street: "Hohe Straße 89",
+      city: "Köln",
+      postalCode: "50667",
+      country: "Deutschland",
+    },
+    companyName: "Boutique Online",
+    segment: "sme" as const,
+    tags: ["fashion", "ecommerce", "nrw"],
   },
 ];
 
 // =============================================================================
-// CUSTOMER CONTACTS SEED DATA
+// ENHANCED DISCOUNT RULES SEED DATA
 // =============================================================================
 
-const seedCustomerContacts = [
+const seedDiscountRulesEnhanced = [
   {
-    id: "contact-mueller-tech",
-    customerId: "cust-mueller-gmbh",
-    name: "Lisa Müller",
-    email: "lisa.mueller@mueller-gmbh.de",
-    phone: "+49 89 123456790",
-    role: "technical" as const,
-    department: "IT",
-    isPrimary: false,
-  },
-  {
-    id: "contact-enterprise-decision",
-    customerId: "cust-enterprise-corp",
-    name: "Jennifer Weber",
-    email: "j.weber@enterprise-corp.de",
-    phone: "+49 40 555777888",
-    role: "decision_maker" as const,
-    department: "Geschäftsführung",
-    isPrimary: true,
-  },
-];
-
-// =============================================================================
-// DISCOUNT RULES SEED DATA
-// =============================================================================
-
-const seedDiscountRules = [
-  {
-    id: "discount-volume-10",
-    name: "Volumenrabatt 10%",
-    code: "VOLUME10",
-    description: "10% Rabatt ab 5.000€ Auftragswert",
+    name: "Startup-Rabatt",
+    code: "STARTUP15",
+    description: "15% Rabatt für Startups und Gründer",
     type: "percentage" as const,
-    value: "10.00",
-    minAmount: "5000.00",
-    priority: 100,
-    tags: ["volume", "automatic"],
-  },
-  {
-    id: "discount-sme-5",
-    name: "KMU-Rabatt",
-    description: "5% Rabatt für kleine und mittlere Unternehmen",
-    type: "percentage" as const,
-    value: "5.00",
-    applicableSegments: ["sme"],
-    priority: 50,
-    tags: ["sme", "segment"],
-  },
-  {
-    id: "discount-bundle-website-shop",
-    name: "Website + Shop Bundle",
-    description: "15% Rabatt bei Kombination Website + Online Shop",
-    type: "bundle" as const,
     value: "15.00",
+    minAmount: "1000.00",
+    applicableSegments: ["sme"],
     conditions: {
-      bundleServices: ["svc-responsive-website", "svc-online-shop"],
+      customLogic: { requiresStartupProof: true },
+    },
+    priority: 100,
+    tags: ["startup", "gründer"],
+  },
+  {
+    name: "Bundle WordPress + WooCommerce",
+    description:
+      "20% Rabatt bei Kombination WordPress Professional + WooCommerce",
+    type: "bundle" as const,
+    value: "20.00",
+    conditions: {
+      bundleServices: [
+        "wordpress-professional-website",
+        "woocommerce-shop-mittel",
+      ],
     },
     priority: 200,
-    tags: ["bundle", "website", "shop"],
-  },
-];
-
-// =============================================================================
-// QUOTATIONS SEED DATA
-// =============================================================================
-
-const seedQuotations = [
-  {
-    id: "quote-mueller-website",
-    quoteNumber: "Q-2024-001",
-    title: "Responsive Website für Müller GmbH",
-    customerId: "cust-mueller-gmbh",
-    validFrom: new Date(),
-    validUntil: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
-    status: "sent" as const,
-    subtotalAmount: "2500.00",
-    discountAmount: "125.00", // 5% VIP discount
-    taxAmount: "451.25", // 19% VAT
-    totalAmount: "2826.25",
-    notes: "Standard responsive Website mit CMS Integration",
-    customerNotes: "Bitte Terminwunsch für Kickoff-Meeting mitteilen",
+    tags: ["bundle", "wordpress", "woocommerce"],
   },
   {
-    id: "quote-startup-shop",
-    quoteNumber: "Q-2024-002",
-    title: "E-Commerce Lösung für StartupTech",
-    customerId: "cust-startup-tech",
-    validFrom: new Date(),
-    validUntil: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
-    status: "draft" as const,
-    subtotalAmount: "7000.00",
-    discountAmount: "1050.00", // 15% bundle discount
-    taxAmount: "1130.50",
-    totalAmount: "7080.50",
-    notes: "Website + Online Shop Bundle mit Payment Integration",
-  },
-];
-
-// =============================================================================
-// QUOTATION ITEMS SEED DATA
-// =============================================================================
-
-const seedQuotationItems = [
-  {
-    id: "item-mueller-website",
-    quotationId: "quote-mueller-website",
-    serviceId: "svc-responsive-website",
-    name: "Responsive Website",
-    description: "Mobile-first responsive Website mit modernem Design",
-    quantity: 1,
-    unitPrice: "2500.00",
-    totalPrice: "2500.00",
-    finalPrice: "2500.00",
-    complexity: "standard",
-    position: 1,
+    name: "Volumenrabatt Enterprise",
+    description: "10% Rabatt ab €10.000 Auftragswert",
+    type: "volume" as const,
+    value: "10.00",
+    minAmount: "10000.00",
+    applicableSegments: ["enterprise"],
+    priority: 150,
+    tags: ["volume", "enterprise"],
   },
   {
-    id: "item-startup-website",
-    quotationId: "quote-startup-shop",
-    serviceId: "svc-responsive-website",
-    name: "Responsive Website",
-    description: "Basis-Website für E-Commerce Integration",
-    quantity: 1,
-    unitPrice: "2500.00",
-    totalPrice: "2500.00",
-    finalPrice: "2500.00",
-    complexity: "standard",
-    position: 1,
-  },
-  {
-    id: "item-startup-shop",
-    quotationId: "quote-startup-shop",
-    serviceId: "svc-online-shop",
-    name: "Online Shop",
-    description: "E-Commerce Shop mit Zahlungsabwicklung",
-    quantity: 1,
-    unitPrice: "4500.00",
-    totalPrice: "4500.00",
-    finalPrice: "4500.00",
-    complexity: "standard",
-    position: 2,
+    name: "Wartungsvertrag-Rabatt",
+    code: "WARTUNG10",
+    description: "10% Rabatt bei Abschluss eines Wartungsvertrags",
+    type: "customer" as const,
+    value: "10.00",
+    conditions: {
+      customLogic: { requiresMaintenanceContract: true },
+    },
+    priority: 80,
+    tags: ["wartung", "vertrag"],
   },
 ];
 
@@ -497,7 +539,9 @@ const seedQuotationItems = [
 // =============================================================================
 
 export async function seedDatabase() {
-  console.log("🌱 Starting comprehensive database seeding...");
+  console.log(
+    "🌱 Starting database seeding with detailed service data...",
+  );
 
   try {
     // Clear existing data (for development)
@@ -511,57 +555,100 @@ export async function seedDatabase() {
     await db.delete(services);
     await db.delete(serviceCategories);
 
-    // Seed Service Categories
+    // 1. Seed Service Categories
     console.log("📂 Seeding service categories...");
-    await db.insert(serviceCategories).values(seedServiceCategories);
-    console.log(
-      `✅ Inserted ${seedServiceCategories.length} service categories`,
-    );
+    const insertedCategories = await db
+      .insert(serviceCategories)
+      .values(seedServiceCategories)
+      .returning();
+    console.log(`✅ Inserted ${insertedCategories.length} service categories`);
 
-    // Seed Services
-    console.log("🛠️  Seeding services...");
-    await db.insert(services).values(seedServices);
-    console.log(`✅ Inserted ${seedServices.length} services`);
+    // Create category lookup map
+    const categoryMap = new Map<string, string>();
+    insertedCategories.forEach((cat) => {
+      categoryMap.set(cat.slug, cat.id);
+    });
 
-    // Seed Service Dependencies
+    // 2. Seed Detailed Services
+    console.log("🛠️  Seeding detailed services...");
+    const servicesWithCategoryIds = seedServicesDetailed.map((service) => {
+      const categoryId = categoryMap.get(service.categorySlug);
+      if (!categoryId) {
+        throw new Error(`Category not found for slug: ${service.categorySlug}`);
+      }
+
+      const { categorySlug: _categorySlug, ...serviceData } = service;
+      return {
+        ...serviceData,
+        categoryId,
+      };
+    });
+
+    const insertedServices = await db
+      .insert(services)
+      .values(servicesWithCategoryIds)
+      .returning();
+    console.log(`✅ Inserted ${insertedServices.length} detailed services`);
+
+    // Create service lookup map
+    const serviceMap = new Map<string, string>();
+    insertedServices.forEach((service) => {
+      serviceMap.set(service.slug, service.id);
+    });
+
+    // 3. Seed Service Dependencies
     console.log("🔗 Seeding service dependencies...");
-    await db.insert(serviceDependencies).values(seedServiceDependencies);
+    const dependenciesWithIds = seedServiceDependencies.map((dep) => {
+      const serviceId = serviceMap.get(dep.serviceSlug);
+      const dependentServiceId = serviceMap.get(dep.dependentServiceSlug);
+
+      if (!serviceId || !dependentServiceId) {
+        throw new Error(
+          `Service not found: ${dep.serviceSlug} -> ${dep.dependentServiceSlug}`,
+        );
+      }
+
+      const {
+        serviceSlug: _serviceSlug,
+        dependentServiceSlug: _dependentServiceSlug,
+        ...depData
+      } = dep;
+      return {
+        ...depData,
+        serviceId,
+        dependentServiceId,
+      };
+    });
+
+    if (dependenciesWithIds.length > 0) {
+      await db.insert(serviceDependencies).values(dependenciesWithIds);
+      console.log(
+        `✅ Inserted ${dependenciesWithIds.length} service dependencies`,
+      );
+    }
+
+    // 4. Seed Enhanced Customers
+    console.log("👥 Seeding enhanced customers...");
+    const insertedCustomers = await db
+      .insert(customers)
+      .values(seedCustomersEnhanced)
+      .returning();
+    console.log(`✅ Inserted ${insertedCustomers.length} customers`);
+
+    // 5. Seed Enhanced Discount Rules
+    console.log("💰 Seeding enhanced discount rules...");
+    await db.insert(discountRules).values(seedDiscountRulesEnhanced);
     console.log(
-      `✅ Inserted ${seedServiceDependencies.length} service dependencies`,
+      `✅ Inserted ${seedDiscountRulesEnhanced.length} discount rules`,
     );
 
-    // Seed Customers
-    console.log("👥 Seeding customers...");
-    await db.insert(customers).values(seedCustomers);
-    console.log(`✅ Inserted ${seedCustomers.length} customers`);
-
-    // Seed Customer Contacts
-    console.log("📞 Seeding customer contacts...");
-    await db.insert(customerContacts).values(seedCustomerContacts);
-    console.log(`✅ Inserted ${seedCustomerContacts.length} customer contacts`);
-
-    // Seed Discount Rules
-    console.log("💰 Seeding discount rules...");
-    await db.insert(discountRules).values(seedDiscountRules);
-    console.log(`✅ Inserted ${seedDiscountRules.length} discount rules`);
-
-    // Seed Quotations
-    console.log("📄 Seeding quotations...");
-    await db.insert(quotations).values(seedQuotations);
-    console.log(`✅ Inserted ${seedQuotations.length} quotations`);
-
-    // Seed Quotation Items
-    console.log("📋 Seeding quotation items...");
-    await db.insert(quotationItems).values(seedQuotationItems);
-    console.log(`✅ Inserted ${seedQuotationItems.length} quotation items`);
-
-    console.log("🎉 Database seeding completed successfully!");
-    console.log("📊 Sample data summary:");
-    console.log(`   • ${seedServiceCategories.length} service categories`);
-    console.log(`   • ${seedServices.length} services`);
-    console.log(`   • ${seedCustomers.length} customers`);
-    console.log(`   • ${seedQuotations.length} quotations`);
-    console.log(`   • ${seedDiscountRules.length} discount rules`);
+    console.log("🎉 Database seeding finished successfully!");
+    console.log("📊 Seeded data summary:");
+    console.log(`   • ${insertedCategories.length} service categories`);
+    console.log(`   • ${insertedServices.length} detailed services`);
+    console.log(`   • ${dependenciesWithIds.length} service dependencies`);
+    console.log(`   • ${insertedCustomers.length} customers`);
+    console.log(`   • ${seedDiscountRulesEnhanced.length} discount rules`);
   } catch (error) {
     console.error("❌ Error seeding database:", error);
     throw error;
