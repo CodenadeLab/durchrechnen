@@ -3,7 +3,7 @@
  */
 export function getApiUrl() {
   // Browser environment - Next.js uses process.env in client-side
-  if (typeof window !== 'undefined') {
+  if (typeof globalThis !== "undefined" && "window" in globalThis) {
     if (process.env.NODE_ENV === "production") {
       return "https://api.codenade.com";
     }
@@ -31,7 +31,7 @@ export function getApiUrl() {
  */
 export function getWebUrl() {
   // Browser environment
-  if (typeof window !== 'undefined') {
+  if (typeof globalThis !== "undefined" && "window" in globalThis) {
     if (import.meta.env.PROD) {
       return "https://durchrechnen.codenade.com";
     }
@@ -60,7 +60,7 @@ export function getWebUrl() {
  */
 export function getWebsiteUrl() {
   // Browser environment
-  if (typeof window !== 'undefined') {
+  if (typeof globalThis !== "undefined" && "window" in globalThis) {
     if (import.meta.env.PROD) {
       return "https://codenade.com";
     }
@@ -87,7 +87,7 @@ export function getWebsiteUrl() {
  */
 export function getGoogleClientId() {
   // Browser environment - Next.js client-side
-  if (typeof window !== 'undefined') {
+  if (typeof globalThis !== "undefined" && "window" in globalThis) {
     return process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '956360384452-esnuj8b12b71numekpns9ba9cpcm1n5f.apps.googleusercontent.com';
   }
 
