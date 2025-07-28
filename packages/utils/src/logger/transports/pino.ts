@@ -1,5 +1,5 @@
-import { PinoTransport } from '@loglayer/transport-pino';
-import pino from 'pino';
+import { PinoTransport } from "@loglayer/transport-pino";
+import pino from "pino";
 
 export function createPinoTransport(options?: {
   level?: string;
@@ -9,7 +9,7 @@ export function createPinoTransport(options?: {
   };
 }) {
   const pinoLogger = pino({
-    level: options?.level || 'info',
+    level: options?.level || "info",
     transport: options?.transport,
   });
 

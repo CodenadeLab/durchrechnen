@@ -50,6 +50,7 @@ jobs:
         id: create_neon_branch
         uses: neondatabase/create-branch-action@v5
         with:
+          username: neondb_owner
           project_id: ${{ vars.NEON_PROJECT_ID }}
           branch_name: preview/pr-${{ github.event.number }}-${{ needs.setup.outputs.branch }}
           api_key: ${{ secrets.NEON_API_KEY }}
@@ -74,7 +75,6 @@ jobs:
           base_branch: dev
           api_key: ${{ secrets.NEON_API_KEY }}
           database: neondb
-          username: neondb_owner
 
   delete_neon_branch:
     name: Delete Neon Branch & Apply Production Migrations

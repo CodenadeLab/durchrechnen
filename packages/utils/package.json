@@ -7,6 +7,11 @@
   "exports": {
     ".": "./src/index.ts"
   },
+  "scripts": {
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "format": "biome format --write ."
+  },
   "devDependencies": {
     "@durchrechnen/tsconfig": "workspace:*",
     "@types/bun": "latest"

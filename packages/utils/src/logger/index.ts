@@ -1,3 +1,3 @@
-export * from './config';
-export * from './transports';
-export { createLogger, createSyncLogger, type IExtendedLogger } from './logger';
+export * from "./config";
+export { createLogger, createSyncLogger, type IExtendedLogger } from "./logger";
+export * from "./transports";

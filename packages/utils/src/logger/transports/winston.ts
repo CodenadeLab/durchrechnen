@@ -1,5 +1,5 @@
-import { WinstonTransport } from '@loglayer/transport-winston';
-import winston from 'winston';
+import { WinstonTransport } from "@loglayer/transport-winston";
+import winston from "winston";
 
 export function createWinstonTransport(options?: {
   level?: string;
@@ -7,7 +7,7 @@ export function createWinstonTransport(options?: {
   transports?: any[];
 }) {
   const winstonLogger = winston.createLogger({
-    level: options?.level || 'info',
+    level: options?.level || "info",
     format: options?.format,
     transports: options?.transports,
   });

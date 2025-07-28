@@ -1,6 +1,6 @@
 export interface LoggerConfig {
-  level?: 'trace' | 'debug' | 'info' | 'warn' | 'error' | 'fatal';
-  environment?: 'development' | 'production' | 'test';
+  level?: "trace" | "debug" | "info" | "warn" | "error" | "fatal";
+  environment?: "development" | "production" | "test";
   service?: string;
   version?: string;
   enableConsole?: boolean;
@@ -25,6 +25,6 @@ export interface LoggerConfig {
 }
 
 export interface TransportConfig {
-  type: 'console' | 'pino' | 'winston' | 'datadog' | 'file';
+  type: "console" | "pino" | "winston" | "datadog" | "file";
   options?: Record<string, any>;
 }

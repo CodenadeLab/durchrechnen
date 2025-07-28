@@ -1,4 +1,4 @@
-import { DataDogTransport } from '@loglayer/transport-datadog';
+import { DataDogTransport } from "@loglayer/transport-datadog";
 
 export function createDatadogTransport(config: {
   apiKey: string;
@@ -16,13 +16,13 @@ export function createDatadogTransport(config: {
         },
       },
       ddServerConf: {
-        site: config.site || 'datadoghq.com',
+        site: config.site || "datadoghq.com",
       },
       onDebug: (msg) => {
-        console.log('[DataDog Debug]:', msg);
+        console.log("[DataDog Debug]:", msg);
       },
       onError: (err, logs) => {
-        console.error('[DataDog Error]:', err, logs);
+        console.error("[DataDog Error]:", err, logs);
       },
     },
   });

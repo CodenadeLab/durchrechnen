@@ -1,4 +1,4 @@
-import { filterPlugin } from 'loglayer';
+import { filterPlugin } from "loglayer";
 
 export function createFilterPlugin(config: {
   level?: string;

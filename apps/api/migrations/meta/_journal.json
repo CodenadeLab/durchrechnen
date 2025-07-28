@@ -8,6 +8,13 @@
       "when": 1753622188101,
       "tag": "0000_bitter_scarlet_spider",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1753698736398,
+      "tag": "0001_low_skaar",
+      "breakpoints": true
     }
   ]
 }

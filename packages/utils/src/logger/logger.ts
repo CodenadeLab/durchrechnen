@@ -40,7 +40,7 @@ export async function createLogger(
   const finalConfig = { ...defaultConfig, ...config };
 
   // Detect environment automatically
-  const isBrowser = typeof window !== "undefined";
+  const isBrowser = typeof globalThis !== "undefined" && "window" in globalThis;
   const isNode = typeof process !== "undefined" && process.versions?.node;
 
   // Create transports based on environment and configuration
@@ -82,14 +82,14 @@ export async function createLogger(
   if (transports.length === 0) {
     transports.push(new ConsoleTransport({ logger: console }));
   }
-  
+
   const baseLogger: ILogLayer = new LogLayer({
     errorSerializer: serializeError,
-    transport: transports.length === 1 ? transports[0] : transports,
+    transport: transports[0]!,
   });
 
   // Create extended logger with custom methods by properly extending the base logger
-  const extendedLogger = baseLogger as any;
+  const extendedLogger = baseLogger as IExtendedLogger;
 
   // Override standard logging methods to accept flexible metadata
   extendedLogger.info = (
