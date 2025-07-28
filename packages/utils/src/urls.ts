@@ -2,12 +2,12 @@
  * Get the API server URL based on environment
  */
 export function getApiUrl() {
-  // Browser environment - use import.meta.env
+  // Browser environment - Next.js uses process.env in client-side
   if (typeof window !== 'undefined') {
-    if (import.meta.env.PROD) {
+    if (process.env.NODE_ENV === "production") {
       return "https://api.codenade.com";
     }
-    return import.meta.env.VITE_API_URL || "http://localhost:3003";
+    return process.env.NEXT_PUBLIC_API_URL || "http://localhost:3003";
   }
 
   // Node.js environment - use process.env
@@ -23,7 +23,7 @@ export function getApiUrl() {
   }
 
   // Development
-  return process.env.VITE_API_URL || "http://localhost:3003";
+  return process.env.NEXT_PUBLIC_API_URL || "http://localhost:3003";
 }
 
 /**
@@ -54,76 +54,6 @@ export function getWebUrl() {
   return "http://localhost:3000";
 }
 
-/**
- * Get the Native App URL based on environment (Tauri dev server)
- */
-export function getNativeUrl() {
-  // Browser environment
-  if (typeof window !== 'undefined') {
-    if (import.meta.env.PROD) {
-      return "durchrechnen://localhost";
-    }
-    return import.meta.env.VITE_APP_URL || "http://localhost:1420";
-  }
-
-  // Node.js environment
-  if (
-    process.env.VERCEL_ENV === "production" ||
-    process.env.NODE_ENV === "production"
-  ) {
-    // In production, native app uses deep links
-    return "durchrechnen://localhost";
-  }
-
-  // Development - Tauri dev server
-  return process.env.VITE_APP_URL || "http://localhost:1420";
-}
-
-/**
- * Get OAuth callback URL for Tauri apps based on environment and platform
- */
-export function getOAuthCallbackUrl(platform: 'desktop' | 'mobile' = 'desktop') {
-  // Browser environment
-  if (typeof window !== 'undefined') {
-    if (import.meta.env.PROD) {
-      if (platform === 'mobile') {
-        return "durchrechnen://oauth-callback";
-      }
-      return "https://durchrechnen.codenade.com/auth-success";
-    }
-    
-    if (platform === 'mobile') {
-      return "durchrechnen://oauth-callback";
-    }
-    return `${getNativeUrl()}/auth-success`;
-  }
-
-  // Node.js environment
-  if (
-    process.env.VERCEL_ENV === "production" ||
-    process.env.NODE_ENV === "production"
-  ) {
-    if (platform === 'mobile') {
-      return "durchrechnen://oauth-callback";
-    }
-    // Desktop production: external auth success page mit deep link
-    return "https://durchrechnen.codenade.com/auth-success";
-  }
-
-  if (platform === 'mobile') {
-    return "durchrechnen://oauth-callback";
-  }
-
-  // Desktop development: direkt zur Tauri app
-  return `${getNativeUrl()}/auth-success`;
-}
-
-/**
- * Get deep link URL for the app
- */
-export function getDeepLinkUrl(path: string = "") {
-  return `durchrechnen://${path}`;
-}
 
 /**
  * Get the marketing website URL
@@ -150,4 +80,17 @@ export function getWebsiteUrl() {
   }
 
   return "http://localhost:3000";
+}
+
+/**
+ * Get Google OAuth Client ID for web platform
+ */
+export function getGoogleClientId() {
+  // Browser environment - Next.js client-side
+  if (typeof window !== 'undefined') {
+    return process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '956360384452-esnuj8b12b71numekpns9ba9cpcm1n5f.apps.googleusercontent.com';
+  }
+
+  // Node.js environment (API server)
+  return process.env.GOOGLE_CLIENT_ID || '956360384452-esnuj8b12b71numekpns9ba9cpcm1n5f.apps.googleusercontent.com';
 }

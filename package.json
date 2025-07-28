@@ -5,7 +5,8 @@
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
-    "typecheck": "turbo run typecheck"
+    "typecheck": "turbo run typecheck",
+    "deploy:api": "fly deploy --remote-only --config apps/api/fly.toml --dockerfile apps/api/Dockerfile"
   },
   "devDependencies": {
     "@biomejs/biome": "2.1.2",
@@ -23,8 +24,5 @@
   "trustedDependencies": [
     "@tailwindcss/oxide",
     "core-js-pure"
-  ],
-  "dependencies": {
-    "@daveyplate/better-auth-tauri": "^0.0.24"
-  }
+  ]
 }

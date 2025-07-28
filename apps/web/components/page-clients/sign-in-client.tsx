@@ -18,7 +18,7 @@ export function SignInClient() {
     // Get Google OAuth URL from Better-Auth and redirect after animation
     setTimeout(async () => {
       try {
-        const response = await fetch('/api/auth/sign-in/social', {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/sign-in/social`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

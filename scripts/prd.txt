@@ -1,66 +1,78 @@
+# Produktanforderungsdokument (PRD) - Preiskalkulator Tool
+## API-First Ansatz mit modernem Tech Stack
+
+---
+
 ## 1. Einführung
 
-Dieses Produktanforderungsdokument (PRD) beschreibt die umfassenden Anforderungen für die Entwicklung eines Preiskalkulator-Tools, das darauf ausgelegt ist, Service-Preisgestaltung, Angebotserstellung und Kundenverwaltungsprozesse zu optimieren. Das Dokument dient als definitive Anleitung für Entwicklungsteams, Stakeholder und Qualitätssicherungsteams, um den Projektumfang, technische Anforderungen und Erfolgskriterien zu verstehen.
+Dieses Produktanforderungsdokument beschreibt die Entwicklung eines API-first Preiskalkulator-Tools mit Fokus auf eine skalierbare, moderne Architektur. Die Entwicklung erfolgt in klar definierten Phasen, wobei die Backend-API als Fundament für alle zukünftigen Client-Anwendungen dient.
 
-Das Preiskalkulator-Tool zielt darauf ab, manuelle Preisgestaltungsprozesse in ein automatisiertes, effizientes System zu transformieren, das Multi-Plattform-Deployment (Desktop via Tauri, Mobile via Tauri Mobile) unterstützt und dabei Konsistenz über alle Benutzer-Touchpoints hinweg aufrechterhält.
+### 1.1 Entwicklungsphasen
+- **Phase 1**: Backend-API Entwicklung (Priorität)
+- **Phase 2**: Mobile-First Web Frontend
+- **Phase 3**: Native Mobile Anwendungen (iOS/Android)
+- **Phase 4**: Desktop-Anwendung mit Tauri
+
+### 1.2 Dokumentzweck
+Dieses PRD dient als zentrale Referenz für alle Projektbeteiligten und definiert funktionale sowie technische Anforderungen für die API-zentrierte Entwicklung des Preiskalkulator-Tools.
 
 ---
 
 ## 2. Produktübersicht
 
 ### 2.1 Vision
-Ein intuitives, umfassendes Preiskalkulations-Tool zu schaffen, das Vertriebsteams dabei unterstützt, schnell präzise Angebote zu erstellen, während es dem Management tiefe Einblicke in Preisstrategien und Rentabilitätskennzahlen bietet.
+Ein modulares, API-basiertes Preiskalkulations-System zu schaffen, das über eine zentrale, gut dokumentierte API verschiedene Client-Anwendungen bedient und dabei maximale Flexibilität, Skalierbarkeit und Wartbarkeit bietet.
 
 ### 2.2 Produktbeschreibung
-Das Preiskalkulator-Tool ist eine plattformübergreifende Anwendung, die Service-Kataloge verwaltet, Preise mit komplexer Geschäftslogik berechnet, professionelle Angebote generiert und Analytics-Einblicke bietet. Das System unterstützt hierarchische Service-Strukturen, mehrere Preismodelle, Kundenbeziehungsmanagement und rollenbasierte Zugriffskontrolle.
+Das Preiskalkulator-Tool ist eine API-zentrierte Lösung für die automatisierte Preisgestaltung und Angebotserstellung. Das System besteht aus einer robusten Backend-API, die verschiedene Frontend-Clients bedient, beginnend mit einer Mobile-First Progressive Web App.
 
 ### 2.3 Zentrale Wertversprechen
-- **Effizienz**: Reduzierung der Angebotserstellungszeit um 50%
-- **Genauigkeit**: 95% weniger manuelle Preiskorrekturen
-- **Transparenz**: 100% nachvollziehbare Gewinnmargen-Berechnungen
-- **Mobilität**: Angebotserstellung auf jedem Gerät, überall
-- **Analytics**: Handlungsrelevante Insights aus Preis- und Verkaufsdaten
+- **API-First Architektur**: Einheitliche, versionierte API für alle Clients
+- **Skalierbarkeit**: Serverless-Architektur mit Edge-Computing-Fähigkeiten
+- **Mobile-First Design**: Primärer Fokus auf mobile Nutzererfahrung
+- **Type-Safety**: Durchgängige Typsicherheit im gesamten Stack
+- **Performance**: Edge-optimierte Architektur für minimale Latenz
+- **Zukunftssicherheit**: Flexibel erweiterbar für neue Plattformen
 
-2.4 Flexible Nutzungsszenarien
-Live-Kundengespräch Integration
-Das Preiskalkulator-Tool ist speziell darauf ausgelegt, spontan und flexibel während aktiver Kundengespräche eingesetzt zu werden. Vertriebsmitarbeiter können:
-- Sofortige Preisgestaltung: Das Tool während des Gesprächs öffnen und in Echtzeit Services zusammenstellen
-- Interaktive Angebotserstellung: Gemeinsam mit dem Kunden verschiedene Service-Kombinationen durchspielen
-- Spontane Rabattgewährung: Prozentuale Nachlässe oder individuelle Preisanpassungen direkt vor Ort vornehmen
-- Direkte Preisnennung: Dem Kunden sofort verbindliche Preise kommunizieren, ohne Rücksprache oder Wartezeit
-- Flexible Konfiguration: Services je nach Kundenwünschen ad-hoc anpassen und Auswirkungen auf den Preis zeigen
-Situative Anwendung
-- Vor-Ort-Termine: Mobile Nutzung beim Kunden für sofortige Angebotserstellung
-- Telefonberatung: Schnelle Preiskalkulationen während des Gesprächs
-- Spontane Anfragen: Ungeplante Kundenanfragen können sofort bearbeitet werden
-- Verhandlungssituationen: Flexible Preisanpassungen und "Was-wäre-wenn"-Szenarien in Echtzeit
-Ziel: Der Kunde verlässt das Gespräch bereits mit einem konkreten, verbindlichen Angebot - ohne Wartezeit oder Nachbearbeitung.
+### 2.4 Flexible Nutzungsszenarien
+
+#### Live-Kundengespräch Integration
+Das System unterstützt die spontane Nutzung während aktiver Kundengespräche mit folgenden Fähigkeiten:
+- Echtzeit-Preiskalkulationen während des Gesprächs
+- Interaktive Service-Konfiguration gemeinsam mit dem Kunden
+- Sofortige Rabattgewährung und Preisanpassungen
+- Direkte PDF-Generierung für verbindliche Angebote
+- Offline-Fähigkeit für Vor-Ort-Termine ohne Internetverbindung
+
+#### Multi-Platform Konsistenz
+- Identische Funktionalität über alle Plattformen
+- Nahtlose Datensynchronisation zwischen Geräten
+- Konsistente Benutzererfahrung unabhängig vom Endgerät
 
 ---
 
 ## 3. Ziele und Zielsetzungen
 
-### 3.1 Hauptziele
-- **Preisworkflows optimieren**: Komplexe Preisberechnungen und Abhängigkeitsmanagement automatisieren
-- **Angebotsqualität verbessern**: Professionelle, gebrandete PDF-Angebote mit konsistenter Formatierung generieren
-- **Kundenverwaltung verbessern**: Umfassende Kundenhistorien und personalisierte Preisgestaltung pflegen
-- **Datengesteuerte Entscheidungen ermöglichen**: Analytics- und Reporting-Fähigkeiten für strategische Planung bereitstellen
-- **Plattformflexibilität gewährleisten**: Desktop- und Mobile-Nutzungsmuster nahtlos unterstützen
-- **Spontane Kundengespräch-Unterstützung**: Ermöglichung von Live-Preiskalkulationen und sofortiger Angebotserstellung während aktiver Kundentermine, um Abschlussquoten zu maximieren und Kundenwartezeiten zu eliminieren
+### 3.1 Geschäftsziele
+- **Digitale Transformation**: Vollständige Digitalisierung des Preisgestaltungsprozesses
+- **Effizienzsteigerung**: 70% Reduktion der Angebotserstellungszeit
+- **Fehlerminimierung**: 95% weniger manuelle Preisfehler
+- **Kundenzufriedenheit**: Sofortige Angebotserstellung während Kundengesprächen
+- **Skalierbarkeit**: Unterstützung für unbegrenztes Wachstum
 
-### 3.2 Erfolgskennzahlen
+### 3.2 Technische Ziele
+- **API-Performance**: Antwortzeiten unter 100ms (p95)
+- **Verfügbarkeit**: 99.9% Uptime für die API
+- **Mobile Performance**: Lighthouse Score über 90
+- **Offline-Fähigkeit**: Vollständige Funktionalität ohne Internetverbindung
+- **Sicherheit**: Implementierung moderner Sicherheitsstandards
 
-#### Benutzererfahrungs-Metriken
-- Durchschnittliche Angebotserstellungszeit: < 5 Minuten
-- Benutzerakzeptanzrate: > 90% des Vertriebsteams
-- Preisberechnungs-Fehlerrate: < 1%
-- Mobile App Nutzung: > 30% aller Angebote
-
-#### Geschäftswirkung-Metriken
-- Verbesserung der Angebotsgenerierungsgeschwindigkeit: 50% schneller als aktueller Prozess
-- Verbesserung der Preisgenauigkeit: 95% weniger manuelle Korrekturen erforderlich
-- Gewinnmargen-Transparenz: 100% der Angebote mit nachvollziehbaren Margen
-- Kundenhistorie-Nutzung: Verfügbar für 100% der Angebote
+### 3.3 Benutzerziele
+- **Intuitive Bedienung**: Minimale Einarbeitungszeit
+- **Schnelle Angebotserstellung**: Unter 5 Minuten pro Angebot
+- **Flexibilität**: Anpassung an verschiedene Verkaufsszenarien
+- **Transparenz**: Nachvollziehbare Preisberechnungen
+- **Mobilität**: Arbeiten von überall aus möglich
 
 ---
 
@@ -69,499 +81,380 @@ Ziel: Der Kunde verlässt das Gespräch bereits mit einem konkreten, verbindlich
 ### 4.1 Primäre Benutzer
 
 #### Vertriebsmitarbeiter
-- **Rolle**: Angebote erstellen, Kundeninteraktionen verwalten
-- **Bedürfnisse**: Schnelle Preisberechnungen, mobiler Zugriff, Kundenhistorie
+- **Rolle**: Direkte Angebotserstellung und Kundenkontakt
+- **Bedürfnisse**: Schnelle, mobile Preiskalkulation, Offline-Fähigkeit
 - **Technische Kompetenz**: Grundlegend bis fortgeschritten
+- **Nutzungskontext**: Büro, Außendienst, Kundentermine
 
 #### Vertriebsleiter
-- **Rolle**: Vertriebsteam überwachen, Preisstrategien analysieren
-- **Bedürfnisse**: Team-Performance-Insights, Preisgenehmigungsworkflows, Analytics
+- **Rolle**: Team-Überwachung und strategische Preisgestaltung
+- **Bedürfnisse**: Analytics, Teamperformance, Preisgenehmigungen
 - **Technische Kompetenz**: Fortgeschritten
+- **Nutzungskontext**: Primär Büro, gelegentlich mobil
 
 #### Systemadministratoren
-- **Rolle**: Systemkonfiguration verwalten, Benutzerkonten, Service-Katalog
-- **Bedürfnisse**: Vollständige Systemkontrolle, Audit-Fähigkeiten, Integrationsmanagement
+- **Rolle**: Systemkonfiguration und Benutzerverwaltung
+- **Bedürfnisse**: API-Verwaltung, Monitoring, Integrationen
 - **Technische Kompetenz**: Sehr fortgeschritten
+- **Nutzungskontext**: Ausschließlich Desktop
 
 ### 4.2 Sekundäre Benutzer
 
 #### Geschäftsführung
-- **Rolle**: Strategische Entscheidungsfindung basierend auf Verkaufsdaten
-- **Bedürfnisse**: High-Level Analytics, Gewinnmargen-Insights, Markttrends
-- **Technische Kompetenz**: Grundlegend
+- **Nutzung**: Strategische Reports und Dashboards
+- **Fokus**: High-Level Metriken und Trends
 
-#### Finanzteam
-- **Rolle**: Preisstrategien validieren, Rentabilität sicherstellen
-- **Bedürfnisse**: Kostenanalyse, Margen-Reporting, Finanzintegration
-- **Technische Kompetenz**: Fortgeschritten
+#### Finanzabteilung
+- **Nutzung**: Margenvalidierung und Finanzreports
+- **Fokus**: Kostenkontrolle und Rentabilität
+
+#### IT-Abteilung
+- **Nutzung**: API-Integration und Systemwartung
+- **Fokus**: Technische Integration und Sicherheit
 
 ---
 
-## 5. Funktionen und Anforderungen
+## 5. Funktionale Anforderungen
 
-### 5.1 Kernfunktionen (Muss-Haben)
+### 5.1 Backend-API Funktionen (Phase 1 - Priorität)
 
 #### 5.1.1 Service-Management
-- **Service-Katalog-Verwaltung**: Unterstützung für 7 Service-Kategorien mit hierarchischer Struktur
-- **Preismodelle**: Festpreis, Stundensatz, monatlich wiederkehrend, projektbasierte Preisgestaltung
-- **Service-Abhängigkeiten**: Automatische Erkennung und Warnungen für erforderliche Services
-- **Komplexitätsstufen**: Basic, Standard, Premium Stufen mit Preis-Multiplikatoren
-- **Add-On Services**: Konfigurierbare zusätzliche Features pro Service
+- Vollständige CRUD-Operationen für Service-Katalog
+- Hierarchische Kategorieverwaltung (7 Hauptkategorien)
+- Unterstützung multipler Preismodelle (Festpreis, Stundensatz, monatlich, projektbasiert)
+- Service-Abhängigkeitsmanagement mit Validierung
+- Komplexitätsstufen (Basic, Standard, Premium) mit konfigurierbaren Multiplikatoren
+- Bulk-Import und Export-Funktionalität
+- Versionierung von Service-Änderungen
 
 #### 5.1.2 Preisberechnungs-Engine
-- **Multi-Service Auswahl**: Unterstützung für mengenbasierte Service-Auswahl
-- **Echtzeit-Berechnung**: Live-Preis-Updates während der Eingabe
-- **Abhängigkeitsmanagement**: Automatische Erkennung mit Benutzerwarnungen
-- **Bundle-Rabatte**: Konfigurierbare Rabatte für Service-Kombinationen
-- **Kundenspezifische Preisgestaltung**: Prozentuale oder feste Rabatte
-- **Gewinnmargen-Berechnung**: Kosten vs. Verkaufspreis Analyse
-- **Zeitschätzung**: Automatische Stundenberechnung für Projektplanung
+- Echtzeit-Preisberechnung mit komplexer Geschäftslogik
+- Automatische Abhängigkeitsprüfung und -auflösung
+- Flexible Rabattsysteme (prozentual, absolut, gestaffelt)
+- Bundle-Erkennung und automatische Rabattierung
+- Kundenspezifische Preisregeln
+- Zeitschätzung für projektbasierte Services
+- Gewinnmargenberechnung und -validierung
 
-#### 5.1.3 Angebotsgenerierung
-- **PDF-Export**: Professionelle Angebote mit Corporate Branding
-- **Template-System**: Mehrere Vorlagen für verschiedene Kundentypen
-- **Projektdetails**: Kundeninformationen, Beschreibungen, Deadlines
-- **Service-Beschreibungen**: Klare Inklusions-/Exklusionsaussagen
-- **Zahlungskonditionen**: Anzahlungen, Raten, Zahlungsfristen
-- **Gültigkeitszeiträume**: Konfigurierbare Angebotsablaufzeiten
+#### 5.1.3 Angebotsverwaltung
+- Angebotserstellung mit vollständigen Projektdetails
+- Template-System für verschiedene Angebotstypen
+- PDF-Generierung mit Corporate Branding
+- Versionsverwaltung für Angebotsänderungen
+- Gültigkeitszeiträume und automatische Ablaufverwaltung
+- Angebotsduplizierung und -anpassung
+- Multi-Währungsunterstützung
 
 #### 5.1.4 Kundenverwaltung
-- **Kundendatenbank**: Umfassende Kontakt- und Geschäftsinformationen
-- **Kundenhistorie**: Vollständige Aufzeichnung von Angeboten und Projekten
-- **Individuelle Preisgestaltung**: Kundenspezifische Rabattsätze
-- **Kundensegmentierung**: Privat, KMU, Enterprise Kategorien
+- Umfassende Kundendatenbank mit Kontaktinformationen
+- Kundenhistorie und Interaktionsverlauf
+- Individuelle Preisvereinbarungen pro Kunde
+- Kundensegmentierung (Privat, KMU, Enterprise)
+- Automatische Dublettenerkennung
+- Kundenspezifische Rabattregeln
+- Integration mit CRM-Systemen
 
-#### 5.1.5 Benutzerverwaltung (Better-Auth)
-- **Rollenbasierter Zugriff**: Admin, Vertriebsleiter, Vertriebsmitarbeiter Rollen
-- **Email/Passwort Authentifizierung**: Sichere Anmeldung mit Session-Management
-- **Passwort-Wiederherstellung**: Sichere Passwort-Reset Funktionalität
-- **Berechtigungssystem**: Granulare Berechtigungen pro Rolle
+#### 5.1.5 Authentifizierung und Autorisierung
+- Sichere Benutzerauthentifizierung mit modernen Standards
+- Rollenbasierte Zugriffskontrolle (RBAC)
+- Session-Management mit automatischer Erneuerung
+- Passwort-Reset und Account-Recovery
+- Multi-Faktor-Authentifizierung (optional)
+- API-Key Management für externe Integrationen
+- Audit-Logging aller sicherheitsrelevanten Aktionen
 
-### 5.2 Erweiterte Funktionen (Soll-Haben)
+### 5.2 Frontend-Funktionen (Phase 2 - Mobile-First PWA)
 
-#### 5.2.1 Administratives Dashboard
-- **Zentralisiertes Preismanagement**: Globale Service-Preis-Administration
-- **Automatisierte Rabattregeln**: Bedingungsbasierte Rabattanwendung
-- **Service-Templates**: Vorkonfigurierte Service-Pakete
-- **Gewinnmargen-Überwachung**: Mindestmargen-Durchsetzung
-- **Preishistorie-Tracking**: Vollständiger Audit-Trail von Preisänderungen
+#### 5.2.1 Progressive Web App Capabilities
+- Installierbarkeit als eigenständige App
+- Offline-Funktionalität mit Service Worker
+- Push-Benachrichtigungen für wichtige Updates
+- Hintergrund-Synchronisation
+- App-ähnliche Navigation und Übergänge
+- Zugriff auf Gerätefunktionen (Kamera, GPS)
 
-#### 5.2.2 Analytics und Reporting
-- **Verkaufs-Dashboard**: Angebots-Metriken, Konversionsraten, Durchschnittspreise
-- **Service-Popularitätsanalyse**: Nutzungsstatistiken und Trends
-- **Gewinnmargen-Analyse**: Rentabilität nach Service und Kategorie
-- **Zeitliche Vergleiche**: Monat, Quartal, Jahr-für-Jahr Analyse
-- **Datenexport**: CSV, Excel Export für externe Analyse
+#### 5.2.2 Benutzeroberfläche
+- Mobile-optimiertes, responsives Design
+- Touch-optimierte Interaktionselemente
+- Intuitive Gestensteuerung
+- Schnellzugriff auf häufig genutzte Funktionen
+- Kontextsensitive Hilfe und Tooltips
+- Barrierefreies Design nach WCAG 2.1 AA
 
-#### 5.2.3 Workflow-Optimierung
-- **Favoriten-System**: Häufig genutzte Service-Kombinationen speichern
-- **Angebots-Duplizierung**: Bestehende Angebote als Vorlagen verwenden
-- **Express-Berechnung**: Schnellspur-Modus für Standard-Pakete
-- **Service-Suche**: Volltext-Suche über Service-Katalog
-- **Drag-and-Drop Interface**: Intuitive Service-Auswahl
-
----
-
-## 6. User Stories und Akzeptanzkriterien
-
-### 6.1 Authentifizierung und Zugriffskontrolle
-
-**ST-101: Benutzer-Login und Authentifizierung**
-- **Als** registrierter Benutzer
-- **möchte ich** mich sicher mit meiner E-Mail und meinem Passwort anmelden
-- **damit** ich auf mein personalisiertes Dashboard zugreifen und die Datensicherheit gewährleisten kann
-
-**Akzeptanzkriterien:**
-- Benutzer kann sich mit gültiger E-Mail/Passwort-Kombination anmelden
-- Ungültige Anmeldedaten zeigen entsprechende Fehlermeldungen an
-- Session bleibt für konfigurierbare Dauer aktiv
-- Logout-Funktionalität löscht Session-Daten
-- Passwort-Reset-Funktionalität über E-Mail verfügbar
-
-**ST-102: Rollenbasierte Zugriffskontrolle**
-- **Als** Systemadministrator
-- **möchte ich** verschiedene Rollen an Benutzer zuweisen
-- **damit** der Zugriff auf Funktionen basierend auf Benutzerverantwortlichkeiten kontrolliert wird
-
-**Akzeptanzkriterien:**
-- Admin-Rolle hat Zugriff auf alle Systemfunktionen
-- Vertriebsleiter-Rolle kann Analytics einsehen und Team-Einstellungen verwalten
-- Vertriebsmitarbeiter-Rolle kann Angebote erstellen und Kunden verwalten
-- Benutzer können nicht auf Funktionen außerhalb ihrer Rollenberechtigung zugreifen
-- Rollenänderungen werden sofort wirksam
-
-### 6.2 Service-Management
-
-**ST-103: Service-Katalog-Verwaltung**
-- **Als** Systemadministrator
-- **möchte ich** den kompletten Service-Katalog verwalten
-- **damit** Vertriebsteams aktuelle Preisinformationen haben
-
-**Akzeptanzkriterien:**
-- Services können in hierarchischen Kategorien organisiert werden
-- Multiple Preismodelle pro Service unterstützt
-- Service-Abhängigkeiten können konfiguriert und durchgesetzt werden
-- Komplexitätsstufen (Basic/Standard/Premium) mit Multiplikatoren
-- Add-On Services können mit Basis-Services verknüpft werden
-
-**ST-104: Service-Abhängigkeits-Validierung**
-- **Als** Vertriebsmitarbeiter
-- **möchte ich** vor fehlenden Service-Abhängigkeiten gewarnt werden
-- **damit** Angebote alle notwendigen Komponenten enthalten
-
-**Akzeptanzkriterien:**
-- System erkennt automatisch fehlende Abhängigkeiten
-- Warnmeldungen zeigen erforderliche Services an
-- Benutzer können fehlende Abhängigkeiten mit einem Klick hinzufügen
-- Abhängigkeitsketten werden rekursiv validiert
-- Override-Möglichkeit für Administratoren
-
-### 6.3 Preisberechnung
-
-**ST-105: Echtzeit-Preisberechnung**
-- **Als** Vertriebsmitarbeiter
-- **möchte ich** Preis-Updates sofort sehen, wenn ich Angebote modifiziere
-- **damit** ich Kunden sofortige Preisinformationen geben kann
-
-**Akzeptanzkriterien:**
-- Preise aktualisieren sich innerhalb von 100ms nach Benutzereingabe
-- Alle Rabatte und Multiplikatoren automatisch angewendet
-- Zwischensummen und Gesamtsummen korrekt berechnet
-- Steuerberechnungen wo anwendbar eingeschlossen
-- Gewinnmargen in Echtzeit angezeigt
-
-**ST-106: Bundle-Rabatt-Anwendung**
-- **Als** Vertriebsmitarbeiter
-- **möchte ich** Bundle-Rabatte automatisch anwenden
-- **damit** Kunden wettbewerbsfähige Preise für Service-Kombinationen erhalten
-
-**Akzeptanzkriterien:**
-- Bundle-Regeln lösen automatisch aus, wenn Bedingungen erfüllt sind
-- Multiple Bundle-Rabatte können kombiniert werden
-- Rabattbeträge klar im Angebot angezeigt
-- Manuelle Override-Möglichkeit für Manager
-- Bundle-Berechtigung während Service-Auswahl angezeigt
-
-### 6.4 Kundenverwaltung
-
-**ST-107: Kundeninformations-Management**
-- **Als** Vertriebsmitarbeiter
-- **möchte ich** umfassende Kundendatensätze pflegen
-- **damit** ich personalisierten Service und Preisgestaltung bieten kann
-
-**Akzeptanzkriterien:**
-- Vollständige Kundenkontaktinformationen gespeichert
-- Kundenhistorie über Angebots-Interface zugänglich
-- Individuelle Rabattsätze können angewendet werden
-- Kundensegmentierung beeinflusst verfügbare Services
-- Datenexport-Möglichkeit für externe Systeme
-
-**ST-108: Kundenhistorie-Tracking**
-- **Als** Vertriebsmitarbeiter
-- **möchte ich** vollständige Kundenangebots-Historie einsehen
-- **damit** ich auf vorherige Projekte und Preisgestaltung verweisen kann
-
-**Akzeptanzkriterien:**
-- Alle Kundenangebote chronologisch angezeigt
-- Such- und Filterfunktionalität verfügbar
-- Vorherige Angebote können als Vorlagen dupliziert werden
-- Status-Tracking für jedes Angebot
-- Notizen und Kommentare können hinzugefügt werden
-
-### 6.5 Angebotsgenerierung
-
-**ST-109: PDF-Angebots-Export**
-- **Als** Vertriebsmitarbeiter
-- **möchte ich** professionelle PDF-Angebote generieren
-- **damit** ich gebrandete Vorschläge an Kunden präsentieren kann
-
-**Akzeptanzkriterien:**
-- PDF enthält Corporate Branding und Formatierung
-- Alle Service-Details und Preise klar präsentiert
-- Zahlungskonditionen und -bedingungen enthalten
-- Digitale Signatur-Möglichkeit
-- E-Mail-Versand-Integration
-
-**ST-110: Angebots-Template-Management**
-- **Als** Vertriebsleiter
-- **möchte ich** Angebots-Templates erstellen und verwalten
-- **damit** das Team konsistente Präsentationsstandards einhält
-
-**Akzeptanzkriterien:**
-- Multiple Templates für verschiedene Kundentypen
-- Template-Anpassung ohne Programmierung
-- Vorschau-Funktionalität vor Anwendung
-- Versionskontrolle für Template-Änderungen
-- Standard-Template-Zuweisung nach Kundensegment
-
-### 6.6 Analytics und Reporting
-
-**ST-111: Verkaufsleistung-Dashboard**
-- **Als** Vertriebsleiter
-- **möchte ich** Team-Performance-Metriken einsehen
-- **damit** ich Trends und Verbesserungsmöglichkeiten identifizieren kann
-
-**Akzeptanzkriterien:**
-- Angebots-Konversionsraten angezeigt
-- Durchschnittliche Angebotswerte berechnet
-- Service-Popularitäts-Rankings gezeigt
-- Zeitbasierte Performance-Vergleiche
-- Drill-Down-Möglichkeit für detaillierte Analyse
-
-**ST-112: Gewinnmargen-Analyse**
-- **Als** Finanzadministrator
-- **möchte ich** Gewinnmargen über Services analysieren
-- **damit** Preisstrategien optimiert werden können
-
-**Akzeptanzkriterien:**
-- Margenberechnungen für individuelle Services
-- Kategoriebasierte Margen-Zusammenfassungen
-- Trendanalyse über Zeiträume
-- Kosten vs. Umsatz Aufschlüsselungen
-- Export-Möglichkeit für Finanzsysteme
-
-### 6.7 Mobile Funktionalität
-
-**ST-113: Mobile Angebotserstellung**
-- **Als** Vertriebsmitarbeiter
-- **möchte ich** Angebote auf mobilen Geräten erstellen
-- **damit** ich sofort auf Kundenanfragen reagieren kann
-
-**Akzeptanzkriterien:**
-- Touch-optimierte Oberfläche für mobile Geräte
-- Alle Kern-Angebotsfunktionen verfügbar
-- Offline-Fähigkeit für Basisfunktionen
-- Sync-Funktionalität wenn Konnektivität wiederhergestellt
-- Kamera-Integration für Dokumentenerfassung
-
-**ST-114: Offline-Funktionalität**
-- **Als** Vertriebsmitarbeiter
-- **möchte ich** offline arbeiten, wenn die Konnektivität begrenzt ist
-- **damit** ich Kunden an jedem Ort weiter bedienen kann
-
-**Akzeptanzkriterien:**
-- Service-Katalog lokal gecacht
-- Angebote können offline erstellt werden
-- Daten synchronisieren sich bei wiederhergestellter Verbindung
-- Konfliktlösung für gleichzeitige Bearbeitungen
-- Klare Indikatoren für Offline-Status
-
-### 6.8 Systemadministration
-
-**ST-115: Benutzerkonto-Management**
-- **Als** Systemadministrator
-- **möchte ich** Benutzerkonten und Berechtigungen verwalten
-- **damit** Systemzugriff ordnungsgemäß kontrolliert wird
-
-**Akzeptanzkriterien:**
-- Benutzerkonten können erstellt, modifiziert, gelöscht werden
-- Rollenzuweisungen können geändert werden
-- Passwort-Richtlinien durchgesetzt
-- Kontoaktivitäts-Überwachung
-- Bulk-Benutzerverwaltungs-Möglichkeiten
-
-**ST-116: Systemkonfigurations-Management**
-- **Als** Systemadministrator
-- **möchte ich** systemweite Einstellungen konfigurieren
-- **damit** das System gemäß Geschäftsanforderungen operiert
-
-**Akzeptanzkriterien:**
-- Steuersätze und Berechnungsregeln konfigurierbar
-- Corporate Branding-Elemente anpassbar
-- Integrationseinstellungen verwaltbar
-- Backup- und Recovery-Verfahren definiert
-- Audit-Log-Konfiguration verfügbar
-
-### 6.9 Datenbank-Modellierung
-
-**ST-117: Datenstruktur-Design**
-- **Als** Systemarchitekt
-- **möchte ich** ein robustes Datenbankschema implementieren
-- **damit** Datenintegrität und Performance aufrechterhalten werden
-
-**Akzeptanzkriterien:**
-- Normalisierte Datenbankstruktur implementiert
-- Foreign-Key-Beziehungen ordnungsgemäß definiert
-- Indexierungsstrategie für Performance-Optimierung
-- Datenvalidierungsregeln auf Datenbankebene durchgesetzt
-- Migrationsskripte für Schema-Updates
-
-**ST-118: Datensicherung und -wiederherstellung**
-- **Als** Systemadministrator
-- **möchte ich** Datensicherungs- und Wiederherstellungsfähigkeiten sicherstellen
-- **damit** Geschäftskontinuität aufrechterhalten wird
-
-**Akzeptanzkriterien:**
-- Automatisierte tägliche Backup-Verfahren
-- Point-in-Time-Recovery-Möglichkeit
-- Backup-Integritäts-Verifikation
-- Disaster-Recovery-Verfahren dokumentiert
-- Recovery-Zeit-Ziele erfüllt
+#### 5.2.3 Offline-Funktionalität
+- Lokale Datenspeicherung mit IndexedDB
+- Offline-Angebotserstellung
+- Automatische Synchronisation bei Verbindung
+- Konfliktauflösung bei konkurrierenden Änderungen
+- Visueller Offline-Indikator
+- Queue-Management für ausstehende Aktionen
 
 ---
 
-## 7. Technische Anforderungen / Stack
+## 6. Nicht-funktionale Anforderungen
 
-### 7.1 Architektur-Übersicht
-- **Frontend Framework**: React mit TypeScript
-- **Backend Framework**: Node.js mit Express
-- **Desktop-Anwendung**: Tauri Framework
-- **Mobile Anwendung**: Tauri Mobile
-- **Datenbank**: PostgreSQL für Produktion, SQLite für Offline-Speicherung
-- **Authentifizierung**: Better-Auth für sicheres Session-Management
-- **API-Schicht**: tRPC für typsichere API-Kommunikation
-- **State Management**: Zustand oder Redux Toolkit
-- **UI-Komponenten**: shadcn/ui oder ähnliche Komponentenbibliothek
+### 6.1 Performance
+- **API-Antwortzeit**: < 100ms für 95% aller Anfragen
+- **Seitenladzeit**: < 3 Sekunden auf 3G-Verbindungen
+- **Time to Interactive**: < 5 Sekunden
+- **Gleichzeitige Benutzer**: Mindestens 1000
+- **Datenbankabfragen**: Optimiert für < 50ms
 
-### 7.2 Datenbank-Anforderungen
+### 6.2 Skalierbarkeit
+- **Horizontale Skalierung**: Automatisch basierend auf Last
+- **Datenbank-Skalierung**: Unterstützung für Read-Replicas
+- **CDN-Integration**: Für statische Assets
+- **Edge-Computing**: Nähe zu Benutzern weltweit
+- **Caching-Strategien**: Multi-Level-Caching
 
-#### Kern-Entitäten
-- **Benutzer**: Authentifizierung, Rollen, Berechtigungen, Profilinformationen
-- **Services**: Katalogstruktur, Preismodelle, Abhängigkeiten, Konfigurationen
-- **Kunden**: Kontaktinformationen, Historie, Preispräferenzen
-- **Angebote**: Projektdetails, Service-Auswahlen, Preisberechnungen
-- **Analytics**: Nutzungs-Tracking, Performance-Metriken, Business Intelligence
+### 6.3 Sicherheit
+- **Verschlüsselung**: TLS 1.3 für alle Verbindungen
+- **Datenverschlüsselung**: At-rest und in-transit
+- **OWASP-Konformität**: Top 10 Sicherheitsmaßnahmen
+- **Penetrationstests**: Quartalsweise
+- **Compliance**: DSGVO/GDPR-konform
 
-#### Performance-Anforderungen
-- **Antwortzeit**: API-Aufrufe abgeschlossen innerhalb von 200ms für 95% der Anfragen
-- **Gleichzeitigkeit**: Mindestens 100 gleichzeitige Benutzer unterstützen
-- **Datenvolumen**: 10.000+ Services und 100.000+ Angebote verarbeiten
-- **Backup-Häufigkeit**: Tägliche automatisierte Backups mit Point-in-Time-Recovery
+### 6.4 Verfügbarkeit
+- **Uptime-Ziel**: 99.9% (8.76 Stunden Downtime/Jahr)
+- **Disaster Recovery**: RTO < 4 Stunden, RPO < 1 Stunde
+- **Backup-Strategie**: Tägliche automatische Backups
+- **Monitoring**: 24/7 mit automatischen Alerts
+- **Failover**: Automatisch bei Ausfall
 
-### 7.3 API-Spezifikationen (tRPC)
-
-#### Service-Management Endpunkte
-- `services.getAll()`: Vollständigen Service-Katalog abrufen
-- `services.create()`: Neuen Service zum Katalog hinzufügen
-- `services.update()`: Bestehenden Service modifizieren
-- `services.delete()`: Service entfernen (mit Abhängigkeitsprüfung)
-- `services.getDependencies()`: Service-Abhängigkeitsbaum abrufen
-
-#### Berechnungs-Engine Endpunkte
-- `calculations.calculate()`: Echtzeit-Preisberechnung durchführen
-- `calculations.validateDependencies()`: Service-Abhängigkeiten prüfen
-- `calculations.applyDiscounts()`: Bundle- und Kundenrabatte anwenden
-- `calculations.estimateTime()`: Projektzeitschätzungen berechnen
-
-#### Angebots-Management Endpunkte
-- `quotations.create()`: Neues Angebot erstellen
-- `quotations.update()`: Bestehendes Angebot modifizieren
-- `quotations.duplicate()`: Angebot als Vorlage kopieren
-- `quotations.generatePDF()`: Angebot als PDF exportieren
-- `quotations.getHistory()`: Kunden-Angebotshistorie abrufen
-
-### 7.4 Authentifizierungs-Implementierung (Better-Auth)
-
-#### Sicherheitsfeatures
-- **Session-Management**: Sichere token-basierte Sessions mit automatischer Erneuerung
-- **Passwort-Richtlinien**: Mindest-Komplexitätsanforderungen durchgesetzt
-- **Rate Limiting**: Login-Versuch-Beschränkungen zur Brute-Force-Attacken-Verhinderung
-- **Multi-Device-Unterstützung**: Gleichzeitige Sessions über Geräte hinweg
-- **Audit-Logging**: Vollständiges Authentifizierungs-Event-Tracking
-
-#### Rollendefinitionen
-- **Admin**: Vollzugriff auf System, Benutzerverwaltung, Konfiguration
-- **Vertriebsleiter**: Team-Übersicht, Analytics-Zugriff, Preisgenehmigung
-- **Vertriebsmitarbeiter**: Angebotserstellung, Kundenverwaltung
-- **Gast**: Nur-Lese-Zugriff auf öffentliche Informationen
-
-### 7.5 Plattformspezifische Implementierungen
-
-#### Desktop (Tauri)
-- **Native Menüs**: Dateioperationen, Bearbeitungsfunktionen, Ansichtsoptionen
-- **Tastaturkürzel**: Standard-Shortcuts für häufige Operationen
-- **Systemintegration**: Standard-Anwendungsassoziationen, Dateihandling
-- **Offline-Synchronisation**: Lokale Datenbank mit Server-Sync
-- **Native Benachrichtigungen**: System-Level Status-Updates
-
-#### Mobile (Tauri Mobile)
-- **Touch-Optimierung**: Gestenbasierte Navigation, responsive Layouts
-- **Kamera-Integration**: Dokumentenscanning, Visitenkarten-Erfassung
-- **Push-Benachrichtigungen**: Echtzeit-Updates und Erinnerungen
-- **Offline-Fähigkeiten**: Vollständige Angebotserstellung ohne Konnektivität
-- **Standortdienste**: GPS-basierte Kundeninformations-Verbesserung
+### 6.5 Wartbarkeit
+- **Code-Dokumentation**: Inline und externe Dokumentation
+- **API-Dokumentation**: Automatisch generiert und versioniert
+- **Logging**: Strukturiertes, zentralisiertes Logging
+- **Monitoring**: Application Performance Monitoring
+- **Update-Strategie**: Zero-Downtime Deployments
 
 ---
 
-## 8. Design und Benutzeroberfläche
+## 7. Technische Architektur
 
-### 8.1 Designprinzipien
+### 7.1 System-Architektur
 
-#### Benutzererfahrungs-Richtlinien
-- **Einfachheit**: Saubere, unübersichtliche Oberfläche mit intuitiver Navigation
-- **Konsistenz**: Einheitliche Designmuster über alle Plattformen
-- **Barrierefreiheit**: WCAG 2.1 AA Konformität für inklusiven Zugang
-- **Responsivität**: Adaptive Layouts für alle Bildschirmgrößen
-- **Performance**: Optimistische UI-Updates mit sofortigem visuellen Feedback
+#### API-First Prinzipien
+- Alle Geschäftslogik in der API gekapselt
+- Strikte Trennung von Frontend und Backend
+- Versionierte, rückwärtskompatible APIs
+- Umfassende API-Dokumentation
+- Standardisierte Fehlerbehandlung
 
-#### Visuelle Designstandards
-- **Farbschema**: Professionelle Palette mit hohen Kontrastverhältnissen
-- **Typografie**: Lesbare Schriftauswahlen mit angemessener Größe
-- **Ikonografie**: Konsistente Icon-Bibliothek über alle Oberflächen
-- **Abstände**: Systematisches Abstandsraster für visuelle Harmonie
-- **Branding**: Corporate Identity Integration durch die gesamte Anwendung
+#### Microservices-Ansatz
+- Modulare Service-Architektur
+- Unabhängige Skalierung einzelner Services
+- Event-Driven Communication wo sinnvoll
+- Service Mesh für Kommunikation
+- Container-basiertes Deployment
 
-### 8.2 Oberflächen-Spezifikationen
+### 7.2 Technology Stack
 
-#### Dashboard-Layout
-- **Navigations-Sidebar**: Zusammenklappbares Menü mit rollenbasierten Optionen
-- **Hauptinhaltsbereich**: Kontextsensitive Inhalte mit Breadcrumb-Navigation
-- **Status-Indikatoren**: Echtzeit-Systemstatus und Benachrichtigungen
-- **Schnellaktionen**: Häufig genutzte Funktionen prominent angezeigt
-- **Suchfunktionalität**: Globale Suche über alle Inhaltstypen
+#### Backend-Stack (Phase 1)
+- **Runtime**: Node.js 20+ oder Bun
+- **API Framework**: Hono.js (Edge-optimiert)
+- **Datenbank**: Neon DB (Serverless PostgreSQL)
+- **ORM**: Drizzle ORM
+- **Validierung**: Zod Schema Validation
+- **API-Protokolle**: REST + tRPC
+- **Dokumentation**: OpenAPI 3.0 / Scalar
+- **Testing**: Vitest + Playwright
+- **Deployment**: Vercel Edge / Cloudflare Workers
 
-#### Angebotserstellungs-Workflow
-- **Wizard-Oberfläche**: Schrittweiser Angebotserstellungsprozess
-- **Service-Auswahl**: Drag-and-Drop Service-Katalog mit Suche
-- **Preisanzeige**: Echtzeit-Berechnungsergebnisse mit Aufschlüsselung
-- **Kundenauswahl**: Autocomplete-Kundensuche mit Historie
-- **Überprüfungsbildschirm**: Vollständige Angebotsvorschau vor Generierung
+#### Frontend-Stack (Phase 2)
+- **Framework**: Next.js 14+ (App Router)
+- **UI-Komponenten**: shadcn/ui
+- **Styling**: Tailwind CSS v4
+- **State Management**: Zustand + TanStack Query
+- **Formulare**: React Hook Form + Zod
+- **PWA**: Workbox / next-pwa
+- **Testing**: Vitest + Playwright
 
-#### Mobile Oberflächen-Anpassungen
-- **Touch-Ziele**: Mindestens 44px Touch-Ziel-Größe
-- **Gesten-Unterstützung**: Swipe-Navigation, Pull-to-Refresh
-- **Modal-Interaktionen**: Bottom-Sheet-Muster für mobile-optimierte Workflows
-- **Tastatur-Optimierung**: Intelligente Tastaturtypen für Eingabefelder
-- **Offline-Indikatoren**: Klares visuelles Feedback für Konnektivitätsstatus
+#### Infrastructure
+- **Hosting**: Edge-basiert (Vercel/Cloudflare)
+- **CDN**: Integriert in Hosting
+- **Monitoring**: Sentry + Vercel Analytics
+- **CI/CD**: GitHub Actions
+- **Container**: Docker für lokale Entwicklung
 
-### 8.3 Barrierefreiheits-Anforderungen
+### 7.3 Datenmodell
 
-#### WCAG 2.1 Konformität
-- **Tastatur-Navigation**: Vollständige Funktionalität über Tastatur verfügbar
-- **Screen-Reader-Unterstützung**: Semantisches Markup mit ordnungsgemäßen ARIA-Labels
-- **Farbkontrast**: Mindestens 4,5:1 Verhältnis für normalen Text
-- **Focus-Management**: Klare Focus-Indikatoren und logische Tab-Reihenfolge
-- **Alternativer Text**: Beschreibender Alt-Text für alle Bilder und Icons
+#### Haupt-Entitäten
+- **Users**: Benutzerkonten mit Rollen und Berechtigungen
+- **Services**: Service-Katalog mit Preisen und Abhängigkeiten
+- **Customers**: Kundendaten und individuelle Vereinbarungen
+- **Quotations**: Angebote mit Positionen und Kalkulationen
+- **Categories**: Hierarchische Service-Kategorien
+- **PricingRules**: Flexible Preisregeln und Rabatte
+- **AuditLogs**: Nachvollziehbarkeit aller Änderungen
 
-#### Zusätzliche Barrierefreiheits-Features
-- **Text-Skalierung**: Unterstützung für benutzerdefinierte Schriftgrößenpräferenzen
-- **Hoher Kontrast-Modus**: Alternatives Farbschema für Sehbehinderungen
-- **Bewegungspräferenzen**: Respektierung von Benutzerpräferenzen für reduzierte Bewegung
-- **Sprachunterstützung**: Mehrsprachige Oberfläche mit ordnungsgemäßer Locale-Behandlung
-- **Fehlerbehandlung**: Klare, handlungsrelevante Fehlermeldungen und Recovery-Pfade
+#### Datenbank-Design-Prinzipien
+- Normalisierung bis zur 3. Normalform
+- Optimierte Indizierung für häufige Abfragen
+- Soft-Deletes für Datenintegrität
+- UUID als Primary Keys
+- Timestamp-Felder für alle Entitäten
 
-### 8.4 Performance-Optimierung
+### 7.4 API-Design
 
-#### Ladestrategien
-- **Progressives Laden**: Kritische Inhalte laden zuerst, sekundäre Inhalte lazy-loaden
-- **Caching-Strategien**: Intelligentes Caching häufig genutzter Daten
-- **Bildoptimierung**: Responsive Bilder mit angemessener Kompression
-- **Code-Splitting**: Dynamische Imports zur Reduzierung der initialen Bundle-Größe
-- **Service Workers**: Offline-Funktionalität und Hintergrund-Synchronisation
+#### RESTful Endpunkte
+- Ressourcen-orientiertes Design
+- Konsistente URL-Struktur
+- Proper HTTP-Verben und Status-Codes
+- Pagination, Filtering, Sorting
+- HATEOAS wo anwendbar
 
-#### Benutzererfahrungs-Optimierungen
-- **Optimistische Updates**: UI reagiert sofort auf Benutzeraktionen
-- **Ladezustände**: Klare Fortschrittsindikatoren für alle asynchronen Operationen
-- **Error Boundaries**: Elegante Fehlerbehandlung mit Recovery-Optionen
-- **Skeleton Screens**: Platzhalter-Inhalte während Ladezuständen
-- **Unendliches Scrollen**: Effiziente Behandlung großer Datensätze
+#### API-Versionierung
+- URL-basierte Versionierung (/v1, /v2)
+- Rückwärtskompatibilität für 2 Versionen
+- Deprecation-Warnings in Headers
+- Migrations-Guides für Breaking Changes
+
+#### Fehlerbehandlung
+- Standardisierte Fehlerformate
+- Aussagekräftige Fehlermeldungen
+- Fehler-Codes für Automatisierung
+- Stack-Traces nur in Development
 
 ---
 
-## Fazit
+## 8. Entwicklungs-Roadmap
 
-Dieses Produktanforderungsdokument bietet eine umfassende Grundlage für die Entwicklung des Preiskalkulator-Tools. Das Dokument deckt alle wesentlichen Aspekte von Benutzerauthentifizierung bis hin zu erweiterten Analytics ab und gewährleistet eine vollständige Lösung, die sowohl aktuelle Bedürfnisse als auch zukünftige Skalierbarkeitsanforderungen erfüllt.
+### Phase 1: Backend-API (6-8 Wochen)
+**Woche 1-2: Foundation**
+- Projekt-Setup und Infrastruktur
+- Datenbank-Schema und Migrationen
+- Basis-API-Struktur mit Hono.js
+- CI/CD Pipeline
 
-Der Erfolg dieses Projekts hängt von der Einhaltung der spezifizierten Anforderungen, konsistenter Implementierung über alle Plattformen hinweg und kontinuierlicher Validierung gegen die definierten Erfolgskennzahlen ab. Regelmäßige Überprüfung und Updates dieses Dokuments werden die Ausrichtung mit sich entwickelnden Geschäftsbedürfnissen und technischen Fähigkeiten sicherstellen.
+**Woche 3-4: Core Features**
+- Service-Management API
+- Preisberechnungs-Engine
+- Basis-Authentifizierung
 
-Für Fragen oder Klarstellungen zu jedem Aspekt dieser Anforderungen wenden Sie sich bitte an das Produktmanagement-Team.
+**Woche 5-6: Advanced Features**
+- Angebotsverwaltung
+- Kundenverwaltung
+- PDF-Generierung
+
+**Woche 7-8: Polish & Testing**
+- API-Dokumentation
+- Performance-Optimierung
+- Sicherheitstests
+- Load Testing
+
+### Phase 2: Mobile-First Frontend (8-10 Wochen)
+**Woche 1-2: Setup & Foundation**
+- Next.js Projekt-Setup
+- UI-Komponenten-Library
+- PWA-Konfiguration
+- API-Integration
+
+**Woche 3-5: Core Features**
+- Service-Auswahl UI
+- Preiskalkulation Interface
+- Kundenverwaltung
+
+**Woche 6-7: Offline Capabilities**
+- Service Worker Implementation
+- Offline-Datenspeicherung
+- Sync-Mechanismen
+
+**Woche 8-10: Polish & Launch**
+- Performance-Optimierung
+- User Testing
+- Bug Fixes
+- Deployment
+
+### Phase 3: Native Apps (12-16 Wochen)
+- Parallele Entwicklung für iOS und Android
+- Nutzung der bestehenden REST API
+- Native Features und Optimierungen
+
+### Phase 4: Desktop App (4-6 Wochen)
+- Tauri-Integration
+- Desktop-spezifische Features
+- System-Integrationen
+
+---
+
+## 9. Erfolgsmetriken
+
+### 9.1 Technische Metriken
+- **API-Verfügbarkeit**: > 99.9%
+- **Response Time**: p95 < 100ms
+- **Error Rate**: < 0.1%
+- **Test Coverage**: > 80%
+- **Lighthouse Score**: > 90
+
+### 9.2 Business Metriken
+- **Angebotserstellungszeit**: < 5 Minuten
+- **Benutzerakzeptanz**: > 90%
+- **Fehlerrate**: < 1%
+- **Mobile Nutzung**: > 40%
+- **Offline-Nutzung**: > 20%
+
+### 9.3 Benutzer-Metriken
+- **Time to First Quote**: < 24 Stunden nach Onboarding
+- **Daily Active Users**: > 80% der Vertriebsteams
+- **Feature Adoption**: > 70% für Kernfeatures
+- **User Satisfaction**: NPS > 50
+
+---
+
+## 10. Risiken und Mitigationsstrategien
+
+### 10.1 Technische Risiken
+**Risiko**: Performance-Probleme bei Skalierung
+- **Mitigation**: Load Testing, Caching-Strategien, CDN
+
+**Risiko**: Offline-Sync-Konflikte
+- **Mitigation**: Robuste Konfliktauflösung, User Guidance
+
+**Risiko**: API-Breaking Changes
+- **Mitigation**: Strikte Versionierung, Deprecation Policy
+
+### 10.2 Business Risiken
+**Risiko**: Langsame User Adoption
+- **Mitigation**: Schrittweise Einführung, Training
+
+**Risiko**: Widerstand gegen Veränderung
+- **Mitigation**: Change Management, Quick Wins
+
+### 10.3 Sicherheitsrisiken
+**Risiko**: Datenlecks
+- **Mitigation**: Verschlüsselung, Access Controls, Auditing
+
+**Risiko**: API-Missbrauch
+- **Mitigation**: Rate Limiting, API Keys, Monitoring
+
+---
+
+## 11. Anhänge
+
+### 11.1 Glossar
+- **API**: Application Programming Interface
+- **PWA**: Progressive Web App
+- **REST**: Representational State Transfer
+- **tRPC**: TypeScript Remote Procedure Call
+- **Edge Computing**: Dezentrale Datenverarbeitung
+- **Service Worker**: Browser-Technologie für Offline-Funktionalität
+
+### 11.2 Referenzen
+- Bestehende Preiskalkulations-Prozesse
+- Wettbewerberanalyse
+- Technologie-Evaluierungen
+- User Research Ergebnisse
+
+### 11.3 Kontakte
+- Product Owner
+- Technical Lead
+- UX/UI Designer
+- QA Lead
+- Stakeholder-Liste
+
+---
+
+## Zusammenfassung
+
+Dieses PRD definiert einen modernen, API-first Ansatz für die Entwicklung eines Preiskalkulator-Tools. Der Fokus liegt auf einer robusten Backend-API, die als Fundament für verschiedene Client-Anwendungen dient, beginnend mit einer Mobile-First Progressive Web App. Die gewählte Architektur gewährleistet Skalierbarkeit, Wartbarkeit und Zukunftssicherheit des Systems.

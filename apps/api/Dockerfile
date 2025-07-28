@@ -11,7 +11,7 @@ WORKDIR /app
 # Copy all files
 COPY . .
 # Use turbo CLI from Bun global install to prune workspaces
-RUN turbo prune @midday/api --docker
+RUN turbo prune @durchrechnen/api --docker
 
 # Installer stage
 FROM base AS installer
@@ -26,7 +26,7 @@ RUN bun install
 COPY --from=builder /app/out/full/ .
 
 # Copy the prebuilt engine dist from the build context (assumes CI built it)
-COPY apps/engine/dist /app/apps/engine/dist
+# COPY apps/engine/dist /app/apps/engine/dist
 
 # Runner stage (same as installer to avoid another copy)
 FROM installer AS runner
@@ -38,7 +38,7 @@ WORKDIR /app/apps/api
 ENV NODE_ENV=production
 
 # Expose the port the API runs on
-EXPOSE 3000
+EXPOSE 8080
 
 # Run the API directly with Bun
 CMD ["bun", "run", "src/index.ts"]

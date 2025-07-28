@@ -5,7 +5,6 @@ import { auth } from "./lib/auth";
 import { checkHealth } from "./utils/health";
 import { routers } from "./rest/routers";
 import { appRouter } from "./trpc/routers/_app";
-// Removed tauri-middleware import
 
 // Define context type with Better-Auth session
 type Variables = {
@@ -21,7 +20,7 @@ app.use(secureHeaders());
 app.use(
   "/api/auth/**",
   cors({
-    origin: process.env.CORS_ORIGINS?.split(",") || ["http://localhost:1420"],
+    origin: process.env.CORS_ORIGINS?.split(",") || ["http://localhost:3000"],
     allowMethods: ["POST", "GET", "OPTIONS"],
     allowHeaders: ["Content-Type", "Authorization", "X-Client-Type", "Platform"],
     exposeHeaders: ["Content-Length"],
@@ -29,9 +28,6 @@ app.use(
     credentials: true,
   }),
 );
-
-
-// Removed Tauri middleware
 
 // Better-Auth route handler
 app.on(["POST", "GET"], "/api/auth/**", (c) => {
@@ -101,7 +97,12 @@ app.get("/api/session", (c) => {
   });
 });
 
+const port = process.env.PORT ? Number.parseInt(process.env.PORT) : 3000;
+const hostname = process.env.HOST || "0.0.0.0";
+
 export default {
-  port: process.env.PORT ? Number.parseInt(process.env.PORT) : 3000,
+  port,
+  hostname,
   fetch: app.fetch,
+  development: process.env.NODE_ENV !== "production",
 };
