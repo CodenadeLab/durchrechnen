@@ -1,13 +1,13 @@
-import { filterPlugin } from "loglayer";
+import { filterPlugin } from "@loglayer/plugin-filter";
 
 export function createFilterPlugin(config: {
-  level?: string;
-  namespace?: string;
-  custom?: (logObj: any) => boolean;
+  messages?: (string | RegExp)[];
+  queries?: string[];
+  debug?: boolean;
 }) {
   return filterPlugin({
-    level: config.level,
-    namespace: config.namespace,
-    filter: config.custom,
+    messages: config.messages,
+    queries: config.queries,
+    debug: config.debug,
   });
 }

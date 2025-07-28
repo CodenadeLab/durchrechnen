@@ -4,6 +4,7 @@ import { serializeError } from "serialize-error";
 import type { LoggerConfig } from "./config";
 import { defaultConfig } from "./config";
 import { createServerTransports } from "./transports";
+import type { StructuredMetadata } from "./types.d";
 
 // Extended logger interface with our custom methods and flexible typing
 export interface IExtendedLogger
@@ -12,13 +13,13 @@ export interface IExtendedLogger
     "info" | "error" | "warn" | "debug" | "withMetadata"
   > {
   // Override base methods to be more flexible with metadata
-  withMetadata(metadata: Record<string, unknown>): ILogBuilder;
+  withMetadata(metadata: StructuredMetadata): ILogBuilder;
 
   // Override standard logging methods to accept flexible metadata as second parameter
-  info(message: string, metadata?: Record<string, unknown>): void;
-  error(message: string, metadata?: Record<string, unknown>): void;
-  warn(message: string, metadata?: Record<string, unknown>): void;
-  debug(message: string, metadata?: Record<string, unknown>): void;
+  info(message: string, metadata?: StructuredMetadata): void;
+  error(message: string, metadata?: StructuredMetadata): void;
+  warn(message: string, metadata?: StructuredMetadata): void;
+  debug(message: string, metadata?: StructuredMetadata): void;
 
   // Custom convenience methods
   withUser(userId: string, userEmail?: string): ILogBuilder;
@@ -94,10 +95,10 @@ export async function createLogger(
   // Override standard logging methods to accept flexible metadata
   extendedLogger.info = (
     message: string,
-    metadata?: Record<string, unknown>,
+    metadata?: StructuredMetadata,
   ): void => {
     if (metadata) {
-      baseLogger.withMetadata(metadata as any).info(message);
+      baseLogger.withMetadata(metadata).info(message);
     } else {
       baseLogger.info(message);
     }
@@ -105,10 +106,10 @@ export async function createLogger(
 
   extendedLogger.error = (
     message: string,
-    metadata?: Record<string, unknown>,
+    metadata?: StructuredMetadata,
   ): void => {
     if (metadata) {
-      baseLogger.withMetadata(metadata as any).error(message);
+      baseLogger.withMetadata(metadata).error(message);
     } else {
       baseLogger.error(message);
     }
@@ -116,10 +117,10 @@ export async function createLogger(
 
   extendedLogger.warn = (
     message: string,
-    metadata?: Record<string, unknown>,
+    metadata?: StructuredMetadata,
   ): void => {
     if (metadata) {
-      baseLogger.withMetadata(metadata as any).warn(message);
+      baseLogger.withMetadata(metadata).warn(message);
     } else {
       baseLogger.warn(message);
     }
@@ -127,10 +128,10 @@ export async function createLogger(
 
   extendedLogger.debug = (
     message: string,
-    metadata?: Record<string, unknown>,
+    metadata?: StructuredMetadata,
   ): void => {
     if (metadata) {
-      baseLogger.withMetadata(metadata as any).debug(message);
+      baseLogger.withMetadata(metadata).debug(message);
     } else {
       baseLogger.debug(message);
     }
@@ -141,16 +142,16 @@ export async function createLogger(
     userId: string,
     userEmail?: string,
   ): ILogBuilder => {
-    const metadata: Record<string, unknown> = {
+    const metadata: StructuredMetadata = {
       userId,
       userEmail: userEmail ? "[REDACTED]" : undefined,
     };
-    return baseLogger.withMetadata(metadata as any);
+    return baseLogger.withMetadata(metadata);
   };
 
   extendedLogger.withRequest = (req: any): ILogBuilder => {
-    const metadata: Record<string, unknown> = { request: req };
-    return baseLogger.withMetadata(metadata as any);
+    const metadata: StructuredMetadata = { request: req };
+    return baseLogger.withMetadata(metadata);
   };
 
   // Add structured logging methods
@@ -159,12 +160,12 @@ export async function createLogger(
     res: any,
     duration?: number,
   ): void => {
-    const metadata: Record<string, unknown> = {
+    const metadata: StructuredMetadata = {
       request: req,
       response: res,
       duration,
     };
-    baseLogger.withMetadata(metadata as any).info("HTTP Request");
+    baseLogger.withMetadata(metadata).info("HTTP Request");
   };
 
   extendedLogger.httpError = (
@@ -172,14 +173,11 @@ export async function createLogger(
     error: Error,
     statusCode: number,
   ): void => {
-    const metadata: Record<string, unknown> = {
+    const metadata: StructuredMetadata = {
       request: req,
       statusCode,
     };
-    baseLogger
-      .withMetadata(metadata as any)
-      .withError(error)
-      .error("HTTP Error");
+    baseLogger.withMetadata(metadata).withError(error).error("HTTP Error");
   };
 
   extendedLogger.databaseQuery = (
@@ -187,12 +185,12 @@ export async function createLogger(
     duration: number,
     params?: any[],
   ): void => {
-    const metadata: Record<string, unknown> = {
+    const metadata: StructuredMetadata = {
       query,
       duration,
       params: params ? "[REDACTED]" : undefined,
     };
-    baseLogger.withMetadata(metadata as any).debug("Database Query");
+    baseLogger.withMetadata(metadata).debug("Database Query");
   };
 
   extendedLogger.authEvent = (
@@ -200,23 +198,23 @@ export async function createLogger(
     userId?: string,
     details?: Record<string, any>,
   ): void => {
-    const metadata: Record<string, unknown> = {
+    const metadata: StructuredMetadata = {
       event,
       userId,
       ...details,
     };
-    baseLogger.withMetadata(metadata as any).info("Auth Event");
+    baseLogger.withMetadata(metadata).info("Auth Event");
   };
 
   extendedLogger.businessEvent = (
     event: string,
     data: Record<string, any>,
   ): void => {
-    const metadata: Record<string, unknown> = {
+    const metadata: StructuredMetadata = {
       event,
       ...data,
     };
-    baseLogger.withMetadata(metadata as any).info("Business Event");
+    baseLogger.withMetadata(metadata).info("Business Event");
   };
 
   return extendedLogger;
@@ -242,10 +240,10 @@ export function createSyncLogger(
   // Override standard logging methods to accept flexible metadata
   extendedLogger.info = (
     message: string,
-    metadata?: Record<string, unknown>,
+    metadata?: StructuredMetadata,
   ): void => {
     if (metadata) {
-      baseLogger.withMetadata(metadata as any).info(message);
+      baseLogger.withMetadata(metadata).info(message);
     } else {
       baseLogger.info(message);
     }
@@ -253,10 +251,10 @@ export function createSyncLogger(
 
   extendedLogger.error = (
     message: string,
-    metadata?: Record<string, unknown>,
+    metadata?: StructuredMetadata,
   ): void => {
     if (metadata) {
-      baseLogger.withMetadata(metadata as any).error(message);
+      baseLogger.withMetadata(metadata).error(message);
     } else {
       baseLogger.error(message);
     }
@@ -264,10 +262,10 @@ export function createSyncLogger(
 
   extendedLogger.warn = (
     message: string,
-    metadata?: Record<string, unknown>,
+    metadata?: StructuredMetadata,
   ): void => {
     if (metadata) {
-      baseLogger.withMetadata(metadata as any).warn(message);
+      baseLogger.withMetadata(metadata).warn(message);
     } else {
       baseLogger.warn(message);
     }
@@ -275,10 +273,10 @@ export function createSyncLogger(
 
   extendedLogger.debug = (
     message: string,
-    metadata?: Record<string, unknown>,
+    metadata?: StructuredMetadata,
   ): void => {
     if (metadata) {
-      baseLogger.withMetadata(metadata as any).debug(message);
+      baseLogger.withMetadata(metadata).debug(message);
     } else {
       baseLogger.debug(message);
     }
@@ -289,16 +287,16 @@ export function createSyncLogger(
     userId: string,
     userEmail?: string,
   ): ILogBuilder => {
-    const metadata: Record<string, unknown> = {
+    const metadata: StructuredMetadata = {
       userId,
       userEmail: userEmail ? "[REDACTED]" : undefined,
     };
-    return baseLogger.withMetadata(metadata as any);
+    return baseLogger.withMetadata(metadata);
   };
 
   extendedLogger.withRequest = (req: any): ILogBuilder => {
-    const metadata: Record<string, unknown> = { request: req };
-    return baseLogger.withMetadata(metadata as any);
+    const metadata: StructuredMetadata = { request: req };
+    return baseLogger.withMetadata(metadata);
   };
 
   // Add structured logging methods
@@ -307,12 +305,12 @@ export function createSyncLogger(
     res: any,
     duration?: number,
   ): void => {
-    const metadata: Record<string, unknown> = {
+    const metadata: StructuredMetadata = {
       request: req,
       response: res,
       duration,
     };
-    baseLogger.withMetadata(metadata as any).info("HTTP Request");
+    baseLogger.withMetadata(metadata).info("HTTP Request");
   };
 
   extendedLogger.httpError = (
@@ -320,14 +318,11 @@ export function createSyncLogger(
     error: Error,
     statusCode: number,
   ): void => {
-    const metadata: Record<string, unknown> = {
+    const metadata: StructuredMetadata = {
       request: req,
       statusCode,
     };
-    baseLogger
-      .withMetadata(metadata as any)
-      .withError(error)
-      .error("HTTP Error");
+    baseLogger.withMetadata(metadata).withError(error).error("HTTP Error");
   };
 
   extendedLogger.databaseQuery = (
@@ -335,12 +330,12 @@ export function createSyncLogger(
     duration: number,
     params?: any[],
   ): void => {
-    const metadata: Record<string, unknown> = {
+    const metadata: StructuredMetadata = {
       query,
       duration,
       params: params ? "[REDACTED]" : undefined,
     };
-    baseLogger.withMetadata(metadata as any).debug("Database Query");
+    baseLogger.withMetadata(metadata).debug("Database Query");
   };
 
   extendedLogger.authEvent = (
@@ -348,23 +343,23 @@ export function createSyncLogger(
     userId?: string,
     details?: Record<string, any>,
   ): void => {
-    const metadata: Record<string, unknown> = {
+    const metadata: StructuredMetadata = {
       event,
       userId,
       ...details,
     };
-    baseLogger.withMetadata(metadata as any).info("Auth Event");
+    baseLogger.withMetadata(metadata).info("Auth Event");
   };
 
   extendedLogger.businessEvent = (
     event: string,
     data: Record<string, any>,
   ): void => {
-    const metadata: Record<string, unknown> = {
+    const metadata: StructuredMetadata = {
       event,
       ...data,
     };
-    baseLogger.withMetadata(metadata as any).info("Business Event");
+    baseLogger.withMetadata(metadata).info("Business Event");
   };
 
   return extendedLogger;

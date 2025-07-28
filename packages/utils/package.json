@@ -10,7 +10,8 @@
   "scripts": {
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
-    "format": "biome format --write ."
+    "format": "biome format --write .",
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@durchrechnen/tsconfig": "workspace:*",
@@ -20,6 +21,10 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
+    "@loglayer/plugin-filter": "^2.1.1",
+    "@loglayer/plugin-opentelemetry": "^2.1.1",
+    "@loglayer/plugin-redaction": "^2.1.1",
+    "@loglayer/plugin-sprintf": "^2.1.1",
     "loglayer": "^6.6.0",
     "serialize-error": "^12.0.0"
   },

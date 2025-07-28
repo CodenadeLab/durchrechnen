@@ -539,9 +539,7 @@ const seedDiscountRulesEnhanced = [
 // =============================================================================
 
 export async function seedDatabase() {
-  console.log(
-    "🌱 Starting database seeding with detailed service data...",
-  );
+  console.log("🌱 Starting database seeding with detailed service data...");
 
   try {
     // Clear existing data (for development)
