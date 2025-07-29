@@ -78,7 +78,8 @@ jobs:
       - id: deploy
         uses: superfly/fly-pr-review-apps@1.2.1
         with:
-          path: ./apps/api
+          path: ./apps/api  
+          name: pr-${{ github.event.number }}-durchrechnen-api
           secrets: |
             DATABASE_URL=$DATABASE_URL
             GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
