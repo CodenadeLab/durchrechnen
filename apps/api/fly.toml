@@ -2,6 +2,8 @@ app = 'durchrechnen-api'
 primary_region = 'fra'
 
 [build]
+  dockerfile = "apps/api/Dockerfile"
+  ignorefile = "apps/api/.dockerignore"
 
 [env]
   PORT = '8080'

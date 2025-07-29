@@ -79,8 +79,7 @@ jobs:
         uses: superfly/fly-pr-review-apps@1.2.1
         with:
           name: pr-${{ github.event.number }}-durchrechnen-api
-          path: apps/api
-          dockerfile: apps/api/Dockerfile
+          config: apps/api/fly.toml
           secrets: |
             DATABASE_URL=$DATABASE_URL
             GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
