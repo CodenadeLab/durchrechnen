@@ -69,9 +69,11 @@ jobs:
           git branch
           git log --oneline -5
 
-      - name: Run Migrations on Preview Branch
+      - name: Push Schema to Preview Branch
         working-directory: ./apps/api
-        run: bun run db:migrate
+        run: |
+          echo "Using drizzle-kit push for preview branch (inherited schema from production)"
+          bun run db:push
 
       - id: deploy
         uses: superfly/fly-pr-review-apps@1.2.1
