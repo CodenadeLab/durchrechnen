@@ -62,7 +62,7 @@ jobs:
       - name: Run Migrations on Preview Branch
         working-directory: ./apps/api
         run: |
-          bun run db:generate
+          echo "Applying existing migrations to preview branch..."
           bun run db:migrate
         env:
           DATABASE_URL: ${{ steps.create_neon_branch.outputs.db_url_with_pooler }}
@@ -126,7 +126,7 @@ jobs:
         if: github.event.pull_request.merged == true
         working-directory: ./apps/api
         run: |
-          bun run db:generate
+          echo "Applying migrations to production database..."
           bun run db:migrate
         env:
           DATABASE_URL: ${{ secrets.NEON_PRODUCTION_DATABASE_URL }}
