@@ -16,6 +16,20 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // Bypass auth for Vercel preview environments (for API/UI testing)
+  // Note: VERCEL_ENV is automatically exposed as system environment variable on Vercel
+  const isVercelPreview = process.env.VERCEL_ENV === 'preview';
+  if (isVercelPreview) {
+    // Allow access to protected routes in preview environments for testing
+    if (isProtectedRoute) {
+      return NextResponse.next();
+    }
+    // Redirect from auth routes to dashboard in preview (skip login)
+    if (isAuthRoute) {
+      return NextResponse.redirect(new URL("/dashboard", request.url));
+    }
+  }
+
   // Validate session by calling API
   let hasValidSession = false;
   try {
