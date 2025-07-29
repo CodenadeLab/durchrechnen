@@ -38,21 +38,24 @@ jobs:
       contents: read
       pull-requests: write
     steps:
-      - name: Checkout
+      - name: Checkout PR Branch
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
 
-      - name: Create Neon Branch
+      - name: Create Neon Branch from Production
         id: create_neon_branch
         uses: neondatabase/create-branch-action@v5
         with:
           username: neondb_owner
           project_id: ${{ vars.NEON_PROJECT_ID }}
           branch_name: preview/pr-${{ github.event.number }}-${{ needs.setup.outputs.branch }}
+          parent: main
           api_key: ${{ secrets.NEON_API_KEY }}
 
       - name: Install Dependencies
@@ -107,9 +110,11 @@ jobs:
           api_key: ${{ secrets.NEON_API_KEY }}
 
       # Only apply migrations to production if PR was merged
-      - name: Checkout
+      - name: Checkout Merged PR Branch
         if: github.event.pull_request.merged == true
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.merge_commit_sha }}
 
       - name: Setup Bun
         if: github.event.pull_request.merged == true
