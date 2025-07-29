@@ -76,6 +76,21 @@ jobs:
           api_key: ${{ secrets.NEON_API_KEY }}
           database: neondb
 
+      - name: Save Database URL for Fly.io Deploy
+        run: |
+          echo "${{ steps.create_neon_branch.outputs.db_url_with_pooler }}" > database_url.txt
+          echo "PR_NUMBER=${{ github.event.number }}" > pr_info.txt
+          echo "BRANCH_NAME=${{ needs.setup.outputs.branch }}" >> pr_info.txt
+
+      - name: Upload Database Info Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: neon-preview-db-info-${{ github.event.number }}
+          path: |
+            database_url.txt
+            pr_info.txt
+          retention-days: 1
+
   delete_neon_branch:
     name: Delete Neon Branch & Apply Production Migrations
     needs: setup
