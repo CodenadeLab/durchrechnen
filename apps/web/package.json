@@ -13,6 +13,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "motion": "^12.23.11",
     "@durchrechnen/utils": "workspace:*",
     "@durchrechnen/ui": "workspace:*",
     "lucide-react": "^0.525.0",

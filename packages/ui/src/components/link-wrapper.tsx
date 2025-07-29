@@ -32,7 +32,6 @@ export const NextJsLink = ({
 }) => {
   // This will be dynamically imported in Next.js applications
   const NextLink = React.lazy(() =>
-    // @ts-expect-error
     import("next/link").then((mod) => ({ default: mod.default })),
   );
 
@@ -44,7 +43,6 @@ export const NextJsLink = ({
         </a>
       }
     >
-      {/* @ts-expect-error */}
       <NextLink href={href} className={className} {...props}>
         {children}
       </NextLink>

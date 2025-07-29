@@ -1,15 +1,15 @@
-import { openTelemetryPlugin } from "loglayer";
+import { openTelemetryPlugin } from "@loglayer/plugin-opentelemetry";
 
 export function createOpenTelemetryPlugin(config?: {
-  serviceName?: string;
-  serviceVersion?: string;
-  traceIdKey?: string;
-  spanIdKey?: string;
+  traceFieldName?: string;
+  traceIdFieldName?: string;
+  spanIdFieldName?: string;
+  traceFlagsFieldName?: string;
 }) {
   return openTelemetryPlugin({
-    serviceName: config?.serviceName || "durchrechnen",
-    serviceVersion: config?.serviceVersion || "1.0.0",
-    traceIdKey: config?.traceIdKey || "trace_id",
-    spanIdKey: config?.spanIdKey || "span_id",
+    traceFieldName: config?.traceFieldName,
+    traceIdFieldName: config?.traceIdFieldName || "trace_id",
+    spanIdFieldName: config?.spanIdFieldName || "span_id",
+    traceFlagsFieldName: config?.traceFlagsFieldName || "trace_flags",
   });
 }

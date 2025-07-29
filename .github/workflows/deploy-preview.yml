@@ -1,0 +1,103 @@
+name: Preview Deployment
+on: [pull_request]
+
+env:
+  NEON_PROJECT_ID: ${{ vars.NEON_PROJECT_ID }} # You can find this in your Neon project settings
+  FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }} # You can generate a Fly API token in your account settings
+  GH_TOKEN: ${{ secrets.GH_TOKEN }} # Required for commenting on pull requests for private repos
+
+jobs:
+  deploy-preview:
+    runs-on: ubuntu-latest
+
+    # Only run one deployment at a time per PR.
+    concurrency:
+      group: pr-${{ github.event.number }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.12.0
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - run: bun install
+
+      - name: Get git branch name
+        id: branch-name
+        uses: tj-actions/branch-names@v8
+
+      - id: create-branch
+        uses: neondatabase/create-branch-action@v5
+        with:
+          project_id: ${{ env.NEON_PROJECT_ID }}
+          username: "neondb_owner" # Change this to the role you use to connect to your database
+          parent: production # Use production as parent branch
+          branch_name: preview/${{ steps.branch-name.outputs.current_branch }}
+          api_key: ${{ secrets.NEON_API_KEY }} # Generate an API key in your Neon account settings
+
+      - name: Get Vercel Preview URL
+        id: vercel_url
+        uses: zentered/vercel-preview-url@v1.1.9
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        with:
+          vercel_project_id: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - run: |
+          echo "DATABASE_URL=${{ steps.create-branch.outputs.db_url_with_pooler }}" >> "$GITHUB_ENV"
+
+      - name: Debug Migration Files
+        working-directory: ./apps/api
+        run: |
+          echo "=== CURRENT DIRECTORY ==="
+          pwd
+          echo ""
+          echo "=== MIGRATIONS FOLDER ==="
+          ls -la migrations/ || echo "No migrations folder found"
+          echo ""
+          echo "=== LOOKING FOR SPECIFIC FILE ==="
+          ls -la migrations/0000_bitter_scarlet_spider.sql || echo "File not found"
+          echo ""
+          echo "=== ALL FILES IN MIGRATIONS ==="
+          find migrations/ -name "*.sql" 2>/dev/null || echo "No SQL files found"
+          echo ""
+          echo "=== GIT BRANCH INFO ==="
+          git branch
+          git log --oneline -5
+
+      - name: Push Schema to Preview Branch
+        working-directory: ./apps/api
+        run: |
+          echo "Using drizzle-kit push for preview branch (inherited schema from production)"
+          bun run db:push
+
+      - id: deploy
+        uses: superfly/fly-pr-review-apps@1.2.1
+        with:
+          name: pr-${{ github.event.number }}-durchrechnen-api
+          config: apps/api/fly.toml
+          secrets: |
+            DATABASE_URL=$DATABASE_URL
+            GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
+            GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}
+            AUTH_SECRET=${{ secrets.AUTH_SECRET }}
+            COMPANY_DOMAIN=codenade.com
+            BASE_URL=${{ steps.deploy.outputs.url }}
+            CORS_ORIGINS=${{ steps.vercel_url.outputs.preview_url }},${{ steps.deploy.outputs.url }}
+            TRUSTED_ORIGINS=${{ steps.vercel_url.outputs.preview_url }},${{ steps.deploy.outputs.url }}
+            NODE_ENV=production
+            DEPLOYMENT_SCOPE=germany
+            PORT=3003
+            TZ=UTC
+
+      - name: Comment on Pull Request
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          GITHUB_TOKEN: ${{ env.GH_TOKEN }} # Required for commenting on pull requests for private repos
+          message: |
+            Fly Preview URL :balloon: : ${{ steps.deploy.outputs.url }}
+            Neon branch :elephant: : https://console.neon.tech/app/projects/${{ env.NEON_PROJECT_ID }}/branches/${{ steps.create-branch.outputs.branch_id }}
