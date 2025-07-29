@@ -63,14 +63,43 @@ jobs:
         working-directory: ./apps/api
         run: bun install
 
-      - name: Debug Migration Files
+      - name: KRASS DEBUG - Alles analysieren
+        run: |
+          echo "=== ROOT DIRECTORY ==="
+          pwd
+          ls -la
+          echo ""
+          echo "=== APPS DIRECTORY ==="
+          ls -la apps/ || echo "No apps directory"
+          echo ""
+          echo "=== API DIRECTORY ==="
+          ls -la apps/api/ || echo "No apps/api directory"
+          echo ""
+          echo "=== MIGRATIONS DIRECTORY ==="
+          ls -la apps/api/migrations/ || echo "No migrations directory"
+          echo ""
+          echo "=== DRIZZLE CONFIG ==="
+          cat apps/api/drizzle.config.ts || echo "No drizzle config"
+          echo ""
+          echo "=== PACKAGE.JSON SCRIPTS ==="
+          cat apps/api/package.json | grep -A 10 '"scripts"' || echo "No package.json"
+
+      - name: KRASS DEBUG - Working Directory Test
         working-directory: ./apps/api
         run: |
-          echo "Current directory: $(pwd)"
-          echo "Migration files:"
-          ls -la migrations/ || echo "migrations directory not found"
-          echo "Working directory contents:"
+          echo "=== INSIDE APPS/API ==="
+          pwd
           ls -la
+          echo ""
+          echo "=== MIGRATIONS FROM WORKING DIR ==="
+          ls -la migrations/ || echo "No migrations from working dir"
+          echo ""
+          echo "=== RELATIVE PATHS ==="
+          ls -la ./migrations/ || echo "No ./migrations/"
+          ls -la ../api/migrations/ || echo "No ../api/migrations/"
+          echo ""
+          echo "=== DRIZZLE CONFIG FROM WORKING DIR ==="
+          cat drizzle.config.ts || echo "No drizzle config from working dir"
 
       - name: Run Migrations on Preview Branch
         working-directory: ./apps/api
