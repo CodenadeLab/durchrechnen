@@ -50,6 +50,25 @@ jobs:
       - run: |
           echo "DATABASE_URL=${{ steps.create-branch.outputs.db_url_with_pooler }}" >> "$GITHUB_ENV"
 
+      - name: Debug Migration Files
+        working-directory: ./apps/api
+        run: |
+          echo "=== CURRENT DIRECTORY ==="
+          pwd
+          echo ""
+          echo "=== MIGRATIONS FOLDER ==="
+          ls -la migrations/ || echo "No migrations folder found"
+          echo ""
+          echo "=== LOOKING FOR SPECIFIC FILE ==="
+          ls -la migrations/0000_bitter_scarlet_spider.sql || echo "File not found"
+          echo ""
+          echo "=== ALL FILES IN MIGRATIONS ==="
+          find migrations/ -name "*.sql" 2>/dev/null || echo "No SQL files found"
+          echo ""
+          echo "=== GIT BRANCH INFO ==="
+          git branch
+          git log --oneline -5
+
       - name: Run Migrations on Preview Branch
         working-directory: ./apps/api
         run: bun run db:migrate
