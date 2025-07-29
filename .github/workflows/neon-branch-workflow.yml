@@ -55,7 +55,7 @@ jobs:
           username: neondb_owner
           project_id: ${{ vars.NEON_PROJECT_ID }}
           branch_name: preview/pr-${{ github.event.number }}-${{ needs.setup.outputs.branch }}
-          parent: main
+          parent: production
           api_key: ${{ secrets.NEON_API_KEY }}
 
       - name: Install Dependencies
@@ -75,7 +75,7 @@ jobs:
         with:
           project_id: ${{ vars.NEON_PROJECT_ID }}
           compare_branch: preview/pr-${{ github.event.number }}-${{ needs.setup.outputs.branch }}
-          base_branch: dev
+          base_branch: production
           api_key: ${{ secrets.NEON_API_KEY }}
           database: neondb
 
