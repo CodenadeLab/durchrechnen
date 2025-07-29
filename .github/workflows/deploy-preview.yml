@@ -50,7 +50,10 @@ jobs:
       - run: |
           echo "DATABASE_URL=${{ steps.create-branch.outputs.db_url_with_pooler }}" >> "$GITHUB_ENV"
 
-      - run: bun run --cwd apps/api db:migrate
+      - name: Run Migrations on Preview Branch
+        run: |
+          cd apps/api
+          bun run db:migrate
 
       - id: deploy
         uses: superfly/fly-pr-review-apps@1.2.1
