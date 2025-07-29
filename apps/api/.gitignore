@@ -1,3 +1,4 @@
 # Database
-migrations/*
-!migrations/.gitkeep
+# Migration files are needed for deployments
+!migrations/
+migrations/.gitkeep

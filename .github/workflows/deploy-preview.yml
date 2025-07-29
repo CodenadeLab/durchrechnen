@@ -16,8 +16,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
       - uses: actions/setup-node@v4
         with:
           node-version: 22.12.0
@@ -36,7 +34,7 @@ jobs:
         with:
           project_id: ${{ env.NEON_PROJECT_ID }}
           username: "neondb_owner" # Change this to the role you use to connect to your database
-          # parent: dev # optional (defaults to your primary branch)
+          parent: production # Use production as parent branch
           branch_name: preview/${{ steps.branch-name.outputs.current_branch }}
           api_key: ${{ secrets.NEON_API_KEY }} # Generate an API key in your Neon account settings
 
